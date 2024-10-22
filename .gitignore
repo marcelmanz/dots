@@ -120,6 +120,7 @@ scripts/work/hibob-attendence.js
 !.config/wofi
 !.config/kanshi
 !.config/tofi
+!.config/user-dirs.dirs
 
 
 # v Added with script v

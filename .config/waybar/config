@@ -21,7 +21,7 @@
         "custom/sensors-temp",
         "battery",
         // "upower",
-        "battery#bat2",
+        // "battery#bat2",
         "clock",
         // "custom/clock",
         "hyprland/language",
@@ -151,7 +151,7 @@
         "format-charging": "󱐋  {capacity}%",
         "format-plugged": "󱘖  {capacity}%",
         "format-alt": "{time} {icon}",
-        "format-full": "{capacity}%",
+        "format-full": "󰁹 {capacity}%",
         "format-icons": [
             "󰁻",
             "󰁽",

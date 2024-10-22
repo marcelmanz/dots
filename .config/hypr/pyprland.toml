@@ -12,10 +12,17 @@ plugins = [
 
 
 
+# [scratchpads.term]
+# animation = "fromTop"
+# command = "foot -e bash --class=foot-dropterm"
+# class = "foot-dropterm"
+# size = "75% 60%"
+# max_size = "1920px 100%"
+# margin = 50
+
 [scratchpads.term]
-animation = "fromTop"
-command = "foot -e bash --class=foot-dropterm"
-class = "foot-dropterm"
-size = "75% 60%"
-max_size = "1920px 100%"
-margin = 50
+animation = ""
+class = "nu"
+command = "foot -a nu -L nu"
+size = "75% 40%"
+lazy = true

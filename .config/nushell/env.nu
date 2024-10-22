@@ -34,4 +34,4 @@ $env.PAGER = 'less -FRX'
 
 # zoxide init nushell | str replace "def-env" "def --env" --all | save -f ~/.zoxide.nu
 zoxide init nushell | save -f ~/.zoxide.nu
-nu-alias-converter ~/.bash_aliases -o $"($nu.default-config-dir)/bash-alises.nu" | ignore
+nuit ~/.bash_aliases -o $"($nu.default-config-dir)/bash-alises.nu" | ignore

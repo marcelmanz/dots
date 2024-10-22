@@ -7,6 +7,8 @@ fi
 
 source ~/.bash_aliases
 
+# alias zshalais="source ~/.zshrc"
+
 # shellcheck disable=2148
 
 # source $(rund zsh)
