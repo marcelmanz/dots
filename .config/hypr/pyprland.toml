@@ -11,7 +11,6 @@ plugins = [
 ]
 
 
-
 # [scratchpads.term]
 # animation = "fromTop"
 # command = "foot -e bash --class=foot-dropterm"
@@ -25,4 +24,11 @@ animation = ""
 class = "nu"
 command = "foot -a nu -L nu"
 size = "75% 40%"
+lazy = true
+
+[scratchpads.whats]
+animation = ""
+command = "wasistlos %u"
+class = "wasistlos"
+size = "70% 80%"
 lazy = true

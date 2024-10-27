@@ -1,11 +1,27 @@
 #!/usr/bin/env bash
 
-target="$*"
+args="$*"
 
-if [[ -e "$target" ]]; then
-	nvim "$target"
+# no arguments
+if [[ -z "$args" ]]; then
+	nvim
+	error_code=$?
+	exit $error_code
+fi
+
+# for flags
+if [[ "$args" == -* ]]; then
+	nvim "$args"
+	error_code=$?
+	exit $error_code
+fi
+
+if [[ -e "$args" ]]; then
+	# for files
+	nvim "$args"
 else
-	dir_path=$(dirname "$target")
+	# for directories
+	dir_path=$(dirname "$args")
 	mkdir -p "$dir_path"
-	nvim "$target"
+	nvim "$args"
 fi
