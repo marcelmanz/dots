@@ -11,13 +11,11 @@ plugins = [
 ]
 
 
-# [scratchpads.term]
-# animation = "fromTop"
-# command = "foot -e bash --class=foot-dropterm"
-# class = "foot-dropterm"
-# size = "75% 60%"
-# max_size = "1920px 100%"
-# margin = 50
+# Base configuration for the scratchpad plugin
+# [scratchpads.name]
+# command = "command to run"
+# class = "the window's class"  # check: hyprctl clients | grep class
+# size = "<width> <height>"  # size of the window relative to the screen size
 
 [scratchpads.term]
 animation = ""
@@ -31,4 +29,24 @@ animation = ""
 command = "wasistlos %u"
 class = "wasistlos"
 size = "70% 80%"
+# size = "99% 97%"
+# position = "0% 3%"
 lazy = true
+
+[scratchpads.volume]
+animation = ""
+command = "pavucontrol"
+class = "org.pulseaudio.pavucontrol"
+position = "25% 25%"
+size = "50% 50%"
+unfocus = "hide"
+lazy = true
+
+[scratchpads.kitty]
+animation = "fromTop"
+command = "kitty --class kitty-dropterm"
+class = "kitty-dropterm"
+size = "75% 60%"
+max_size = "1920px 100%"
+margin = 50
+
