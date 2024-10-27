@@ -1,34 +1,33 @@
 # notes
 def th [] {
-    cd $"($env.HOME)/clones/pers/notes"
+    cd $"($env.HOME)/notes"
     nvim .
 }
 
 def zkn [note_title] {
-    cd $"($env.HOME)/clones/pers/notes"
+    cd $"($env.HOME)/notes"
     zk new --title $note_title
 }
 
 def zko [] {
-    cd $"($env.HOME)/clones/pers/notes"
+    cd $"($env.HOME)/notes"
     nvim -c 'ZkNotes'
 }
 
 def zkwo [] {
-    cd $"($env.HOME)/clones/pers/notes"
+    cd $"($env.HOME)/notes"
     nvim ix07-work-to-do-s.md
 }
 
 def rgfind [file] { rg --files | rg $file }
 
 # tmux
-def two [] { nu $"($env.HOME)/scripts/tmux/create-session.nu" work }
-def tpe [] { nu $"($env.HOME)/scripts/tmux/create-session.nu" own }
-
-# nu
+# def tpe [] { nu $"($env.HOME)/scripts/tmux/create-session.nu" own }
+# def two [] { nu $"($env.HOME)/scripts/tmux/create-session.nu" work }
 
 # This is not possible yet :(
 # ls ~/.config/nushell/*.nu | each { |f| source $f.name }
+
 def so [] { exec nu }
 
 def colored_string [value, color: string] {
