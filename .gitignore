@@ -116,6 +116,7 @@ scripts/work/hibob-attendence.js
 !.tmux
 
 !.config/hypr
+.config/hypr/*.conf-bak
 !.config/waybar
 !.config/wofi
 !.config/kanshi
