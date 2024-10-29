@@ -13,6 +13,7 @@ application/x-extension-ics=userapp-Thunderbird-75BSU2.desktop
 x-scheme-handler/webcals=userapp-Thunderbird-75BSU2.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/http=firefox.desktop
+inode/directory=nemo.desktop
 
 [Added Associations]
 image/png=feh.desktop;imv.desktop;

@@ -121,6 +121,7 @@ scripts/work/hibob-attendence.js
 !.config/kanshi
 !.config/tofi
 !.config/user-dirs.dirs
+!.config/zathura
 
 
 # v Added with script v

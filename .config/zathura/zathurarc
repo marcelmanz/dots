@@ -1,0 +1,3 @@
+set recolor true
+set recolor-keephue
+set selection-clipboard "clipboard"
