@@ -123,6 +123,8 @@ scripts/work/hibob-attendence.js
 !.config/tofi
 !.config/user-dirs.dirs
 !.config/zathura
+!.config/clipse/config.json
+!.config/clipse/custom_theme.json
 
 
 # v Added with script v
