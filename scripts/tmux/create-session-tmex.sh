@@ -4,7 +4,8 @@ SESSION_TYPE=$1
 
 if [ -z "$SESSION_TYPE" ]; then
 	echo "No session type provided"
-	exit 1
+	echo "Select a session type:"
+	SESSION_TYPE=$(ls $HOME/clones | fzy)
 fi
 
 WORK_PATH="$HOME/clones/$SESSION_TYPE"
