@@ -44,6 +44,8 @@ SRC_ACCESS_TOKEN=$(pass show sg/token)
 export SRC_ACCESS_TOKEN
 SRC_ENDPOINT=$(pass show sg/endpoint)
 export SRC_ENDPOINT
+GITLAB_TOKEN=$(pass show gitlab/access-token)
+export GITLAB_TOKEN
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk

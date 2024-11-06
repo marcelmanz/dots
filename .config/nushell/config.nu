@@ -6,7 +6,6 @@ source colors.nu
 use ~/clones/external/nupm/nupm/
 
 # source external/get-weather.nu
-
 # use ~/clones/forks/nu_scripts/custom-completions/mod.nu *
 # use ~/clones/forks/nu_scripts/modules/rbenv/rbenv.nu
 
@@ -77,7 +76,7 @@ $env.config = {
   }
   completions: {
       case_sensitive: false # set to true to enable case-sensitive completions
-      quick: false          # set this to false to prevent auto-selecting completions when only one remains
+      quick: true           # set this to false to prevent auto-selecting completions when only one remains
       partial: true         # set this to false to prevent partial filling of the prompt
       algorithm: "prefix"   # prefix or fuzzy
       external: {
@@ -123,20 +122,6 @@ $env.config = {
   }
   ]
   keybindings: [
-   {
-    name: completion_menu
-    modifier: none
-    keycode: tab
-    mode: [vi_normal vi_insert emacs]
-    event: {
-      until: [
-        { send: menu name: completion_menu }
-        { send: menudown }
-        { send: menunext }
-        { edit: complete }
-      ]
-    }
-  }
   {
     name: zoxide_menu
     modifier: control

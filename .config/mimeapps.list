@@ -14,6 +14,8 @@ x-scheme-handler/webcals=userapp-Thunderbird-75BSU2.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 inode/directory=nemo.desktop
+application/epub+zip=calibre-ebook-viewer.desktop
+text/html=firefox.desktop
 
 [Added Associations]
 image/png=feh.desktop;imv.desktop;
@@ -25,3 +27,5 @@ x-scheme-handler/mailto=userapp-Thunderbird-NBZSU2.desktop;
 x-scheme-handler/mid=userapp-Thunderbird-NBZSU2.desktop;
 x-scheme-handler/webcal=userapp-Thunderbird-75BSU2.desktop;
 x-scheme-handler/webcals=userapp-Thunderbird-75BSU2.desktop;
+application/epub+zip=calibre-ebook-viewer.desktop;
+text/html=chromium.desktop;firefox.desktop;

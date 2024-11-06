@@ -26,3 +26,6 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+[submodule ".config/tmux/plugins/extrakto"]
+	path = .config/tmux/plugins/extrakto
+	url = https://github.com/laktak/extrakto
