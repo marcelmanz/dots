@@ -1,5 +1,5 @@
 source alias.nu
-source bash-alises.nu
+source bash-aliases.nu
 source func.nu
 source colors.nu
 
@@ -202,3 +202,4 @@ $env.PROMPT_MULTILINE_INDICATOR = {colored_error_prompt ':> '}
 # source ~/.local/share/atuin/init.nu
 
 source ~/.zoxide.nu
+source ~/.local/share/atuin/init.nu
