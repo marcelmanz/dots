@@ -12,5 +12,5 @@ function show_webcam
         exit 1
     end
 
-    gst-launch-1.0 -v v4l2src "device=$webcam_number" ! glimagesink
+    gst-launch-1.0 -v v4l2src "device=$webcam_number" ! video/x-raw,format=YUY2,width=640,height=480,framerate=30/1 ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
 end
