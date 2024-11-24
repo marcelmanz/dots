@@ -42,6 +42,7 @@
 !.config/btop
 !.config/cheat
 !.config/helix
+.config/helix/runtime
 !.config/htop
 !.config/lf
 !.config/vimfm

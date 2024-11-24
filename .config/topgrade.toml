@@ -13,7 +13,8 @@
 # raco, rcm, remotes, restarts, rtcl, ruby_gems, rustup, scoop, sdkman, sheldon, shell,
 # snap, sparkle, spicetify, stack, system, tldr, tlmgr, tmux, toolbx, vagrant, vcpkg,
 # vim, winget, wsl, yadm, yarn
-disable = ["nix", "system", "vim", "mas", "ruby_gems", "gem", "pip3", "containers"]
+# disable = ["nix", "system", "vim", "mas", "ruby_gems", "gem", "pip3", "containers"]
+disable = ["containers"]
 skip_notify = true
 
 # Ignore failures for these steps
@@ -73,14 +74,14 @@ skip_notify = true
 # Custom commands
 [commands]
 # "Nix flake update and rebuild" = "echo 'Nix update'; nix flake update ~/.nixpkgs && echo 'Nix rebuild'; sudo darwin-rebuild switch --flake ~/.nixpkgs#"
-"Custom pip3" = "python3 -m pip install --upgrade pip"
-"Wezterm nightly update" = "brew upgrade --cask wezterm-nightly --no-quarantine --greedy-latest"
+# "Custom pip3" = "python3 -m pip install --upgrade pip"
+# "Wezterm nightly update" = "brew upgrade --cask wezterm-nightly --no-quarantine --greedy-latest"
 # "Neovim nightly update" = "/Users/m.manzanares/scripts/install-last-neovim.sh"
-"Generate Brewfile" = "brew bundle dump --force --file=/Users/m.manzanares/Brewfile"
+# "Generate Brewfile" = "brew bundle dump --force --file=/Users/m.manzanares/Brewfile"
 "Generate Cargofile" = "ls ~/.cargo/bin > ~/Cargofile"
 "Generate Clones File Structure" = "tree -L 2 clones > clones-file-structure.md"
-"Generate dot files fetch" = "echo '```' > README.md; ./scripts/onefetch-clean-outuput >> README.md; echo '```' >> README.md"
-# "Generate cargo-programs file" = "cat /Users/m.manzanares/.crates2.json | jq -r '.installs | keys[] | split(" ")[0]' | sed '/^$/d' > .cargo-programs"
+# "Generate dot files fetch" = "echo '```' > README.md; ./scripts/onefetch-clean-outuput >> README.md; echo '```' >> README.md"
+"Arch backup" = "~/scripts/arch/backup.sh"
 
 [brew]
 # greedy_cask = true
