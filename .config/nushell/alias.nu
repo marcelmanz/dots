@@ -73,7 +73,6 @@ alias vi = ^nvim
 alias iv = ^nvim
 alias vo = ^nvim
 alias vu = ^nvim
-alias bi = ^nvim -c 'colorscheme OceanicNext'
 # alias mi = ^nvim -u ~/.config/nvim/minimal-init.lua
 # alias revi = ^bash $"($env.HOME)/scripts/install-last-neovim.sh"
 alias rc = ^nvim $"($env.HOME)/.config/nvim/*init.*"

@@ -10,6 +10,8 @@ $env.PATH = (
     | split row (char esep)
     | prepend $"(gem env user_gemhome)/bin" # ruby gems
     | prepend '~/.cargo/bin' # rust
+    | prepend '~/.npm-global/bin' # npm
+    | prepend '~/.local/bin' # local binaries
 )
 
 $env.EDITOR = 'nvim'
