@@ -1,0 +1,8 @@
+font-size = 9
+
+background = #000000
+window-decoration = false
+confirm-close-surface = false
+window-padding-x = 10
+window-padding-y = 10
+
