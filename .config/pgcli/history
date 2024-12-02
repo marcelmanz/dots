@@ -1,0 +1,12 @@
+
+# 2024-12-02 16:48:38.948279
++SELE
+
+# 2024-12-02 16:48:52.801931
++SELECT * FROM information_schema.sequences.
+
+# 2024-12-02 16:48:54.236091
++SELECT * FROM information_schema.sequences
+
+# 2024-12-02 16:48:56.962154
++SELECT * FROM public
