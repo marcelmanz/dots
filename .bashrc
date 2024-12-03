@@ -14,8 +14,8 @@ source <(carapace _carapace)
 eval "$(atuin init bash --disable-up-arrow)"
 
 # Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] && \
-    . /usr/share/bash-completion/bash_completion
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
+	. /usr/share/bash-completion/bash_completion
 
 # Start gpg-agent if not already running
 GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
@@ -35,7 +35,7 @@ fi
 
 # ENV. VARIABLES
 
-# pass 
+# pass
 OPENAI_API_KEY=$(pass show openai/api-key)
 export OPENAI_API_KEY
 GITHUB_TOKEN=$(pass show github/token)
@@ -46,6 +46,10 @@ SRC_ENDPOINT=$(pass show sg/endpoint)
 export SRC_ENDPOINT
 GITLAB_TOKEN=$(pass show gitlab/access-token)
 export GITLAB_TOKEN
+
+export _JAVA_AWT_WM_NONREPARENTING=1
+export AWT_TOOLKIT=MToolkit
+export GDK_BACKEND=wayland
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk

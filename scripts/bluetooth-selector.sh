@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 notify_user() {
-	local status=$1
+	local _status=$1
 	local message=$2
 	local icon=$3
 

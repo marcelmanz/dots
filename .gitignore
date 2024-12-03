@@ -10,6 +10,8 @@
 !.config
 .config/*
 !.config/alacritty
+!.config/foot
+!.config/ghostty
 !.config/awesome
 !.config/topgrade.toml
 !.config/mimeapps.list
@@ -125,6 +127,8 @@ scripts/work/hibob-attendence.js
 !.config/waybar
 !.config/wofi
 !.config/kanshi
+!.config/pgcli
+!.myclirc
 !.config/tofi
 !.config/user-dirs.dirs
 !.config/zathura
