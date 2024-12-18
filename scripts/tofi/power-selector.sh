@@ -12,7 +12,8 @@ selected=$(echo -e "$entries" | tofi --width 250 --height 270 | awk '{print $0}'
 
 case "$selected" in
 "Lock")
-	hyprlock
+	gammastep -l 0:0 -o -b 0.1:0.1 &
+	hyprlock && killall gammastep
 	;;
 "Lock & Suspend")
 	hyprlock &

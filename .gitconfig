@@ -6,10 +6,10 @@
 	name = marcelarie
 
 [pager]
-    diff = delta
-    log = delta
+    ; diff = delta
+    ; log = delta
     reflog = delta
-    show = delta
+    ; show = diff
 
 [interactive]
     diffFilter = delta --color-only --features=interactive
