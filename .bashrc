@@ -50,6 +50,7 @@ export GITLAB_TOKEN
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
 export GDK_BACKEND=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=wayland
 
 export HOMEBREW_NO_AUTO_UPDATE=1
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk

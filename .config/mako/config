@@ -5,4 +5,4 @@ max-icon-size=64
 
 default-timeout=7000
 ignore-timeout=1
-on-notify=exec mpv ~/music/notification_laser_sound.ogg
+# on-notify=exec mpv ~/music/notification_laser_sound.ogg

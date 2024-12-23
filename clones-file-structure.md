@@ -1,58 +1,57 @@
 clones
 ├── external
-│   ├── SketchyBar
-│   ├── nu_scripts
+│   ├── astro-theme-cactus
+│   ├── better-hn
+│   ├── codecrafters-redis-rust
+│   ├── deno
+│   ├── juan-test
+│   ├── neohtop
+│   ├── new-nu-parser
 │   ├── nupm
-│   ├── scripts
-│   └── tmux-sessionizer
+│   ├── nushell
+│   ├── paru
+│   ├── powerlevel10k
+│   └── tree-sitter-nu
 ├── forks
-│   ├── kanagawa.nvim
-│   ├── nu_scripts
-│   ├── open-webui
-│   ├── sttusline
-│   └── tldr
-├── lang_servers
-├── learn
-│   ├── OpenSign
-│   ├── codecrafters-grep-rust
-│   └── use-signals
+│   ├── blink.cmp
+│   ├── codecrafters-cli
+│   ├── no-clown-fiesta.nvim
+│   ├── nvim-nu
+│   ├── plastic
+│   ├── plastic-arch
+│   ├── tldr
+│   ├── tree-sitter-nu
+│   ├── tree-sitter-zig
+│   └── zoxide
+├── interviews
+│   └── dev-skiller-canonical
 ├── own
-│   ├── aoc23
+│   ├── advent-of-rust
+│   ├── bicycle_shop_ror
+│   ├── bsr
+│   ├── chat-backend
 │   ├── dots
-│   ├── fixtures-generator
-│   ├── gh-fuzzy-search
+│   ├── fraud-exam-monitor
+│   ├── fraud-exam-monitor-worldsensing-marcel-manzanares.zip
+│   ├── fraud-exam-monitor-zip
+│   ├── git-commit-search
 │   ├── git-tellme
+│   ├── golang-docker-template
 │   ├── knowledge-material
+│   ├── linguist-rs
 │   ├── marcelarie
 │   ├── marcelarie.com
-│   ├── nix
-│   ├── rofi-translate-to-clip
+│   ├── my-astro-theme-cactus
+│   ├── nu-alias-converter
+│   ├── rpaste-self-host
 │   ├── rund
+│   ├── tofi-calc
 │   ├── tree-rs
+│   ├── tree-sitter-kanshi
+│   ├── vison
+│   ├── wallafinder
 │   └── zettelin
-├── pers
-│   └── notes
 └── work
-    ├── client-dashboard
-    ├── dev-portal
-    ├── lop-rules-manager
-    ├── lop-searcher
-    ├── mc-app-template
-    ├── mc-clients-account-management
-    ├── mc-gh-actions
-    ├── mc-live-ops-packages
-    ├── mc-live-ops-rules-manager
-    ├── mc-packages
-    ├── mc-scripts
-    ├── mission-control
-    ├── postman
-    ├── pulse-v3
-    ├── scripts
-    ├── shadowing-with-ferdi
-    ├── stuart-api
-    ├── stuart-api-old
-    ├── stuart-frontend
-    ├── stuart-solutions
-    └── web-ui
+    └── ls-cmt-frontend
 
-56 directories, 0 files
+54 directories, 1 file

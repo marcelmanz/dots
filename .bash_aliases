@@ -337,6 +337,7 @@ alias vps_connect_root="sshpass -p (pass show do-vps-marcel-ubuntu/root) ssh roo
 alias show_webcams="v4l2-ctl --list-devices"
 alias speedtest-cli="speedtest-rs"
 alias wiki="wiki-tui"
+alias chatd="chatd --ozone-platform=wayland"
 
 # Only adds aliases if the shell is bash
 # if [ -n "$BASH_VERSION" ]; then

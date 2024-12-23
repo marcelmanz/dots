@@ -61,6 +61,7 @@ set -g MANPAGER 'nvim +Man!'
 set -g PAGER 'less -FRX'
 set -g -x MOZ_ENABLE_WAYLAND 1
 set -g -x TERMINAL alacritty -e
+set -g -x ELECTRON_OZONE_PLATFORM_HINT wayland
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
