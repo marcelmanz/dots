@@ -8,8 +8,8 @@
 [pager]
     ; diff = delta
     ; log = delta
-    reflog = delta
-    ; show = diff
+    ; reflog = delta
+    show = diff
 
 [interactive]
     diffFilter = delta --color-only --features=interactive
@@ -41,7 +41,8 @@
     conflictstyle = zdiff3
 [diff]
 	algorithm = histogram
-	; external = difft
+	external = difft
+
 ; [commit]
 ; 	template = ~/.gitmessage
 [core]
