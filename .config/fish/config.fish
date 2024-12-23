@@ -45,9 +45,9 @@ bind -M insert \cr _atuin_search
 # end
 
 # ENV VARS
-set -g -x EDITOR /home/marcel/.local/share/bob/nvim-bin/nvim
-set -g -x VISUAL /home/marcel/.local/share/bob/nvim-bin/nvim
-set -g -x SUDO_EDITOR /home/marcel/.local/share/bob/nvim-bin/nvim
+set -g -x EDITOR $HOME/.local/share/bob/nvim-bin/nvim
+set -g -x VISUAL $HOME/.local/share/bob/nvim-bin/nvim
+set -g -x SUDO_EDITOR $HOME/.local/share/bob/nvim-bin/nvim
 set -g -x HYPRSHOT_DIR $HOME/screenshots
 # set -g DOCKER_HOST (podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')
 # set -g OPENAI_API_KEY (pass show openai/api-key)
