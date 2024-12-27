@@ -42,6 +42,7 @@ cmake
 cmus
 colordiff
 copyq
+cowsay
 cronie
 cryptsetup
 deno
@@ -155,6 +156,7 @@ linux-lts-headers
 linuxwave
 lldb
 logrotate
+lolcat
 lsb-release
 lsd
 lsix

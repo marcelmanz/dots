@@ -3,6 +3,7 @@
 alias ls="eza"
 # alias l="ls"
 alias ll="eza -l"
+alias cowlol="cowsay hello | lolcat"
 alias lla="eza -la"
 alias cp="cp -i"
 alias mv="mv -i"

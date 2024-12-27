@@ -47,6 +47,7 @@
 ; 	template = ~/.gitmessage
 [core]
 	editor = nvim
+	pager = moar --no-statusbar
 	hookspath = /Users/m.manzanares/.githooks
 
 [safe]

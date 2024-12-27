@@ -2,6 +2,7 @@
 
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
+
 source ~/.local/share/xelabash/xela.bash
 source ~/.bash_aliases
 
@@ -34,6 +35,7 @@ fi
 # eval "$(starship init bash)"
 
 # ENV. VARIABLES
+export PAGER="moar --no-statusbar"
 
 # pass
 OPENAI_API_KEY=$(pass show openai/api-key)

@@ -14,12 +14,12 @@ mdbook
 nuit
 rls
 rust-analyzer
-rust-gdb
-rust-gdbgui
-rust-lldb
 rustc
 rustdoc
 rustfmt
+rust-gdb
+rust-gdbgui
+rust-lldb
 rustup
 shuttle
 thebook

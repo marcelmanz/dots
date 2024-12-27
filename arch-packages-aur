@@ -53,6 +53,7 @@ kernel-install-for-dracut
 kickoff
 luajit-tiktoken-bin
 mise-bin
+moar
 mprocs-bin
 mullvad-vpn-bin
 mycli
@@ -72,6 +73,7 @@ pyprland
 rate-mirrors-bin
 rbenv
 reflector-simple
+riff-bin
 rustrover
 rustrover-eap
 rustrover-jre

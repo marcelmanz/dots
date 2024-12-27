@@ -18,7 +18,7 @@ $env.EDITOR = 'nvim'
 $env.OPENAI_API_KEY = (pass show openai/api-key)
 # $env.RANDOM = (random int ..32767)
 $env.MANPAGER = 'nvim +Man!'
-$env.PAGER = 'less -FRX'
+$env.PAGER = 'moar --no-statusbar'
 $env.GITLAB_TOKEN = (pass show gitlab/access-token)
 # $env.GITHUB_TOKEN = (pass show github/token)
 
