@@ -340,6 +340,10 @@ alias speedtest-cli="speedtest-rs"
 alias wiki="wiki-tui"
 alias chatd="chatd --ozone-platform=wayland"
 
+# Worldsensing
+
+alias ws-create-branch="~/scripts/work/ws-create-branch-name.sh"
+
 # Only adds aliases if the shell is bash
 # if [ -n "$BASH_VERSION" ]; then
 #     alias oh-shit-git='$(xdg-open https://ohshitgit.com/)'
