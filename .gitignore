@@ -134,6 +134,7 @@ scripts/work/hibob-attendence.js
 !.config/zathura
 !.config/clipse/config.json
 !.config/clipse/custom_theme.json
+!.config/shellcheckrc
 
 
 # v Added with script v
