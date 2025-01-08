@@ -35,7 +35,7 @@ fi
 # eval "$(starship init bash)"
 
 # ENV. VARIABLES
-export PAGER="moar --no-statusbar"
+# export PAGER="moar --no-statusbar"
 
 # pass
 OPENAI_API_KEY=$(pass show openai/api-key)

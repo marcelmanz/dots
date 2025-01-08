@@ -9,7 +9,7 @@
     ; diff = delta
     ; log = delta
     ; reflog = delta
-    show = diff
+    ; show = diff
 
 [interactive]
     diffFilter = delta --color-only --features=interactive
@@ -31,41 +31,54 @@
     hunk-header-file-style = red
     hunk-header-line-number-style = "#067a00"
     hunk-header-style = file line-number syntax
+
 ; [credential]
 ; 	helper = /usr/bin/git-credential-manager-core
+
 ; [credential "https://dev.azure.com"]
 ; 	useHttpPath = true
+
 [init]
 	defaultBranch = main
 [merge]
     conflictstyle = zdiff3
+
 [diff]
 	algorithm = histogram
+	tool = difftastic
 	external = difft
+
+; [difftool]
+; 	prompt = false
+;
+; [difftool "difftastic"]
+;    cmd = difft "$LOCAL" "$REMOTE"
 
 ; [commit]
 ; 	template = ~/.gitmessage
+
 [core]
 	editor = nvim
-	pager = moar --no-statusbar
+	; pager = /sbin/moar --no-statusbar 
 	hookspath = /Users/m.manzanares/.githooks
 
 [safe]
-	directory = /Users/m.manzanares/.nixpkgs/
-	directory = /Users/m.manzanares/.nixpkgs
+	directory = ~/.nixpkgs/
 	directory = /etc/nix
-; [commit]
-; 	template = /Users/m.manzanares/.gitmessage
+
 [pull]
 	rebase = false
+
 [branch]
 	autoSetupMerge = always
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+
 [maintenance]
-	repo = /Users/m.manzanares
-[gpg]
-	program = /home/marcel/scripts/gpg-pinetry-loopback.sh
+	repo = $HOME
+; [gpg]
+; 	program = $HOME/scripts/gpg-pinetry-loopback.sh
