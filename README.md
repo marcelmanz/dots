@@ -29,5 +29,7 @@ Update arch mirror list to use the fastest matches using `rate-mirrors`:
 ```bash
 # needs to be installed from the AUR with:
 # `paru rate-mirrors-bin`
-rate-mirrors --allow-root --protocol https arch | grep -v '^#' | sudo tee /etc/pacman.d/mirrorlist
+rate-mirrors --allow-root --protocol --entry-country=ES https arch | grep -v '^#' | sudo tee /etc/pacman.d/mirrorlist
+# for endeavouros
+rate-mirrors --disable-comments-in-file --entry-country=CA --protocol=https endeavouros  | sudo tee /etc/pacman.d/endeavouros-mirrorlist
 ```
