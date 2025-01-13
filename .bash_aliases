@@ -340,6 +340,7 @@ alias show_webcams="v4l2-ctl --list-devices"
 alias speedtest-cli="speedtest-rs"
 alias wiki="wiki-tui"
 alias chatd="chatd --ozone-platform=wayland"
+alias nchat="~/scripts/tmux/nchat-tmux.sh"
 
 # Worldsensing
 
