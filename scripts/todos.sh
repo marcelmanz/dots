@@ -2,7 +2,7 @@
 
 cd ~/notes/ || exit 1
 
-current_date_todo="TODO:$(date +'%d-%m-%Y').md"
+current_date_todo="TODO:$(date +'%Y-%m-%d').md"
 
 previous_date=$(date -d "yesterday" +'%d-%m-%Y')
 previous_date_todo="TODO:$previous_date.md"
