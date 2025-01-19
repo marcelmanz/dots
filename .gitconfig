@@ -82,3 +82,5 @@
 	repo = $HOME
 ; [gpg]
 ; 	program = $HOME/scripts/gpg-pinetry-loopback.sh
+[help]
+	autocorrect = prompt

@@ -17,6 +17,7 @@ inode/directory=nemo.desktop
 application/epub+zip=calibre-ebook-viewer.desktop
 text/html=firefox.desktop
 video/x-matroska=mpv.desktop
+video/mp4=mpv.desktop
 
 [Added Associations]
 image/png=feh.desktop;imv.desktop;
@@ -31,3 +32,4 @@ x-scheme-handler/webcals=userapp-Thunderbird-75BSU2.desktop;
 application/epub+zip=calibre-ebook-viewer.desktop;
 text/html=chromium.desktop;firefox.desktop;
 video/x-matroska=mpv.desktop;
+video/mp4=mpv.desktop;
