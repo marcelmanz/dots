@@ -19,7 +19,8 @@
         "cpu",
         "memory",
         "custom/sensors-temp",
-        "battery",
+        // "battery",
+        "custom/battery",
         // "upower",
         // "battery#bat2",
         "clock",
@@ -121,6 +122,11 @@
             "",
             ""
         ]
+    },
+    "custom/battery": {
+        "exec": "~/scripts/waybar/battery.sh",
+        "interval": 3,
+        "tooltip": false
     },
     // "battery": {
     //     "states": {
