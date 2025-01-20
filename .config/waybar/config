@@ -124,6 +124,7 @@
         ]
     },
     "custom/battery": {
+        "format": " {} ",
         "exec": "~/scripts/waybar/battery.sh",
         "interval": 3,
         "tooltip": false
