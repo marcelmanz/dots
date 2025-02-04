@@ -33,3 +33,8 @@ rate-mirrors --allow-root --protocol --entry-country=ES https arch | grep -v '^#
 # for endeavouros
 rate-mirrors --disable-comments-in-file --entry-country=CA --protocol=https endeavouros  | sudo tee /etc/pacman.d/endeavouros-mirrorlist
 ```
+
+Reset locale:
+```
+sudo localedef -i en_US -f UTF-8 en_US.UTF-8
+```
