@@ -67,9 +67,9 @@ $env.config = {
     mode: none
    
   }
-  filesize: {
-    metric: true
-  }
+  # filesize: {
+  #   metric: true
+  # }
   cursor_shape: {
     vi_insert: underscore
     vi_normal: block
