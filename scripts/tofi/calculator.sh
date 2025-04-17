@@ -15,7 +15,7 @@ fi
 find "$tmp_dir" -type f -mtime +$max_age_days -delete
 
 # Input operation
-operation=$(cat "$tmp_path" | tofi --prompt-text=" " --require-match=false)
+operation=$(cat "$tmp_path" | ~/.nix-profile/bin/tofi --prompt-text=" " --require-match=false)
 
 # Exit if no operation provided
 if [ -z "$operation" ]; then

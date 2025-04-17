@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get the output of sensors command
 sensors_output=$(sensors)

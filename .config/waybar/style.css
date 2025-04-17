@@ -2,7 +2,8 @@
     border: none;
     /* border-radius: 4px; */
     /* `ttf-font-awesome` is required to be installed for icons */
-    font-family: "Roboto Mono Medium", Helvetica, Arial, sans-serif;
+    /* font-family: "Roboto Mono Medium", Helvetica, Arial, sans-serif; */
+    font-family: "Blex Mono Nerd Font", "Font Awesome 5 Free";
 
     /* adjust font-size value to your liking: */
     font-size: 14px;

@@ -12,14 +12,14 @@ selected=$(echo -e "$entries" | tofi --width 250 --height 270 | awk '{print $0}'
 
 case "$selected" in
 "Lock")
-	hyprlock
+	swaylock
 	;;
 "Lock & Suspend")
-	hyprlock &
+	swaylock &
 	disown && systemctl suspend
 	;;
 "Logout")
-	hyprctl dispatch exit
+	sway exit
 	;;
 "Suspend")
 	exec systemctl suspend

@@ -15,19 +15,19 @@ profile home_office {
 }
 
 profile work_main_screen {
-    output "HDMI-A-1" mode 1920x1200@59.950 position 3880,0 scale 1
-    output "eDP-1" mode 3840x2160@60.01 position 2279,430 scale 2.4
+    output "HDMI-A-1" mode 3840x2160@60Hz position 4328,346 scale 1.666667
+    output "eDP-1" disable
 }
 
 profile laptop_only {
     output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
 }
 
-profile just_one_screen {
-    output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
-    # output "HDMI-A-1" mode 3840x2160@60Hz position 2280,346 scale  1.666667
-    output "DP-2" mode 3840x2160@60Hz position 4328,346 scale  1.666667
-}
+#profile just_one_screen {
+#    output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
+#    # output "HDMI-A-1" mode 3840x2160@60Hz position 2280,346 scale  1.666667
+#    output "DP-2" mode 3840x2160@60Hz position 4328,346 scale  1.666667
+#}
 
 profile projector_and_lg  {
     output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 file_path=$1
 declare -A placeholders # Declare an associative array to store user inputs

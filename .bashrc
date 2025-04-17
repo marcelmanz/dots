@@ -3,8 +3,8 @@
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
 
-source ~/.local/share/xelabash/xela.bash
 source ~/.bash_aliases
+source ~/programs/xelabash/xela.bash
 
 set -o vi
 
@@ -30,6 +30,8 @@ if [ -z "$SSH_AUTH_SOCK" ] && [ -S "$GPG_AGENT_INFO.ssh" ]; then
 	export SSH_AUTH_SOCK="$GPG_AGENT_INFO.ssh"
 fi
 
+bind -x '"\C-l":clear'
+
 # source "$HOME/.rye/env"
 # source rund bash
 # eval "$(starship init bash)"
@@ -38,16 +40,16 @@ fi
 # export PAGER="moar --no-statusbar"
 
 # pass
-OPENAI_API_KEY=$(pass show openai/api-key)
-export OPENAI_API_KEY
-GITHUB_TOKEN=$(pass show github/token)
-export GITHUB_TOKEN
-SRC_ACCESS_TOKEN=$(pass show sg/token)
-export SRC_ACCESS_TOKEN
-SRC_ENDPOINT=$(pass show sg/endpoint)
-export SRC_ENDPOINT
-GITLAB_TOKEN=$(pass show gitlab/access-token)
-export GITLAB_TOKEN
+# OPENAI_API_KEY=$(pass show openai/api-key)
+# export OPENAI_API_KEY
+# GITHUB_TOKEN=$(pass show github/token)
+# export GITHUB_TOKEN
+# SRC_ACCESS_TOKEN=$(pass show sg/token)
+# export SRC_ACCESS_TOKEN
+# SRC_ENDPOINT=$(pass show sg/endpoint)
+# export SRC_ENDPOINT
+# GITLAB_TOKEN=$(pass show gitlab/access-token)
+# export GITLAB_TOKEN
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
@@ -61,8 +63,8 @@ export EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
 export SUDO_EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
 export TERMINAL=alacritty
 
-ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
-export ANTHROPIC_API_KEY
+# ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
+# export ANTHROPIC_API_KEY
 
 if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 	export MOZ_ENABLE_WAYLAND=1

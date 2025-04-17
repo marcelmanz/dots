@@ -8,4 +8,4 @@ for session in $sessions; do
 		continue
 	fi
 	echo "$session"
-done | tofi --width 350 --height 210 | xargs tmux switch-client -t
+done | ~/.nix-profile/bin/tofi --width 350 --height 210 | xargs tmux switch-client -t

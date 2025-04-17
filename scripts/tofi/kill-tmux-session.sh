@@ -7,7 +7,7 @@ fi
 
 entries="Kill Session\nDetach Session\nCancel"
 
-selected=$(echo -e "$entries" | tofi --prompt-text "tmux> " --width 250 --height 160 | awk '{print $1}')
+selected=$(echo -e "$entries" | ~/.nix-profile/bin/tofi --prompt-text "tmux> " --width 250 --height 160 | awk '{print $1}')
 first_word=$(echo $selected | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
 
 [[ -z $selected ]] && exit

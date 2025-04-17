@@ -30,7 +30,7 @@ set fish_greeting
 # ≃≃≃≃≃≃≃≃≃≃≃≃≃≃≃≃≃≃≃≃##
 starship init fish | source
 zoxide init fish | source
-fnm env --use-on-cd --log-level quiet | source # fnm has a fish plugin
+# fnm env --use-on-cd --log-level quiet | source # fnm has a fish plugin
 direnv hook fish | source
 pyenv init - | source
 op completion fish | source

@@ -1830,7 +1830,7 @@ all_emojis="😀 grinning face happy smile cheerful joy positive
 🏴󠁵󠁳󠁴󠁸󠁿 flag for (tx)
 "
 
-selected=$(printf '%s\n' "$all_emojis" | tofi | cut -d ' ' -f 1)
+selected=$(printf '%s\n' "$all_emojis" | ~/.nix-profile/bin/tofi | cut -d ' ' -f 1)
 
 wl-copy "$selected"
 wl-paste

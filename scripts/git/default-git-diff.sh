@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-# Find a better way of doinf this
+ARGS=("$@")
+
+# Find a better way of doing this
 git config --global --unset diff.external
-git diff
+if [ -n "$ARGS" ]; then
+	git diff "${ARGS[@]}"
+else 
+	git diff
+fi
 git config --global diff.external difft

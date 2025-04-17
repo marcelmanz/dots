@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Get wlr-randr output
 output=$(wlr-randr)

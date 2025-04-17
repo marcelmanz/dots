@@ -21,3 +21,5 @@ EDITOR=nvim
 tmex "$SESSION" --reattach --focus=0 --layout="2{41}" \
 	"cd $REPO_NAME; clear; $EDITOR;" \
 	"cd $REPO_NAME; clear;"
+
+~/.config/tmux/plugins/tpm/tpm
