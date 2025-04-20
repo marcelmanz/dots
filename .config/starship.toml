@@ -92,7 +92,7 @@ disabled = true
 [buf]
 disabled = true
 [nix_shell]
-disabled = true
+disabled = false
 [conda]
 disabled = true
 [meson]

@@ -59,8 +59,10 @@ export ELECTRON_OZONE_PLATFORM_HINT=wayland
 export HOMEBREW_NO_AUTO_UPDATE=1
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export HYPRSHOT_DIR=$HOME/screenshots
-export EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
-export SUDO_EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
+# export EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
+# export SUDO_EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
+export EDITOR=nvim
+export SUDO_EDITOR=nvim
 export TERMINAL=alacritty
 
 # ANTHROPIC_API_KEY=$(pass show anthropic/api-key)

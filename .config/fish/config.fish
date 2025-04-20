@@ -32,7 +32,7 @@ starship init fish | source
 zoxide init fish | source
 # fnm env --use-on-cd --log-level quiet | source # fnm has a fish plugin
 direnv hook fish | source
-pyenv init - | source
+# pyenv init - | source
 op completion fish | source
 # source /Users/m.manzanares/.opam/opam-init/init.fish >/dev/null 2>/dev/null; or true
 # status --is-interactive; and rbenv init - fish | source
@@ -46,9 +46,12 @@ bind -M insert \cr _atuin_search
 # end
 
 # ENV VARS
-set -g -x EDITOR $HOME/.local/share/bob/nvim-bin/nvim
-set -g -x VISUAL $HOME/.local/share/bob/nvim-bin/nvim
-set -g -x SUDO_EDITOR $HOME/.local/share/bob/nvim-bin/nvim
+set -g -x EDITOR nvim
+set -g -x VISUAL nvim
+set -g -x SUDO_EDITOR nvim
+# set -g -x EDITOR $HOME/.local/share/bob/nvim-bin/nvim
+# set -g -x VISUAL $HOME/.local/share/bob/nvim-bin/nvim
+# set -g -x SUDO_EDITOR $HOME/.local/share/bob/nvim-bin/nvim
 set -g -x HYPRSHOT_DIR $HOME/screenshots
 # set -g DOCKER_HOST (podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')
 # set -g OPENAI_API_KEY (pass show openai/api-key)
