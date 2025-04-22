@@ -1,5 +1,6 @@
 # shellcheck disable=2148
 
+
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
 
@@ -79,3 +80,9 @@ function so() {
 eval "$(zoxide init bash)"
 
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
+
+if [ -z "$SOURSES_RUNNING" ]; then
+  export SOURSES_RUNNING=1
+  # Replace this shell with the sourses recorder (PTY spawn + indexing)
+  # exec ~/clones/own/sourses/target/debug/sourses record
+fi

@@ -374,6 +374,9 @@ alias kport="~/scripts/kill-port.sh"
 alias ws-create-branch="~/scripts/work/custom-create-branch-name.sh"
 alias ws-bump="~/scripts/work/update-changelog-and-bump-version.sh"
 
+# development alias
+alias sour="~/clones/own/sourses/target/debug/sourses"
+
 # Only adds aliases if the shell is bash
 # if [ -n "$BASH_VERSION" ]; then
 #     alias oh-shit-git='$(xdg-open https://ohshitgit.com/)'
