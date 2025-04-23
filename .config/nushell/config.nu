@@ -3,7 +3,7 @@ source bash-aliases.nu
 source func.nu
 source colors.nu
 
-use ~/clones/external/nupm/nupm/
+# use ~/clones/external/nupm/nupm/
 
 # source external/get-weather.nu
 # use ~/clones/forks/nu_scripts/custom-completions/mod.nu *
@@ -202,4 +202,4 @@ $env.PROMPT_MULTILINE_INDICATOR = {colored_error_prompt ':> '}
 # source ~/.local/share/atuin/init.nu
 
 source ~/.zoxide.nu
-source ~/.local/share/atuin/init.nu
+# source ~/.local/share/atuin/init.nu
