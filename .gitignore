@@ -44,6 +44,7 @@
 !.config/btop
 !.config/cheat
 !.config/direnv
+!.config/eww
 !.config/helix
 .config/helix/runtime
 !.config/htop
