@@ -110,7 +110,7 @@ disabled = true
 [azure]
 disabled = true
 [env_var]
-disabled = true
+disabled = false
 [crystal]
 disabled = true
 [battery]

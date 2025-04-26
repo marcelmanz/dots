@@ -43,6 +43,7 @@
 !.config/bat
 !.config/btop
 !.config/cheat
+!.config/direnv
 !.config/helix
 .config/helix/runtime
 !.config/htop

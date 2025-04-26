@@ -1,0 +1,4 @@
+[global]
+hide_env_diff = true
+log_format    = "\u001b[2mdirenv: %s\u001b[0m"
+# log_filter = "^$"

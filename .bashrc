@@ -5,13 +5,14 @@ export GIT_PROMPT=true
 export KUBE_PROMPT=true
 
 source ~/.bash_aliases
-source ~/programs/xelabash/xela.bash
+source ~/clones/forks/xelabash/xela.bash
 
 set -o vi
 
 # ~/.bashrc
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 source <(carapace _carapace)
+eval "$(direnv hook bash)"
 
 eval "$(atuin init bash --disable-up-arrow)"
 
