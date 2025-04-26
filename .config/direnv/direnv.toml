@@ -1,4 +1,7 @@
 [global]
-hide_env_diff = true
-log_format    = "\u001b[2mdirenv: %s\u001b[0m"
 # log_filter = "^$"
+hide_env_diff = true                        # no +VAR / -VAR wall of text
+log_format = "\u001b[2mdirenv: %s\u001b[0m"
+#                │                 │
+#                │                 └─ reset colours
+#                └─ "\u001b[2m" = CSI 2 m  →  “faint / dim” text

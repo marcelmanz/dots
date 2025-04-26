@@ -62,7 +62,7 @@ alias yb="yarn build"
 alias yig="yarn install -g"
 alias yjd="yarn jest --silent=false --watch (git_dirs)"
 alias zrc="nvim ~/.zshrc"
-alias ns="sudo nixos-rebuild switch --flake ~/.config/nix#nixos --impure"
+alias ns="sudo nixos-rebuild switch --flake ~/.config/nix#nixos"
 alias hms="home-manager switch --flake ~/.config/nix#homeConfigurations.marcel"
 alias nus='cachix push marcelarie $(nix path-info /run/current-system)'
 alias nise="nix-search"
