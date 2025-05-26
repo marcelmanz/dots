@@ -25,6 +25,7 @@
         // "battery#bat2",
         "clock",
         // "custom/clock",
+        "custom/foot",
         "hyprland/language",
         "tray"
     ],
@@ -222,5 +223,10 @@
         "format-off": "!",
         "on-click": "foot bluetoothctl",
         "tooltip-format": "{status}"
+    },
+    "custom/foot": {
+        "format": "   ",
+        "tooltip": "Open Foot Terminal",
+        "on-click": "foot"
     }
 }

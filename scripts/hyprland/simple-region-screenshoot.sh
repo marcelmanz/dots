@@ -16,5 +16,4 @@
 # get last file from /screenshots
 # last_screenshot=$(find ~/screenshots -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" ")
 
-# grim -g "$(slurp)" - | satty --filename - --fullscreen --output-filename ~/screenshots/satty-"$(date '+%Y%m%d-%H:%M:%S')".png
-grim -- --mode region --raw | satty --filename - --fullscreen --early-exit --output-filename ~/screenshots/satty-"$(date '+%Y%m%d-%H:%M:%S')".png
+grim -g "$(slurp)" ~/screenshots/grim-"$(date '+%Y%m%d-%H:%M:%S')".png

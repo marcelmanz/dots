@@ -60,7 +60,6 @@
 [core]
 	editor = nvim
 	; pager = /sbin/moar --no-statusbar 
-	hookspath = /Users/m.manzanares/.githooks
 
 [safe]
 	directory = ~/.nixpkgs/

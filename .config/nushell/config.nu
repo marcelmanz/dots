@@ -203,3 +203,4 @@ $env.PROMPT_MULTILINE_INDICATOR = {colored_error_prompt ':> '}
 
 source ~/.zoxide.nu
 # source ~/.local/share/atuin/init.nu
+source $"($nu.home-path)/.cargo/env.nu"

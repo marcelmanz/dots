@@ -32,7 +32,7 @@ if [ -z "$SSH_AUTH_SOCK" ] && [ -S "$GPG_AGENT_INFO.ssh" ]; then
 	export SSH_AUTH_SOCK="$GPG_AGENT_INFO.ssh"
 fi
 
-bind -x '"\C-l":clear'
+# bind -x '"\C-l":clear'
 
 # source "$HOME/.rye/env"
 # source rund bash
@@ -78,7 +78,14 @@ function so() {
 	source "$HOME/.bashrc"
 }
 
-eval "$(zoxide init bash)"
+
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
 
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 
@@ -87,3 +94,7 @@ if [ -z "$SOURSES_RUNNING" ]; then
   # Replace this shell with the sourses recorder (PTY spawn + indexing)
   # exec ~/clones/own/sourses/target/debug/sourses record
 fi
+. "$HOME/.cargo/env"
+
+eval "$(zoxide init bash)"
+export _ZO_DOCTOR=0

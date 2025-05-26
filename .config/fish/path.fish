@@ -6,6 +6,9 @@
 #         fish_add_path $PNPM_HOME
 # end
 
+if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+end
 
 fish_add_path /home/$USER/scripts/
 fish_add_path /home/$USER/go/bin

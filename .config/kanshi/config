@@ -1,5 +1,11 @@
 # vim: set ft=kanshi:
 
+profile home_office_work {
+    output "HDMI-A-1" mode 3840x2160@60.00Hz position 4328,346 scale  1.666667
+    output "DP-3" mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
+    output "eDP-1" disable
+}
+
 profile home_office_targus {
     output "DP-3" mode 3840x2160@60.00Hz position 4328,346 scale  1.666667
     output "DP-4" mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
