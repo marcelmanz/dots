@@ -32,9 +32,9 @@ profile home_office_targus_inverted {
 #     output "eDP-1" disable
 # }
 #
-# profile laptop_only {
-#     output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
-# }
+profile laptop_only {
+    output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
+}
 #
 # #profile just_one_screen {
 # #    output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4

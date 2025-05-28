@@ -7,6 +7,8 @@ export KUBE_PROMPT=true
 source ~/.bash_aliases
 source ~/clones/forks/xelabash/xela.bash
 
+alias gpsup="git push --set-upstream origin $(git symbolic-ref --short HEAD 2>/dev/null)"
+
 set -o vi
 
 # ~/.bashrc
