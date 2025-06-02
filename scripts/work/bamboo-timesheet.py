@@ -17,7 +17,7 @@ class Colors:
 
 
 BAMBOOHR_URL = "https://worldsensing.bamboohr.com/timesheet/hour/entries"
-EMPLOYEE_ID = '<ID>'
+EMPLOYEE_ID = '349'
 PROJECT_ID = 6
 TASK_ID = 9
 DAILY_HOURS = 8

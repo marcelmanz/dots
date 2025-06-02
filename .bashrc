@@ -3,6 +3,8 @@
 
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
+export NIX_PROMPT=true
+export VI_MODE_PROMPT=true
 
 source ~/.bash_aliases
 source ~/clones/forks/xelabash/xela.bash
@@ -11,16 +13,14 @@ alias gpsup="git push --set-upstream origin $(git symbolic-ref --short HEAD 2>/d
 
 set -o vi
 
-# ~/.bashrc
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 source <(carapace _carapace)
 eval "$(direnv hook bash)"
-
 eval "$(atuin init bash --disable-up-arrow)"
 
 # Use bash-completion, if available
-[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
-	. /usr/share/bash-completion/bash_completion
+# [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
+# 	. /usr/share/bash-completion/bash_completion
 
 # Start gpg-agent if not already running
 GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
@@ -33,8 +33,6 @@ export GPG_TTY
 if [ -z "$SSH_AUTH_SOCK" ] && [ -S "$GPG_AGENT_INFO.ssh" ]; then
 	export SSH_AUTH_SOCK="$GPG_AGENT_INFO.ssh"
 fi
-
-# bind -x '"\C-l":clear'
 
 # source "$HOME/.rye/env"
 # source rund bash
@@ -88,13 +86,11 @@ if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init -)"
 fi
 
-
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 
 if [ -z "$SOURSES_RUNNING" ]; then
   export SOURSES_RUNNING=1
-  # Replace this shell with the sourses recorder (PTY spawn + indexing)
-  # exec ~/clones/own/sourses/target/debug/sourses record
+  # Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
 fi
 . "$HOME/.cargo/env"
 

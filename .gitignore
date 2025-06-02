@@ -12,6 +12,7 @@
 !.config/alacritty
 !.config/foot
 !.config/ghostty
+!.cargo/
 !.config/awesome
 !.config/topgrade.toml
 !.config/mimeapps.list
