@@ -16,7 +16,7 @@ set -o vi
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 source <(carapace _carapace)
 eval "$(direnv hook bash)"
-eval "$(atuin init bash --disable-up-arrow)"
+# eval "$(atuin init bash --disable-up-arrow)"
 
 # Use bash-completion, if available
 # [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&

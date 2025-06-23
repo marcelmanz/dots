@@ -16,19 +16,31 @@ if [[ "$args" == -* ]]; then
 	exit $error_code
 fi
 
-if [[ "$args" =~ ^([^:]+):([0-9]+)$ ]]; then
+#  path:line:col: open file at given line and column
+if [[ "$args" =~ ^(.+):([0-9]+):([0-9]+)$ ]]; then
 	file="${BASH_REMATCH[1]}"
 	line="${BASH_REMATCH[2]}"
-	if [[ -e "$file" ]]; then
-		nvim +"$line" "$file"
-	else
+	col="${BASH_REMATCH[3]}"
+	[[ -e "$file" ]] || {
 		dir_path=$(dirname "$file")
 		mkdir -p "$dir_path"
-		nvim +"$line" "$file"
-	fi
+	}
+	nvim +"call cursor(${line},${col})" "$file"
+	exit $?
+	# path:line: open file at given line
+elif [[ "$args" =~ ^(.+):([0-9]+)$ ]]; then
+	file="${BASH_REMATCH[1]}"
+	line="${BASH_REMATCH[2]}"
+	[[ -e "$file" ]] || {
+		dir_path=$(dirname "$file")
+		mkdir -p "$dir_path"
+	}
+	nvim +"$line" "$file"
 	exit $?
 fi
 
+# Existing file -> open it;
+# otherwise create dirs & open new file
 if [[ -e "$args" ]]; then
 	# for files
 	nvim "$args"

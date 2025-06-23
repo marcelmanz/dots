@@ -13,8 +13,12 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-echo -e "${BLUE}Enter the TargetProcess URL or ticket number:${NC}"
-read -r tp_input
+if [ -n "$1" ]; then
+	tp_input="$1"
+else
+	echo -e "${BLUE}Enter the TargetProcess URL or ticket number:${NC}"
+	read -r tp_input
+fi
 
 if [[ "$tp_input" =~ ^[0-9]+$ ]]; then
 	ticket_number=$tp_input
@@ -33,10 +37,10 @@ fi
 # If we have an auto-extracted description, show it and ask for confirmation
 if [ -n "$auto_description" ]; then
 	echo -e "${BLUE}Found description from URL:${NC} $auto_description"
-	echo -e "${BLUE}Do you want to use this description? (y/n):${NC}"
+	echo -e "${BLUE}Do you want to use this description? (Y/n, default: Y):${NC}"
 	read -r use_auto_description
 
-	if [[ ! $use_auto_description =~ ^[Yy] ]]; then
+	if [[ ! $use_auto_description =~ ^[Yy] && -n "$use_auto_description" ]]; then
 		echo -e "${BLUE}Enter a brief description:${NC}"
 		read -r description
 		auto_description=$(echo "$description" |
@@ -84,10 +88,10 @@ elif command -v xclip >/dev/null 2>&1; then
 	echo -e "${GREEN}Branch name copied to clipboard!${NC}"
 fi
 
-echo -e "${BLUE}Do you want to create and checkout this branch? (y/n):${NC}"
+echo -e "${BLUE}Do you want to create and checkout this branch? (Y/n, default: Y):${NC}"
 read -r checkout_answer
 
-if [[ $checkout_answer =~ ^[Yy] ]]; then
+if [[ $checkout_answer =~ ^[Yy] || -z "$checkout_answer" ]]; then
 	if git checkout -b "$branch_name" 2>/dev/null; then
 		echo -e "${GREEN}Successfully created and checked out branch: $branch_name${NC}"
 	else
