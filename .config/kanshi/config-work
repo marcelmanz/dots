@@ -7,8 +7,8 @@ profile home_office_work {
 }
 
 profile work {
-    output "HDMI-A-1" mode 1920x1080@60.00Hz position 4328,346 scale  1
-    output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
+    output "HDMI-A-1" mode 1920x1080@60.00Hz position 1544,0 scale  1
+    output "eDP-1" mode 1920x1200@60.00 position 0,120 scale 1.25
 }
 
 profile home_office_targus {
