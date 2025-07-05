@@ -69,6 +69,7 @@ alias nixu="nix flake update --flake ~/.config/nix"
 alias hms="home-manager switch --flake ~/.config/nix#work"
 alias nus='cachix push marcelarie $(nix path-info /run/current-system)'
 alias nise="nix-search"
+alias tempshell="~/scripts/nix-templates.sh"
 alias hmb="home-manager switch"
 # alias arc="nvim ${nixConfig}/home-manager/programs/alacritty/default.nix"
 alias frc="nvim ~/.config/fish/config.fish"
