@@ -6,6 +6,58 @@ REPO="${DEV_TEMPLATES:-$HOME/clones/own/dev-templates}"
 edit=false
 remote=""
 lang=""
+add_envrc=false
+
+declare -A ext_to_lang=(
+	[py]=python
+	[js]=javascript
+	[jsx]=javascript
+	[ts]=typescript
+	[tsx]=typescript
+	[rb]=ruby
+	[go]=go
+	[rs]=rust
+	[java]=java
+	[c]=c
+	[cpp]=cpp
+	[cc]=cpp
+	[cxx]=cpp
+	[h]=c
+	[hpp]=cpp
+	[cs]=csharp
+	[php]=php
+	[swift]=swift
+	[kt]=kotlin
+	[kts]=kotlin
+	[m]=objective-c
+	[mm]=objective-c++
+	[scala]=scala
+	[hs]=haskell
+	[erl]=erlang
+	[ex]=elixir
+	[exs]=elixir
+	[dart]=dart
+	[sh]=shell
+	[bash]=shell
+	[zsh]=shell
+	[ps1]=powershell
+	[psm1]=powershell
+	[lua]=lua
+	[pl]=perl
+	[pm]=perl
+	[groovy]=groovy
+	[r]=r
+	[jl]=julia
+	[sql]=sql
+	[yml]=yaml
+	[yaml]=yaml
+	[json]=json
+	[xml]=xml
+	[html]=html
+	[css]=css
+	[scss]=scss
+	[md]=markdown
+)
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
@@ -17,12 +69,31 @@ while [[ $# -gt 0 ]]; do
 		remote="$2"
 		shift 2
 		;;
+	-d | --direnv)
+		add_envrc=true
+		shift
+		;;
 	*)
 		lang="$1"
 		shift
 		;;
 	esac
 done
+
+if [[ -n "${ext_to_lang[$lang]:-}" ]]; then
+	lang=${ext_to_lang[$lang]}
+fi
+
+if $add_envrc; then
+	echo "ADDING ENVRC"
+	if [[ -n "$remote" ]]; then
+		echo "use flake \"${remote}?dir=${lang}\"" >.envrc
+	else
+		echo "use flake \"${REPO}/${lang}\"" >.envrc
+	fi
+	echo ".envrc created, run 'direnv allow' to enable it"
+	exit 0
+fi
 
 if [[ -n "$remote" ]]; then
 	if [[ -z "$lang" ]]; then
