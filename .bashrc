@@ -67,8 +67,8 @@ export EDITOR=nvim
 export SUDO_EDITOR=nvim
 export TERMINAL=alacritty
 
-# ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
-# export ANTHROPIC_API_KEY
+ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
+export ANTHROPIC_API_KEY
 
 if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 	export MOZ_ENABLE_WAYLAND=1
@@ -79,14 +79,16 @@ function so() {
 }
 
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init - bash)"
-fi
+# No need with nix, use the tempshell script instead
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+#
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init - bash)"
+# fi
 
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
+export PATH=$PATH:/usr/local/bin:/snap/bin
 
 if [ -z "$SOURSES_RUNNING" ]; then
   export SOURSES_RUNNING=1
