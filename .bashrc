@@ -1,6 +1,5 @@
 # shellcheck disable=2148
 
-
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
 export NIX_PROMPT=true
@@ -42,16 +41,20 @@ fi
 # export PAGER="moar --no-statusbar"
 
 # pass
-# OPENAI_API_KEY=$(pass show openai/api-key)
-# export OPENAI_API_KEY
-# GITHUB_TOKEN=$(pass show github/token)
-# export GITHUB_TOKEN
-# SRC_ACCESS_TOKEN=$(pass show sg/token)
-# export SRC_ACCESS_TOKEN
-# SRC_ENDPOINT=$(pass show sg/endpoint)
-# export SRC_ENDPOINT
-# GITLAB_TOKEN=$(pass show gitlab/access-token)
-# export GITLAB_TOKEN
+OPENAI_API_KEY=$(pass show openai/api-key)
+export OPENAI_API_KEY
+GITHUB_TOKEN=$(pass show github/token)
+export GITHUB_TOKEN
+SRC_ACCESS_TOKEN=$(pass show sg/token)
+export SRC_ACCESS_TOKEN
+SRC_ENDPOINT=$(pass show sg/endpoint)
+export SRC_ENDPOINT
+GITLAB_TOKEN=$(pass show gitlab/access-token)
+export GITLAB_TOKEN
+TASK_CLIENT_ID=$(pass show task/client-id)
+export TASK_CLIENT_ID
+TASK_SYNC_SECRET=$(pass show task/sync-secret)
+export TASK_CLIENT_ID
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
@@ -78,7 +81,6 @@ function so() {
 	source "$HOME/.bashrc"
 }
 
-
 # No need with nix, use the tempshell script instead
 # export PYENV_ROOT="$HOME/.pyenv"
 # export PATH="$PYENV_ROOT/bin:$PATH"
@@ -91,8 +93,8 @@ export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 export PATH=$PATH:/usr/local/bin:/snap/bin
 
 if [ -z "$SOURSES_RUNNING" ]; then
-  export SOURSES_RUNNING=1
-  # Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
+	export SOURSES_RUNNING=1
+	# Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
 fi
 . "$HOME/.cargo/env"
 

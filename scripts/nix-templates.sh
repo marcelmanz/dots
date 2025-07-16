@@ -85,7 +85,6 @@ if [[ -n "${ext_to_lang[$lang]:-}" ]]; then
 fi
 
 if $add_envrc; then
-	echo "ADDING ENVRC"
 	if [[ -n "$remote" ]]; then
 		echo "use flake \"${remote}?dir=${lang}\"" >.envrc
 	else
