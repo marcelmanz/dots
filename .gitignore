@@ -11,7 +11,7 @@
 .config/*
 !.config/alacritty
 !.config/foot
-!.task
+!.tasks
 !.config/ghostty
 !.cargo/
 !.config/awesome

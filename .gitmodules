@@ -29,3 +29,6 @@
 [submodule ".config/tmux/plugins/extrakto"]
 	path = .config/tmux/plugins/extrakto
 	url = https://github.com/laktak/extrakto
+[submodule ".tasks"]
+	path = .tasks
+	url = git@github.com:marcelarie/.tasks.git
