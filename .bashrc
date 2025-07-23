@@ -51,10 +51,6 @@ SRC_ENDPOINT=$(pass show sg/endpoint)
 export SRC_ENDPOINT
 GITLAB_TOKEN=$(pass show gitlab/access-token)
 export GITLAB_TOKEN
-TASK_CLIENT_ID=$(pass show task/client-id)
-export TASK_CLIENT_ID
-TASK_SYNC_SECRET=$(pass show task/sync-secret)
-export TASK_CLIENT_ID
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
@@ -91,6 +87,10 @@ function so() {
 
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 export PATH=$PATH:/usr/local/bin:/snap/bin
+
+for f in ~/.bash_completion.d/*; do
+	[[ -f $f ]] && source "$f"
+done
 
 if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1
