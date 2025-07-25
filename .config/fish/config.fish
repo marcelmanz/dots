@@ -71,6 +71,7 @@ set -g -x MOZ_ENABLE_WAYLAND 1
 set -g -x TERMINAL alacritty -e
 set -g -x ELECTRON_OZONE_PLATFORM_HINT wayland
 
+type -q tarea; and tarea --completions fish | source
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!

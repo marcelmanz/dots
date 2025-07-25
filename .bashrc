@@ -88,9 +88,6 @@ function so() {
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 export PATH=$PATH:/usr/local/bin:/snap/bin
 
-for f in ~/.bash_completion.d/*; do
-	[[ -f $f ]] && source "$f"
-done
 
 if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1
@@ -100,3 +97,7 @@ fi
 
 eval "$(zoxide init bash)"
 export _ZO_DOCTOR=0
+
+if command -v tarea >/dev/null 2>&1; then
+	eval "$(tarea --completions bash)"
+fi
