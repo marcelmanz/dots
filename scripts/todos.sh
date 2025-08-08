@@ -35,8 +35,12 @@ if ! [[ $offset =~ ^-?[0-9]+$ ]]; then
 fi
 
 # 1) If not ignoring and there's a TODO.md in cwd, open it and exit
-if [[ $ignore_local -eq 0 && -f "./TODO.md" ]]; then
-  nvim "./TODO.md"
+if [[ $ignore_local -eq 0 && (-f "./TODO.md" || -f "./todo.md") ]]; then
+  if [[ -f "./TODO.md" ]]; then
+    nvim "./TODO.md"
+  else
+    nvim "./todo.md"
+  fi
   exit 0
 fi
 

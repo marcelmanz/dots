@@ -8,14 +8,18 @@ export VI_MODE_PROMPT=true
 source ~/.bash_aliases
 source ~/clones/forks/xelabash/xela.bash
 
-alias gpsup="git push --set-upstream origin $(git symbolic-ref --short HEAD 2>/dev/null)"
+gpsup() {
+	local branch
+	branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+	git push --set-upstream origin "$branch"
+}
 
 set -o vi
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 source <(carapace _carapace)
 eval "$(direnv hook bash)"
-# eval "$(atuin init bash --disable-up-arrow)"
+eval "$(atuin init bash --disable-up-arrow)"
 
 # Use bash-completion, if available
 # [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
@@ -43,8 +47,8 @@ fi
 # pass
 OPENAI_API_KEY=$(pass show openai/api-key)
 export OPENAI_API_KEY
-GITHUB_TOKEN=$(pass show github/token)
-export GITHUB_TOKEN
+# GITHUB_TOKEN=$(pass show github/token)
+# export GITHUB_TOKEN
 SRC_ACCESS_TOKEN=$(pass show sg/token)
 export SRC_ACCESS_TOKEN
 SRC_ENDPOINT=$(pass show sg/endpoint)
@@ -88,7 +92,6 @@ function so() {
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 export PATH=$PATH:/usr/local/bin:/snap/bin
 
-
 if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1
 	# Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
@@ -98,6 +101,17 @@ fi
 eval "$(zoxide init bash)"
 export _ZO_DOCTOR=0
 
+gstp() {
+	git status --porcelain "$@" | awk '$1 ~ /^M/ { print $2 }' | paste -sd ' '
+}
+
+tarea
+
 if command -v tarea >/dev/null 2>&1; then
 	eval "$(tarea --completions bash)"
 fi
+
+# need to go back and work on gcs again so it generates completions
+# if command -v gcs >/dev/null 2>&1; then
+# 	eval "$(gcs --completion bash)"
+# fi

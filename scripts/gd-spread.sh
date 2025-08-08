@@ -1,30 +1,42 @@
 #!/usr/bin/env bash
 
-
 if ! git rev-parse --is-inside-work-tree &>/dev/null; then
-  echo "Not a git repository – skipping diff."
-  exit 0
+	echo "Not a git repository – skipping diff."
+	exit 0
 fi
 
-args=("$@")
-arg="$1"
+flags=()
+positional=()
 
-if [[ $arg == *".."* ]]; then
-	start_head=$(echo "$args" | awk -F'\.\.' '{print $1}')
-	last_head=$(echo "$args" | awk -F'\.\.' '{print $2}')
-	git diff "HEAD~$start_head" "HEAD~$last_head"
-	exit 1
+for arg in "$@"; do
+	if [[ $arg == -* ]]; then
+		flags+=("$arg")
+	else
+		positional+=("$arg")
+	fi
+done
+
+first_pos="${positional[0]}"
+
+# Handle range syntax ("5..2")
+if [[ $first_pos == *".."* ]]; then
+	start_head=$(echo "$first_pos" | awk -F'\.\.' '{print $1}')
+	last_head=$(echo "$first_pos" | awk -F'\.\.' '{print $2}')
+	git diff "${flags[@]}" "HEAD~$start_head" "HEAD~$last_head" "${positional[@]:1}"
+	exit 0
 fi
 
-if [[ $arg == "HEAD~"* ]]; then
-	git diff $args
-	exit 1
+# Handle HEAD~ syntax ("HEAD~5")
+if [[ $first_pos == "HEAD~"* ]]; then
+	git diff "${flags[@]}" "${positional[@]}"
+	exit 0
 fi
 
-if [[ $arg =~ ^[0-9]+$ ]]; then
-	git diff "HEAD~$args"
-	exit 1
+# Handle numeric syntax ("5")
+if [[ $first_pos =~ ^[0-9]+$ ]]; then
+	git diff "${flags[@]}" "HEAD~$first_pos" "${positional[@]:1}"
+	exit 0
 fi
 
-git diff $args
-
+# Default: pass everything through
+git diff "${flags[@]}" "${positional[@]}"
