@@ -1,0 +1,147 @@
+# Ignore everything
+/*
+/*/
+
+# But not these files...
+!*.gitignore
+!.node-version
+!.gitconfig
+!.gitmessage
+!.config
+.config/*
+.termux
+!.config/alacritty
+!.config/foot
+!.tasks
+!.config/ghostty
+!.cargo/
+!.config/awesome
+!.config/topgrade.toml
+!.config/mimeapps.list
+!.config/dwm
+!.config/kitty/prenix-kitty.conf
+!.config/autorandr
+!.config/polybar*
+!.config/himalaya
+!.config/fish/
+!.config/fish/config.fish
+!.config/tmux
+!.config/fish/alias.fish
+!.config/fish/functions/
+!.config/vifm
+!.config/omf
+!.config/nushell
+.config/nushell/history.txt
+!.config/rofi/themes
+!.config/paru/
+!.inputrc
+!.bashrc
+!.config/starship.toml
+!.config/rustfmt
+!.config/greenclip.toml
+!.config/yabai
+!.config/borders
+!.config/sketchybar
+!.config/skhd
+!.config/bat
+!.config/btop
+!.config/cheat
+!.config/direnv
+!.config/eww
+!.config/helix
+.config/helix/runtime
+!.config/htop
+!.config/lf
+!.config/vimfm
+!.config/tmuxinator
+!.config/gnupg
+!scripts/
+scripts/work/hibob-attendence.js
+!.vimrc
+!.password-store
+!.githooks
+!.gnupg/gpg-agent.conf
+!*.zshrc
+!*.prettierrc
+!*.profile
+!*.xprofile
+!*.tmux.conf
+!*.vimrc
+!*local_supers.md
+!*old-sys-pacman-qe.md
+!.rustfmt.toml
+!.config/leftwm/config.toml
+!.config/leftwm/themes.toml
+!.config/neofetch/
+!README.md
+!.config/dunst
+!.config/wezterm
+!.mozilla/
+!README.md
+!notes.md
+!.config/zk
+!xorg.conf
+!.cargo-programs
+!.config/gh/config.yml
+!.config/atuin
+!.config/mako
+!.config/tridactyl
+!.local/share/applications
+
+### ARCH
+# !.config/pacman
+# !.config/paru
+
+### NIX
+!.config/nixos
+!.config/nixpkgs
+
+
+### file structure
+!clones-file-structure.md
+!programs-file-structure.md
+!apps-structure.md
+!mas-list.md
+
+### Arch backup files
+!arch-packages
+!arch-packages-aur
+
+# AI
+!models
+
+
+### brew
+!Brewfile
+!Cargofile
+
+## IGNORE
+.config/fish/fish_variables
+
+# SYMLINKS
+
+# v Added with script
+!.tmex
+.mozilla
+
+# v Added with script v
+!.tmux
+
+!.config/hypr
+.config/hypr/*.conf-bak
+!.config/waybar
+!.config/wofi
+!.config/kanshi
+!.config/pgcli
+!.myclirc
+!.config/tofi
+!.config/user-dirs.dirs
+!.config/zathura
+!.config/clipse/config.json
+!.config/clipse/custom_theme.json
+!.config/shellcheckrc
+
+
+# v Added with script v
+test
+
