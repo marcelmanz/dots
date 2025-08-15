@@ -9,6 +9,7 @@
 !.gitmessage
 !.config
 .config/*
+.termux
 !.config/alacritty
 !.config/foot
 !.tasks

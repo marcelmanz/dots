@@ -199,8 +199,8 @@ $env.PROMPT_MULTILINE_INDICATOR = {colored_error_prompt ':> '}
 
 # use ~/.cache/starship/init.nu
 # use external/fnm.nu
-# source ~/.local/share/atuin/init.nu
+ source ~/.local/share/atuin/init.nu
 
 source ~/.zoxide.nu
-# source ~/.local/share/atuin/init.nu
+source ~/.local/share/atuin/init.nu
 source $"($nu.home-path)/.cargo/env.nu"

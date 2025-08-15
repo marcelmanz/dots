@@ -2,13 +2,18 @@
 
 profile home_office_work {
     output "HDMI-A-1" mode 3840x2160@60.00Hz position 4328,346 scale  1.666667
-    output "DP-3" mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
+    output "DP-3"     mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
     output "eDP-1" disable
 }
 
 profile work {
-    output "HDMI-A-1" mode 1920x1080@60.00Hz position 4328,346 scale  1
-    output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
+    # berlin
+    # output "HDMI-A-1" mode 1920x1080@60.00Hz position 1544,0 scale  1
+    # output "eDP-1"    mode 1920x1200@60.00   position 0,120  scale 1.25
+
+    # leipzig
+    output "HDMI-A-1" mode 1920x1080@60.00Hz  position 1544,0    scale 1
+    output "eDP-1"    mode 1920x1200@60.00    position 1544,1080 scale 1.25
 }
 
 profile home_office_targus {
@@ -18,10 +23,9 @@ profile home_office_targus {
 }
 
 profile home_office_targus_inverted {
-    output "DP-5" mode 3840x2160@60.00Hz position 4328,346 scale  1.666667
-    output "DP-6" mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
-    # output "eDP-1" disable
-    output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
+    output "DP-5"  mode 3840x2160@60.00Hz position 4328,346  scale  1.666667
+    output "DP-6"  mode 3840x2160@60.00Hz position 2020,346  scale  1.666667
+    output "eDP-1" mode 3840x2160@60.01   position 2280,1498 scale 2.4
 }
 
 profile laptop_only {

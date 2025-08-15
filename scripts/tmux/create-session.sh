@@ -1,41 +1,14 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n'
+dirs=$(find ~/clones -mindepth 2 -maxdepth 2 -type d)
+selection=$(printf '%s\n' $dirs | fzf)
 
-SESSION_TYPE=$1
-
-if [ -z "$SESSION_TYPE" ]; then
-	echo "No session type provided"
-	exit 1
+if [ -n "$selection" ]; then
+    session=$(basename "$selection")
+    if ! tmux has-session -t "$session" 2>/dev/null; then
+        tmux new-session -ds "$session" -c "$selection"
+        tmux send-keys -t "$session" nvim C-m
+    fi
+    tmux attach -t "$session"
 fi
-
-WORK_PATH="$HOME/clones/$SESSION_TYPE"
-# Selecting a repository to work on
-SELECTED_REPO=$(ls "$WORK_PATH" | fzy)
-REPO=$(echo $SELECTED_REPO | sed 's/\//-/g' | sed 's/\./-dot-/g')
-SESSION="$SESSION_TYPE-$REPO"
-REPO_NAME="$WORK_PATH/$SELECTED_REPO/"
-# Generating the session name using the repository
-# SHELL=fish # this is already set in fish config
-EDITOR=nvim
-# CUSTOM_COMMAND="fnm use"
-
-if ! tmux has-session -t "$SESSION" 2>/dev/null; then
-	echo "Creating new session..."
-	tmux new-session -d -s "$SESSION"
-	tmux rename-window -t "$SESSION:0" $EDITOR
-	# tmux send-keys "$SHELL" C-m
-	tmux send-keys "cd $REPO_NAME" C-m
-	# tmux send-keys "$CUSTOM_COMMAND" C-m
-	# tmux send-keys "$EDITOR" C-m
-	tmux send-keys C-l
-	tmux split-window -v
-	tmux select-pane -t 0
-	# tmux send-keys "$SHELL" C-m
-	tmux send-keys "cd $REPO_NAME" C-m
-	# tmux send-keys "$CUSTOM_COMMAND" C-m
-	tmux send-keys C-l
-	tmux resize-pane -D 80
-else
-	echo "Session already exists"
-fi
-
-tmux -2 attach-session -t "$SESSION"

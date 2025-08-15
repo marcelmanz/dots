@@ -1,6 +1,5 @@
 # shellcheck disable=2148
 
-
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
 export NIX_PROMPT=true
@@ -9,7 +8,11 @@ export VI_MODE_PROMPT=true
 source ~/.bash_aliases
 source ~/clones/forks/xelabash/xela.bash
 
-alias gpsup="git push --set-upstream origin $(git symbolic-ref --short HEAD 2>/dev/null)"
+gpsup() {
+	local branch
+	branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+	git push --set-upstream origin "$branch"
+}
 
 set -o vi
 
@@ -42,16 +45,16 @@ fi
 # export PAGER="moar --no-statusbar"
 
 # pass
-# OPENAI_API_KEY=$(pass show openai/api-key)
-# export OPENAI_API_KEY
+OPENAI_API_KEY=$(pass show openai/api-key)
+export OPENAI_API_KEY
 # GITHUB_TOKEN=$(pass show github/token)
 # export GITHUB_TOKEN
-# SRC_ACCESS_TOKEN=$(pass show sg/token)
-# export SRC_ACCESS_TOKEN
-# SRC_ENDPOINT=$(pass show sg/endpoint)
-# export SRC_ENDPOINT
-# GITLAB_TOKEN=$(pass show gitlab/access-token)
-# export GITLAB_TOKEN
+SRC_ACCESS_TOKEN=$(pass show sg/token)
+export SRC_ACCESS_TOKEN
+SRC_ENDPOINT=$(pass show sg/endpoint)
+export SRC_ENDPOINT
+GITLAB_TOKEN=$(pass show gitlab/access-token)
+export GITLAB_TOKEN
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
@@ -67,8 +70,8 @@ export EDITOR=nvim
 export SUDO_EDITOR=nvim
 export TERMINAL=alacritty
 
-# ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
-# export ANTHROPIC_API_KEY
+ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
+export ANTHROPIC_API_KEY
 
 if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 	export MOZ_ENABLE_WAYLAND=1
@@ -78,21 +81,37 @@ function so() {
 	source "$HOME/.bashrc"
 }
 
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+# No need with nix, use the tempshell script instead
+# export PYENV_ROOT="$HOME/.pyenv"
+# export PATH="$PYENV_ROOT/bin:$PATH"
+#
+# if command -v pyenv 1>/dev/null 2>&1; then
+#   eval "$(pyenv init - bash)"
+# fi
 
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
+export PATH=$PATH:/usr/local/bin:/snap/bin
 
 if [ -z "$SOURSES_RUNNING" ]; then
-  export SOURSES_RUNNING=1
-  # Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
+	export SOURSES_RUNNING=1
+	# Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
 fi
 . "$HOME/.cargo/env"
 
 eval "$(zoxide init bash)"
 export _ZO_DOCTOR=0
+
+gstp() {
+	git status --porcelain "$@" | awk '$1 ~ /^M/ { print $2 }' | paste -sd ' '
+}
+
+tarea
+
+if command -v tarea >/dev/null 2>&1; then
+	eval "$(tarea --completions bash)"
+fi
+
+# need to go back and work on gcs again so it generates completions
+# if command -v gcs >/dev/null 2>&1; then
+# 	eval "$(gcs --completion bash)"
+# fi

@@ -1,36 +1,15 @@
-[include]
-    path = /home/marcel/.config/delta/themes.gitconfig
-
 [user]
 	email = googlillo@gmail.com
 	name = marcelarie
 
 [pager]
-    ; diff = delta
-    ; log = delta
-    ; reflog = delta
+    ; diff = ?
+    ; log = ?
+    ; reflog = ?
     ; show = diff
 
-[interactive]
-    diffFilter = delta --color-only --features=interactive
-
-[delta]
-    features = decorations
-    navigate = true
-    ; features =  calochortus-lyallii
-    ; side-by-side = true
-
-[delta "interactive"]
-    keep-plus-minus-markers = false
-
-[delta "decorations"]
-    commit-decoration-style = blue ol
-    commit-style = raw
-    file-style = omit
-    hunk-header-decoration-style = blue box
-    hunk-header-file-style = red
-    hunk-header-line-number-style = "#067a00"
-    hunk-header-style = file line-number syntax
+; [interactive]
+;     diffFilter = delta --color-only --features=interactive
 
 ; [credential]
 ; 	helper = /usr/bin/git-credential-manager-core
@@ -83,3 +62,4 @@
 ; 	program = $HOME/scripts/gpg-pinetry-loopback.sh
 [help]
 	autocorrect = prompt
+

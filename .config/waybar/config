@@ -15,18 +15,18 @@
     ],
     "modules-right": [
         "pulseaudio",
-        "network",
+        // "network",
         "cpu",
         "memory",
         "custom/sensors-temp",
         // "battery",
-        "custom/battery",
         // "upower",
         // "battery#bat2",
         "clock",
         // "custom/clock",
         "custom/foot",
         "hyprland/language",
+        "custom/battery",
         "tray"
     ],
     // Modules configuration
@@ -227,6 +227,6 @@
     "custom/foot": {
         "format": "   ",
         "tooltip": "Open Foot Terminal",
-        "on-click": "foot"
+        "on-click": "/usr/bin/gnome-terminal"
     }
 }
