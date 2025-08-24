@@ -20,7 +20,7 @@ if [ -z "$SESSIONS_LIST" ] || [[ "$SESSIONS_LIST" =~ $NO_SERVER_REGEX ]]; then
 			ALL_OPTIONS+=$(printf "%s\n" "$folder_list" | sed "s|$HOME/clones/||g" | sed 's|/$||g')
 		done
 
-		SELECTED=$(printf "$ALL_OPTIONS" | fzy)
+		SELECTED=$(printf "$ALL_OPTIONS" | fzf)
 
 		if [ -n "$SELECTED" ]; then
 			SESSION_TYPE=$(echo "$SELECTED" | cut -d'/' -f1)

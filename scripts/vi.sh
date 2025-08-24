@@ -26,6 +26,12 @@ if [[ "$args" =~ ^(.+):([0-9]+):([0-9]+)$ ]]; then
 		mkdir -p "$dir_path"
 	}
 	nvim +"call cursor(${line},${col})" "$file"
+	if [[ ! -s "$file" ]]; then
+		rm "$file"
+	fi
+	if [[ -d "$dir_path" && -z "$(ls -A "$dir_path")" ]]; then
+		rmdir "$dir_path"
+	fi
 	exit $?
 	# path:line: open file at given line
 elif [[ "$args" =~ ^(.+):([0-9]+)$ ]]; then
@@ -36,6 +42,12 @@ elif [[ "$args" =~ ^(.+):([0-9]+)$ ]]; then
 		mkdir -p "$dir_path"
 	}
 	nvim +"$line" "$file"
+	if [[ ! -s "$file" ]]; then
+		rm "$file"
+	fi
+	if [[ -d "$dir_path" && -z "$(ls -A "$dir_path")" ]]; then
+		rmdir "$dir_path"
+	fi
 	exit $?
 fi
 
@@ -49,4 +61,7 @@ else
 	dir_path=$(dirname "$args")
 	mkdir -p "$dir_path"
 	nvim "$args"
+	if [[ -d "$dir_path" && -z "$(ls -A "$dir_path")" ]]; then
+		rmdir "$dir_path"
+	fi
 fi
