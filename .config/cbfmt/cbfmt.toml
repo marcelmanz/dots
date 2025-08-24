@@ -1,0 +1,8 @@
+[languages]
+rust = ["rustfmt"]
+go = ["gofmt"]
+lua = ["stylua -s -"]
+python = ["black --line-lenght 100"]
+nix = ["alejandra"]
+bash = ["shfmt"]
+

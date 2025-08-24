@@ -17,6 +17,17 @@ function gpsup
     git push --set-upstream origin (git symbolic-ref --short HEAD 2>/dev/null)
 end
 
+function edit_cmd
+    set -l tmp (mktemp)
+    commandline > $tmp
+    $EDITOR $tmp
+    commandline (cat $tmp)
+    command rm -f $tmp
+end
+
+bind -M insert \cx edit_cmd
+bind -M default \cx edit_cmd
+
 # base16-gruvbox-dark-medium # :)
 
 ### "bat" as manpager

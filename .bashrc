@@ -105,7 +105,7 @@ gstp() {
 	git status --porcelain "$@" | awk '$1 ~ /^M/ { print $2 }' | paste -sd ' '
 }
 
-tarea
+# tarea
 
 if command -v tarea >/dev/null 2>&1; then
 	eval "$(tarea --completions bash)"
@@ -115,3 +115,5 @@ fi
 # if command -v gcs >/dev/null 2>&1; then
 # 	eval "$(gcs --completion bash)"
 # fi
+
+alias claude="/home/mmanzanares/.claude/local/claude"

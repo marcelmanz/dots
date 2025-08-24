@@ -18,5 +18,5 @@ SELECTED=$(
   fi
 )
 
-[[ -n "$SELECTED" ]] && xdg-open "$HOME/$SELECTED"
+[[ -n "$SELECTED" ]] && zathura "$HOME/$SELECTED"
 

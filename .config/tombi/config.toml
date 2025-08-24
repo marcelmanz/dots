@@ -1,0 +1,20 @@
+toml-version = "v1.0.0"
+
+[format]
+
+[lint]
+[lint.rules]
+dotted-keys-out-of-order = "warn"
+key-empty = "warn"
+tables-out-of-order = "warn"
+
+[lsp]
+code-action.enabled = true
+completion.enabled = true
+diagnostics.enabled = true
+document-link.enabled = true
+formatting.enabled = true
+goto-declaration.enabled = true
+goto-definition.enabled = true
+goto-type-definition.enabled = true
+hover.enabled = true
