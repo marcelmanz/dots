@@ -1,0 +1,41 @@
+anchor_to_edges = true
+position = "top"
+height = 25
+
+[[start]]
+type = "workspaces"
+all_monitors = false
+
+
+[[end]]
+type = "volume"
+format = "{icon} {percentage}%"
+max_volume = 100
+
+[end.icons]
+volume_high = "󰕾"
+volume_medium = "󰖀"
+volume_low = "󰕿"
+muted = "󰝟"
+
+[[end]]
+type = "clock"
+
+[[end]]
+type = "notifications"
+show_count = true
+
+[[end]]
+type = "tray"
+icon_size = 32
+
+# [[end]]
+# type = "keyboard"
+# show_scroll = false
+#
+# [end.icons]
+# caps_on = "󰪛"
+#
+# [end.icons.layout_map]
+# "English (US)" = "🇺🇸"
+# Ukrainian = "🇺🇦"
