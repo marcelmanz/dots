@@ -6,7 +6,9 @@ export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 
 source ~/.bash_aliases
-source ~/clones/forks/xelabash/xela.bash
+if [[ $- == *i* ]] && [[ -t 0 ]]; then
+	source ~/clones/forks/xelabash/xela.bash
+fi
 
 gpsup() {
 	local branch
@@ -91,6 +93,7 @@ function so() {
 
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 export PATH=$PATH:/usr/local/bin:/snap/bin
+export PATH="/home/$USER/.local/bin:$PATH"
 
 if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1
@@ -105,7 +108,9 @@ gstp() {
 	git status --porcelain "$@" | awk '$1 ~ /^M/ { print $2 }' | paste -sd ' '
 }
 
-# tarea
+# if [[ $- == *i* ]] && [[ -t 0 ]]; then
+# 	 tarea
+# fi
 
 if command -v tarea >/dev/null 2>&1; then
 	eval "$(tarea --completions bash)"

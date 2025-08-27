@@ -325,7 +325,6 @@ alias gss="git status -s"
 alias gs="echo 'if you want to run gs use GS';"
 alias GS="gs"
 alias gst="git status"
-# alias gst="git stash"
 alias gsta="git stash save"
 alias gstaa="git stash apply"
 # dangerous -> # alias gstd="git stash drop" 
@@ -378,7 +377,7 @@ alias jt="just test"
 alias date_iso="date -u +%Y-%m-%d"
 
 alias copy="wl-copy"
-alias wf-record-area='wf-recorder -g "$(slurp)"'
+alias wf-recorder-area='wf-recorder -g "$(slurp)"'
 
 alias nmtui="$HOME/scripts/nice-color-nmtui.sh"
 alias my_public_ip="ip -json route get 8.8.8.8 | jq -r '.[].prefsrc'"
@@ -396,6 +395,7 @@ alias kport="~/scripts/kill-port.sh"
 
 alias ws-create-branch="~/scripts/work/custom-create-branch-name.sh"
 alias ws-bump="~/scripts/work/update-changelog-and-bump-version.sh"
+alias python-nix-init="~/scripts/work/python-nix-init.sh"
 
 # development alias
 alias sour="~/clones/own/sourses/target/debug/sourses"

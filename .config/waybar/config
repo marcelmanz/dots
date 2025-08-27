@@ -7,8 +7,7 @@
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
-        "hyprland/mode",
-        "custom/media"
+        "hyprland/mode"
     ],
     "modules-center": [
         "sway/window"
@@ -228,5 +227,13 @@
         "format": "   ",
         "tooltip": "Open Foot Terminal",
         "on-click": "/usr/bin/gnome-terminal"
+    },
+    "custom/media-toggle": {
+      "exec": "$HOME/scripts/waybar/playerctl-toggle.sh",
+      "return-type": "json",
+      "interval": 1,
+      "signal": 10,
+      "on-click": "playerctl --player=mpv play-pause; pkill -RTMIN+10 waybar",
+      "on-click-right": "playerctl --player=mpv stop; pkill -RTMIN+10 waybar"
     }
 }
