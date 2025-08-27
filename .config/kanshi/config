@@ -25,7 +25,7 @@ profile home_office_targus_inverted {
 }
 
 profile laptop_only {
-    output "eDP-1" mode 3840x2160@60.01Hz position 0,0 scale 2
+    output "eDP-1" mode 3840x2160@60.01Hz position 0,0 scale 2.4
     # output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
 }
 

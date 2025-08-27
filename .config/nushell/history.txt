@@ -141,3 +141,29 @@ cal
 cal
 vini
 ls
+exit
+rustup update
+exit
+gst
+alias
+barc
+nixu
+ns
+nurc
+ls
+cd .config/nushell
+ls
+gst
+rm bash-aliases.nu
+gst
+exit
+nixu
+gst
+ll
+lla
+z front
+ll
+vi
+vini
+barc
+vin

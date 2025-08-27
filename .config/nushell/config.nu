@@ -31,30 +31,30 @@ let zoxide_completer = {|spans|
 }
 
 # This completer will use carapace by default
-let external_completer = {|spans|
-    let expanded_alias = scope aliases
-    | where name == $spans.0
-    | get -i 0.expansion
-
-    let spans = if $expanded_alias != null {
-        $spans
-        | skip 1
-        | prepend ($expanded_alias | split row ' ' | take 1)
-    } else {
-        $spans
-    }
-
-    match $spans.0 {
-      # carapace completions are incorrect for nu
-      # nu => $fish_completer
-      # fish completes commits and branch names in a nicer way
-      git => (if $spans.1 == "branch" { $fish_completer } else { $carapace_completer })
-      # use zoxide completions for zoxide commands
-      z | zi => $zoxide_completer
-      __zoxide_z | __zoxide_zi => $zoxide_completer
-      _ => $carapace_completer
-    } | do $in $spans
-}
+# let external_completer = {|spans|
+#     let expanded_alias = scope aliases
+#     | where name == $spans.0
+#     | get -i 0.expansion
+#
+#     let spans = if $expanded_alias != null {
+#         $spans
+#         | skip 1
+#         | prepend ($expanded_alias | split row ' ' | take 1)
+#     } else {
+#         $spans
+#     }
+#
+#     match $spans.0 {
+#       # carapace completions are incorrect for nu
+#       # nu => $fish_completer
+#       # fish completes commits and branch names in a nicer way
+#       git => (if $spans.1 == "branch" { $fish_completer } else { $carapace_completer })
+#       # use zoxide completions for zoxide commands
+#       z | zi => $zoxide_completer
+#       __zoxide_z | __zoxide_zi => $zoxide_completer
+#       _ => $carapace_completer
+#     } | do $in $spans
+# }
 
 $env.config = {
   color_config: $base16_theme
@@ -82,7 +82,7 @@ $env.config = {
       external: {
           max_results: 20
           enable: true
-          completer: $external_completer
+          # completer: $external_completer
       }
   }
   menus: [
@@ -199,8 +199,7 @@ $env.PROMPT_MULTILINE_INDICATOR = {colored_error_prompt ':> '}
 
 # use ~/.cache/starship/init.nu
 # use external/fnm.nu
- source ~/.local/share/atuin/init.nu
 
 source ~/.zoxide.nu
-source ~/.local/share/atuin/init.nu
+# source ~/.local/share/atuin/init.nu
 source $"($nu.home-path)/.cargo/env.nu"

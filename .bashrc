@@ -116,4 +116,4 @@ fi
 # 	eval "$(gcs --completion bash)"
 # fi
 
-alias claude="/home/mmanzanares/.claude/local/claude"
+# alias claude="/home/mmanzanares/.claude/local/claude"
