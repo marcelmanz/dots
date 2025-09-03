@@ -25,7 +25,7 @@ eval "$(direnv hook bash)"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 # Turn on comments for commands executed from the command line so they can show in history
-setopt interactivecomments
+# setopt interactivecomments
 eval "$(atuin init bash --disable-up-arrow)"
 
 # Use bash-completion, if available
