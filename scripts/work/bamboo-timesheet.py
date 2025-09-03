@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 
+# Example:
+# python3 ./scripts/work/bamboo-timesheet.py --csrf '<csrf-header>' --cookie '<cookie-header>' --month <month-relative-num>
+
+
 import argparse
 import requests
 from datetime import datetime
 from calendar import monthrange
+from dateutil.relativedelta import relativedelta
 import sys
 
 
@@ -30,6 +35,8 @@ if EMPLOYEE_ID == '<ID>':
 parser = argparse.ArgumentParser(description=f"BambooHR Timesheet Automation Tool")
 parser.add_argument("--csrf", required=True)
 parser.add_argument("--cookie", required=True)
+parser.add_argument("--month", type=int, default=0,
+                    help="Relative month offset (e.g. -1 = last month, 0 = current, 1 = next)")
 args = parser.parse_args()
 
 print(f"\n{Colors.BOLD}BambooHR Timesheet Automation{Colors.END}")
@@ -39,8 +46,9 @@ print(f"Task ID:     {Colors.BLUE}{TASK_ID}{Colors.END}")
 print(f"Daily Hours: {Colors.BLUE}{DAILY_HOURS}{Colors.END}")
 print(f"Country:     {Colors.BLUE}{COUNTRY_ISO}{Colors.END}\n")
 
-now = datetime.now()
-days = monthrange(now.year, now.month)[1]
+base_date = datetime.now() + relativedelta(months=args.month)
+year, month = base_date.year, base_date.month
+days = monthrange(year, month)[1]
 headers = {
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "en-US,en;q=0.7,es-ES;q=0.3",
@@ -67,15 +75,15 @@ def get_holidays(year):
         return set()
 
 
-holidays = get_holidays(now.year)
+holidays = get_holidays(year)
 
-print(f"{Colors.BOLD}Processing timesheet for {Colors.BLUE}{now.year}-{now.month:02d}{Colors.END}")
+print(f"{Colors.BOLD}Processing timesheet for {Colors.BLUE}{year}-{month:02d}{Colors.END}")
 print(f"{Colors.BOLD}{'Date':<12} {'Status':<10} {'Details'}{Colors.END}")
 print("-" * 50)
 
 
 for day in range(1, days + 1):
-    current_date = datetime(now.year, now.month, day)
+    current_date = datetime(year, month, day)
     date_str = current_date.strftime("%Y-%m-%d")
 
     if current_date.weekday() in (5, 6):
@@ -86,7 +94,7 @@ for day in range(1, days + 1):
         print(f"{date_str} {Colors.YELLOW}SKIPPED{Colors.END}    Public holiday in {COUNTRY_ISO}")
         continue
 
-    date_str = f"{now.year}-{now.month:02d}-{day:02d}"
+    date_str = f"{year}-{month:02d}-{day:02d}"
     data = {
         "hours": [
             {

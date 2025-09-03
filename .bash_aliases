@@ -52,7 +52,7 @@ alias tree="erd"
 # alias glom="git pull origin (git branch -rl "*/HEAD" | rev | cut -d/ -f1 | rev)''"
 alias glof="git log --oneline -M --stat --follow --"
 alias glast="git log --pretty=format:"%h" HEAD^..HEAD"
-alias cglast="glast | copy"
+alias gclast="glast | copy"
 # alias grec='git log --graph --oneline --decorate ( git fsck --no-reflog | awk "/dangling commit/ {print $3}" )'
 alias gdfc=" git diff --name-only origin/HEAD"
 # alias gdsm='git diff (gst | rg "modified" | sed "s/modified://g" | fzf | awk \'{$1=$1};1\' )'
@@ -102,6 +102,7 @@ alias retro="~/scripts/open-retro-notes.sh"
 alias emulator="~/Library/Android/sdk/emulator/emulator"
 # alias vi="nvim"
 alias vi="~/scripts/vi.sh"
+alias feni='~/scripts/fennel-nvim.sh'
 alias vin="nvim-nightly"
 alias screen_shoot_partial='grim -g "$(slurp)" ~/screenshots/grim-"$(date '+%Y%m%d-%H:%M:%S')".png'
 alias cvi="vi"
@@ -155,8 +156,7 @@ alias mc="mcfly search"
 # alias af="xdotool type --delay 0 ( alias | fzy | awk -F' ' '{print $2}')"
 # alias chs="cht.sh"
 
-alias ta="tmux attach -t"
-alias tas='~/scripts/tmux/tmux-attach-search.sh own work'
+alias ta='tmux attach -t $(tmux ls -F "#{session_name}" | fzf)'
 alias tcs='~/scripts/tmux/create-session-tmex.sh'
 alias trc='nvim ~/.config/tmux/tmux.conf'
 alias skrc='nvim ~/.config/skhd/skhdrc'
@@ -359,7 +359,7 @@ alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias nurc="nvim ~/.config/nushell/config.nu"
 alias nual="nvim ~/.config/nushell/alias.nu"
 alias nuenv="nvim ~/.config/nushell/env.nu"
-alias ta="tarea"
+alias ff="fzf --preview 'bat --style=numbers --color=always {}'"
 
 alias nn="nnn -e"
 alias nnn="nnn -e"

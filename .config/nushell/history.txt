@@ -141,3 +141,5 @@ cal
 cal
 vini
 ls
+exot
+exit

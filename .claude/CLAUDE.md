@@ -13,4 +13,8 @@ When writing code:
 This project prefers minimal diffs and clean patches.  
 Follow Unix-style conventions: small, focused changes that are easy to review.
 If the project has a flake.nix try to use nix develop to run commands.
+Check if there is a Makefile, Justfile or variants to see if there are already
+setup some command runs.
+Check if there is a flake.nix to know if you need to use nix develop to run
+commands.
 
