@@ -1,3 +1,4 @@
 
 .cargo/
 old-scripts/
+.config/nushell/history.txt

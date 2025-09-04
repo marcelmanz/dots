@@ -6,6 +6,7 @@ export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 
 source ~/.bash_aliases
+
 if [[ $- == *i* ]] && [[ -t 0 ]]; then
 	source ~/clones/forks/xelabash/xela.bash
 fi
@@ -21,6 +22,10 @@ set -o vi
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 source <(carapace _carapace)
 eval "$(direnv hook bash)"
+
+[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+# Turn on comments for commands executed from the command line so they can show in history
+# setopt interactivecomments
 eval "$(atuin init bash --disable-up-arrow)"
 
 # Use bash-completion, if available
@@ -108,9 +113,9 @@ gstp() {
 	git status --porcelain "$@" | awk '$1 ~ /^M/ { print $2 }' | paste -sd ' '
 }
 
-# if [[ $- == *i* ]] && [[ -t 0 ]]; then
-# 	 tarea
-# fi
+if [[ $- == *i* ]] && [[ -t 0 ]] && command -v tarea >/dev/null 2>&1; then
+	tarea
+fi
 
 if command -v tarea >/dev/null 2>&1; then
 	eval "$(tarea --completions bash)"
@@ -121,4 +126,3 @@ fi
 # 	eval "$(gcs --completion bash)"
 # fi
 
-# alias claude="/home/mmanzanares/.claude/local/claude"
