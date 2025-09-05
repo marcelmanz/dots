@@ -20,13 +20,17 @@ gpsup() {
 set -o vi
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
-source <(carapace _carapace)
-eval "$(direnv hook bash)"
-
-[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-# Turn on comments for commands executed from the command line so they can show in history
-# setopt interactivecomments
-eval "$(atuin init bash --disable-up-arrow)"
+carapace_bootstrap() { unset -f carapace_bootstrap; source <(carapace _carapace); }
+complete -D carapace_bootstrap
+__post_first_prompt_init() {
+	eval "$(direnv hook bash)"
+	eval "$(atuin init bash --disable-up-arrow)"
+	eval "$(zoxide init bash)"
+	[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+	PROMPT_COMMAND="${PROMPT_COMMAND//__post_first_prompt_init;/}"
+	unset -f __post_first_prompt_init
+}
+PROMPT_COMMAND="__post_first_prompt_init;${PROMPT_COMMAND}"
 
 # Use bash-completion, if available
 # [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
@@ -34,15 +38,10 @@ eval "$(atuin init bash --disable-up-arrow)"
 
 # Start gpg-agent if not already running
 GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
-export GPG_AGENT_INFO
-
 GPG_TTY=$(tty)
-export GPG_TTY
-
-# If SSH_AUTH_SOCK is not set, set it to gpg-agent's SSH socket
-if [ -z "$SSH_AUTH_SOCK" ] && [ -S "$GPG_AGENT_INFO.ssh" ]; then
-	export SSH_AUTH_SOCK="$GPG_AGENT_INFO.ssh"
-fi
+export GPG_AGENT_INFO GPG_TTY
+SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$(gpgconf --list-dirs agent-ssh-socket)}
+export SSH_AUTH_SOCK
 
 # source "$HOME/.rye/env"
 # source rund bash
@@ -52,16 +51,21 @@ fi
 # export PAGER="moar --no-statusbar"
 
 # pass
-OPENAI_API_KEY=$(pass show openai/api-key)
-export OPENAI_API_KEY
-# GITHUB_TOKEN=$(pass show github/token)
-# export GITHUB_TOKEN
-SRC_ACCESS_TOKEN=$(pass show sg/token)
-export SRC_ACCESS_TOKEN
-SRC_ENDPOINT=$(pass show sg/endpoint)
-export SRC_ENDPOINT
-GITLAB_TOKEN=$(pass show gitlab/access-token)
-export GITLAB_TOKEN
+SECRETS_CACHE=~/.cache/sh/secret-env
+if [ -f "$SECRETS_CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$SECRETS_CACHE"))) -lt 3600 ]; then
+	. "$SECRETS_CACHE"
+else
+	mkdir -p ~/.cache/sh
+	{
+		echo "export OPENAI_API_KEY=$(pass show openai/api-key)"
+		echo "export SRC_ACCESS_TOKEN=$(pass show sg/token)"
+		echo "export SRC_ENDPOINT=$(pass show sg/endpoint)"
+		echo "export GITLAB_TOKEN=$(pass show gitlab/access-token)"
+		echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key)"
+	} >"$SECRETS_CACHE"
+
+	. "$SECRETS_CACHE"
+fi
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
@@ -77,8 +81,6 @@ export EDITOR=nvim
 export SUDO_EDITOR=nvim
 export TERMINAL=alacritty
 
-ANTHROPIC_API_KEY=$(pass show anthropic/api-key)
-export ANTHROPIC_API_KEY
 
 if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 	export MOZ_ENABLE_WAYLAND=1
@@ -106,7 +108,6 @@ if [ -z "$SOURSES_RUNNING" ]; then
 fi
 . "$HOME/.cargo/env"
 
-eval "$(zoxide init bash)"
 export _ZO_DOCTOR=0
 
 gstp() {
@@ -117,8 +118,10 @@ if [[ $- == *i* ]] && [[ -t 0 ]] && command -v tarea >/dev/null 2>&1; then
 	tarea
 fi
 
+mkdir -p ~/.cache/bash-completions
 if command -v tarea >/dev/null 2>&1; then
-	eval "$(tarea --completions bash)"
+	[ -f ~/.cache/bash-completions/tarea.bash ] || tarea --completions bash >~/.cache/bash-completions/tarea.bash
+	. ~/.cache/bash-completions/tarea.bash
 fi
 
 # need to go back and work on gcs again so it generates completions
