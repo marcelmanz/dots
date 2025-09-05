@@ -1,1 +1,1 @@
-/nix/store/idhv03y23mwjczy84ajqi3zshy0hhv18-home-manager-files/.cargo/env.fish
+/nix/store/pif7nz7m056wj2wjaq4isk4jcjrss53c-home-manager-files/.cargo/env.fish
