@@ -20,8 +20,16 @@ gpsup() {
 set -o vi
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
-carapace_bootstrap() { unset -f carapace_bootstrap; source <(carapace _carapace); }
-complete -D carapace_bootstrap
+_carapace_lazy_init() {
+    if [[ -z "$_CARAPACE_INITIALIZED" ]]; then
+        source <(carapace _carapace)
+        export _CARAPACE_INITIALIZED=1
+    fi
+    # Call the original complete_func
+    compopt -o default
+    COMPREPLY=()
+}
+complete -F _carapace_lazy_init -D
 __post_first_prompt_init() {
 	eval "$(direnv hook bash)"
 	eval "$(atuin init bash --disable-up-arrow)"

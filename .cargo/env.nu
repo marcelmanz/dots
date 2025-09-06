@@ -1,2 +1,1 @@
-use std/util "path add"
-path add $"($nu.home-path)/.cargo/bin"
+/nix/store/pif7nz7m056wj2wjaq4isk4jcjrss53c-home-manager-files/.cargo/env.nu

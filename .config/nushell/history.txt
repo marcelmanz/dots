@@ -167,3 +167,6 @@ vi
 vini
 barc
 vin
+z dots
+gst
+fis
