@@ -38,7 +38,15 @@ __post_first_prompt_init() {
 	PROMPT_COMMAND="${PROMPT_COMMAND//__post_first_prompt_init;/}"
 	unset -f __post_first_prompt_init
 }
-PROMPT_COMMAND="__post_first_prompt_init;${PROMPT_COMMAND}"
+
+# Initialize immediately in tmux (after xela.bash is loaded), otherwise use deferred init
+if [[ $- == *i* ]] && [[ -t 0 ]]; then
+	if [[ -n "$TMUX" ]]; then
+		__post_first_prompt_init
+	else
+		PROMPT_COMMAND="__post_first_prompt_init;${PROMPT_COMMAND}"
+	fi
+fi
 
 # Use bash-completion, if available
 # [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
@@ -122,9 +130,9 @@ gstp() {
 	git status --porcelain "$@" | awk '$1 ~ /^M/ { print $2 }' | paste -sd ' '
 }
 
-if [[ $- == *i* ]] && [[ -t 0 ]] && command -v tarea >/dev/null 2>&1; then
-	tarea
-fi
+# if [[ $- == *i* ]] && [[ -t 0 ]] && command -v tarea >/dev/null 2>&1; then
+# 	tarea
+# fi
 
 mkdir -p ~/.cache/bash-completions
 if command -v tarea >/dev/null 2>&1; then
