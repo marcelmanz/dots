@@ -1,0 +1,16 @@
+default_layout "minimal"
+leader "Ctrl b"
+pane_frames false
+simplified_ui true
+show_startup_tips false
+session_serial true
+
+keybinds {
+  normal {
+    bind "Ctrl b" { SwitchToMode "pane"; }
+  }
+  pane {
+    bind "v" { NewPane "Down"; SwitchToMode "normal"; }
+    bind "s" { NewPane "Right"; SwitchToMode "normal"; }
+  }
+}

@@ -42,4 +42,4 @@ $env.GITLAB_TOKEN = (pass show gitlab/access-token)
 
 # zoxide init nushell | str replace "def-env" "def --env" --all | save -f ~/.zoxide.nu
 zoxide init nushell | save -f ~/.zoxide.nu
-# nuit ~/.bash_aliases -o $"($nu.default-config-dir)/bash-aliases.nu" | ignore
+nuit ~/.bash_aliases -o $"($nu.default-config-dir)/bash-aliases.nu" | ignore
