@@ -121,6 +121,7 @@ alias arch-backup="~/scripts/arch/backup.sh"
 
 alias arch-restore="~/scripts/arch/restore.sh"
 alias qr_scanner="~/scripts/hyprland/qr-code-reader.sh"
+alias gorc="cd ~/.config/nvim/"
 alias virc="nvim ~/.config/nvim/"
 alias zerc="nvim ~/.config/zellij/"
 # alias docker="podman"

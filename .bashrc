@@ -77,6 +77,7 @@ else
 		echo "export SRC_ACCESS_TOKEN=$(pass show sg/token)"
 		echo "export SRC_ENDPOINT=$(pass show sg/endpoint)"
 		echo "export GITLAB_TOKEN=$(pass show gitlab/access-token)"
+		echo "export GITHUB_TOKEN=$(pass show github/token)"
 		echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key)"
 	} >"$SECRETS_CACHE"
 
