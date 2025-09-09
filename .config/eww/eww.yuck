@@ -46,8 +46,8 @@
       (notifications)
       (github)
       ; (updates)
-      (trash)
-      (noisetorch)
+      ; (trash)
+      ; (noisetorch)
       (microphone)
       (speaker)
       (ping)
@@ -56,6 +56,7 @@
       (ram)
       ; (nvidia)
       (cpu)
+      (battery)
       (date)
       (time)
       (box :visible {screen == 0} (tray_button0))
@@ -103,11 +104,11 @@
   (literal :content workspaces_listen))
 
 (defwidget player []
-  (icon-module :class "player" :icon "   " :visible {player_listen.show == "yes"}
+  (icon-module :class "player" :icon " " :visible {player_listen.show == "yes"}
     (literal :content {player_listen.content})))
 
 (defwidget ram []
-  (icon-module :class "ram" :icon "" :visible {EWW_RAM.used_mem_perc != ""}
+  (icon-module :class "ram" :icon "  " :visible {EWW_RAM.used_mem_perc != ""}
     (label :text "${round(EWW_RAM.used_mem_perc, 0)}%")))
 
 (defwidget notifications []
@@ -116,7 +117,8 @@
 
 (defwidget date []
   (icon-module :class "date" :icon "" 
-    (label :text date_poll)))
+    (eventbox :onhover "cal"
+      (label :text date_poll))))
 
 (defwidget time []
   (icon-module :class "time" :icon "" 
@@ -127,8 +129,9 @@
     (label :text nvidia_listen))) 
 
 (defwidget cpu []
-  (icon-module :class "cpu" :icon "" 
-    (label :text "${round(EWW_CPU.avg, 0)}%"))) 
+  (icon-module :class "cpu" :icon " " 
+    (button :onclick "kitty btop"
+      (label :text "${round(EWW_CPU.avg, 0)}%")))) 
 
 (defwidget disk []
   (icon-module :class "disk" :icon "" 
@@ -153,7 +156,11 @@
 
 (defwidget ping []
   (icon-module :class "ping" :icon " "
-    (label :text ping_poll))) 
+    (label :text ping_poll)))
+
+(defwidget battery []
+  (icon-module :class "battery" :icon "" 
+    (label :text "${EWW_BATTERY.BAT0.capacity}%"))) 
 
 (defwidget network []
   (icon-module :class "network" :icon ""

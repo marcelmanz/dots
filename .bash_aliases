@@ -394,6 +394,7 @@ alias speedtest-cli="speedtest-rs"
 alias wiki="wiki-tui"
 alias chatd="chatd --ozone-platform=wayland"
 alias nchat="~/scripts/tmux/nchat-tmux.sh"
+alias clc="claude -c"
 
 alias kport="~/scripts/kill-port.sh"
 

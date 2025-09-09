@@ -21,7 +21,7 @@ window {
 
 .bar {
   font-family: "Noto Sans";
-  font-size: 13px;
+  font-size: 14px;
   margin: 0 10px;
 }
 
@@ -49,9 +49,13 @@ window {
   color: $blue;
 }
 
+.player {
+  margin-top: 5px;
+}
+
 .workspaces {
   font-family: "Font Awesome 5 Free Solid";
-  font-size: 12px;
+  font-size: 15px;
   margin-right: 20px;
 
   button {
