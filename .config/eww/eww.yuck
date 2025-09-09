@@ -1,233 +1,180 @@
-(defwidget bar0 []
-(box :class "bar"
-  (centerbox :orientation "h"
-    (workspaces0)
-    (clock)
-    (sidestuff)))
-)
-
-(defwidget bar1 []
-(box :class "bar"
-  (centerbox :orientation "h"
-    (workspaces1)
-    (clock)
-    (sidestuff)))
-)
-
-(defwidget bar2 []
-(box :class "bar"
-  (centerbox :orientation "h"
-    (workspaces2)
-    (clock)
-    (sidestuff)))
-)
-
-(defwidget sidestuff []
-  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-   (updates)
-   (scratchpad-indicator)
-   (language)
-   (idleinhibit)
-   (bright)
-   (audio)
-   (net)
-   (battery)
-    ))
-
-(deflisten workspace0
-  "scripts/workspace.sh 0")
-
-(defwidget workspaces0 []
-  (literal :content workspace0))
-
-(deflisten workspace1
-  "scripts/workspace.sh 1")
-
-(defwidget workspaces1 []
-  (literal :content workspace1))
-
-(defwidget workspaces2 []
-  (literal :content workspace2))
-
-(deflisten workspace2
-  "scripts/workspace.sh 2")
-
-(defwidget language []
-  (box :class "language"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/keyboardlayout.sh toggle"
-        language)
-))
-
-(defwidget clock []
-  (box :class "clock"
-       :orientation "h"
-       :space-evenly false
-       :halign "center"
-    (button
-        :class ""
-	:onclick "scripts/calendar.sh show"
-        date-time)
-))
-
-(defwidget audio []
-  (box :class "audio"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/volumecontrol down"
-        :onmiddleclick "scripts/volumecontrol mute"
-	:onrightclick "scripts/volumecontrol up"
-        volume)
-))
-
-(defwidget bright []
-  (box :class "brightness"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/brightnesscontrol down"
-	:onrightclick "scripts/brightnesscontrol up"
-        brightness)
-))
-
-(defwidget updates []
-  (box 
-       :class "${matches(arch-updates, '^\s*$')?'paru-empty':'paru'}"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "foot bash -c 'paru; ~/.config/eww/scripts/arch-updates.sh Refresh'&"
-        arch-updates)
-))
-
-(defwidget scratchpad-indicator []
-  (box 
-       :class "${matches(scratchpad, '^\s*$')?'scratchpad-empty':'scratchpad'}"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/scratchpad-indicator.sh ShowInfo"
-        scratchpad)
-))
-
-(defwidget idleinhibit []
-  (box :class "idle"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/idleinhibit.sh toggle"
-        idle)
-))
-
-(defwidget net []
-  (box :class "net"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/network.sh ShowInfo"
-        network)
-))
-
-(defwidget battery []
-  (box :class "battery"
-       :orientation "h"
-       :space-evenly false
-       :halign "end"
-       :spacing 10
-    (button
-        :class ""
-	:onclick "scripts/battery.py --c left-click"
-        :onmiddleclick "scripts/battery.py --c middle-click"
-	:onrightclick "scripts/battery.py --c right-click"
-        battery)
-))
-
-(defpoll battery :interval "10s"
-  "scripts/battery.py --c status")
-
-(defpoll scratchpad :interval "1s"
-  "scripts/scratchpad-indicator.sh Update || echo null")
-
-(defpoll language :interval "1s"
-  "scripts/keyboardlayout.sh")
-
-(defpoll network :interval "1s"
-  "scripts/network.sh")
-
-(defpoll idle :interval "1s"
-  "scripts/idleinhibit.sh")
-
-(defpoll arch-updates :interval "600s"
-  "scripts/arch-updates.sh")
-
-(defpoll volume :interval "1s"
-  "scripts/volumecontrol")
-
-(defpoll brightness :interval "1s"
-  "scripts/brightnesscontrol")
-
-(defpoll date-time :interval "1s"
-  "scripts/date-time.sh")
-
+; Windows foldstart
 (defwindow bar0
   :monitor 0
-  :windowtype "dock"
-  :geometry (geometry :x "0%"
-                      :y "10px"
-                      :width "100%"
-                      :height "20px"
-                      :anchor "top center")
-  :stacking "bt"
   :exclusive true
   :focusable false
-  (bar0))
+  :geometry (geometry :anchor "top center" :x "0%" :y "0" :width "100%" :height "20px")
+  (bar :screen 0))
 
-(defwindow bar1
-  :monitor 0
-  :windowtype "dock"
-  :geometry (geometry :x "0%"
-                      :y "10px"
-                      :width "100%"
-                      :height "20px"
-                      :anchor "top center")
-  :stacking "bt"
-  :exclusive true
-  :focusable false
-  (bar1))
-
-(defwindow bar2
+(defwindow bar1  
   :monitor 1
-  :windowtype "dock"
-  :geometry (geometry :x "0%"
-                      :y "10px"
-                      :width "100%"
-                      :height "20px"
-                      :anchor "top center")
-  :stacking "bt"
   :exclusive true
   :focusable false
-  (bar2))
+  :geometry (geometry :anchor "top center" :x "0%" :y "0" :width "100%" :height "20px")
+  (bar :screen 1))
+
+(defwindow tray-window0
+  :monitor 0
+  :stacking "fg"
+  :focusable false
+  :windowtype "dock"
+  :geometry (geometry :anchor "top right" :x "0" :y "4px" :width "40px" :height "100px")
+  (tray))
+
+(defwindow tray-window1
+  :monitor 1
+  :stacking "fg"
+  :focusable false
+  :windowtype "dock"
+  :geometry (geometry :anchor "top right" :x "0" :y "4px" :width "40px" :height "100px")
+  (tray))
+; foldend
+
+; Bar foldstart
+(defwidget bar [screen]
+  (box :orientation "h"
+       :space-evenly false
+       :class "bar"
+    (box :halign "start"
+         :space-evenly false
+      (workspaces)
+      (player))
+    (box :halign "end"
+         :spacing 12
+         :hexpand true
+         :space-evenly false
+      (notifications)
+      (github)
+      ; (updates)
+      (trash)
+      (noisetorch)
+      (microphone)
+      (speaker)
+      (ping)
+      (network)
+      (disk)
+      (ram)
+      ; (nvidia)
+      (cpu)
+      (date)
+      (time)
+      (box :visible {screen == 0} (tray_button0))
+      (box :visible {screen == 1} (tray_button1)))))
+; foldend
+
+; Variables foldstart
+(defpoll time_poll :interval "1s" "date +%H:%M")
+(defpoll date_poll :interval "1m" "date +%d/%m/%Y")
+(defpoll trash_poll :interval "10s" "./modules/trash.sh")
+(defpoll noisetorch_poll :initial "" :interval "10s" "./modules/noisetorch.sh")
+(defpoll updates_poll :initial "" :interval "1m" "./modules/updates.sh &") 
+(defpoll github_poll :initial "" :interval "1m" "./modules/github.sh")
+(defpoll ping_poll :interval "10s" "./modules/ping.sh")
+
+(deflisten workspaces_listen "./modules/workspaces.sh")
+(deflisten player_listen :initial '{"show": "no", "content": ""}' "./modules/player.sh")
+(deflisten nvidia_listen "./modules/nvidia.sh")
+(deflisten notifications_listen :initial '{"show": "no", "content": ""}' "./modules/notifications.sh")
+
+; Make this cleaner at some point
+(defpoll microphone_poll :interval "999h" "./modules/microphone.sh")
+(defpoll speaker_poll :interval "999h" "./modules/speaker.sh")
+
+; Tray variables
+(defvar open_tray true)
+(defvar tray0_active false)
+(defvar tray1_active false)
+; foldend
+
+; Modules foldstart
+; Generic icon module foldstart
+(defwidget icon-module [icon ?class ?visible]
+  (box :class "${class} icon-module"
+       :orientation "h"
+       :halign "end"
+       :space-evenly false
+       :visible {visible ?: true} ; because the argument is optional
+    (label :class "icon-module__icon" :text "${icon}")
+    (children)))
+; foldend
+
+; Polybar-Style modules foldstart
+(defwidget workspaces []
+  (literal :content workspaces_listen))
+
+(defwidget player []
+  (icon-module :class "player" :icon "   " :visible {player_listen.show == "yes"}
+    (literal :content {player_listen.content})))
+
+(defwidget ram []
+  (icon-module :class "ram" :icon "" :visible {EWW_RAM.used_mem_perc != ""}
+    (label :text "${round(EWW_RAM.used_mem_perc, 0)}%")))
+
+(defwidget notifications []
+  (icon-module :class "notifications" :icon "" :visible {notifications_listen.show == "yes"}
+    (literal :content {notifications_listen.content}))) 
+
+(defwidget date []
+  (icon-module :class "date" :icon "" 
+    (label :text date_poll)))
+
+(defwidget time []
+  (icon-module :class "time" :icon "" 
+    (label :text time_poll))) 
+
+(defwidget nvidia []
+  (icon-module :class "nvidia" :icon "" 
+    (label :text nvidia_listen))) 
+
+(defwidget cpu []
+  (icon-module :class "cpu" :icon "" 
+    (label :text "${round(EWW_CPU.avg, 0)}%"))) 
+
+(defwidget disk []
+  (icon-module :class "disk" :icon "" 
+    (label :text "${round(EWW_DISK["/"].used_perc, 0)}%"))) 
+
+(defwidget trash []
+  (icon-module :class "trash" :icon "" 
+    (label :text trash_poll))) 
+
+(defwidget noisetorch []
+  (icon-module :class "noisetorch" :icon " " 
+    (label :text noisetorch_poll))) 
+
+(defwidget updates []
+  (icon-module :class "updates" :icon " " :visible {updates_poll != ""}
+    (label :text updates_poll))) 
+
+(defwidget github []
+  (icon-module :class "github" :icon "" :visible {github_poll != ""}
+    (button :onclick "open https://github.com/notifications"
+      (label :text github_poll)))) 
+
+(defwidget ping []
+  (icon-module :class "ping" :icon " "
+    (label :text ping_poll))) 
+
+(defwidget network []
+  (icon-module :class "network" :icon ""
+    (label :text "${round(EWW_NET.enp42s0.NET_UP / 1000000, 2)}/${round(EWW_NET.enp42s0.NET_DOWN / 1000000, 2)}"))) 
+
+(defwidget speaker []
+  (icon-module :class "speaker" 
+               :icon {speaker_poll.icon}
+    (eventbox :onscroll `eww update speaker_poll="$(./modules/speaker.sh {})"`
+      (button :onclick `eww update speaker_poll="$(./modules/speaker.sh toogle)"`
+        (label :text {speaker_poll.content})))))
+
+(defwidget microphone []
+  (icon-module :class "microphone" 
+               :icon {microphone_poll.icon}
+    (eventbox :onscroll `eww update microphone_poll="$(./modules/microphone.sh {})"`
+      (button :onclick `eww update microphone_poll="$(./modules/microphone.sh toogle)"`
+        (label :text {microphone_poll.content})))))
+
+; Include tray module
+(include "modules/tray.yuck")
+; foldend
+
+; vim:foldmarker=foldstart,foldend

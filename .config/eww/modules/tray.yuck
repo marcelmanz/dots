@@ -1,0 +1,22 @@
+;; System Tray Widget
+(defwidget tray []
+  (box :class "tray"
+       :orientation "v"
+       :valign "start"
+       :spacing 5
+    (systray :class "tray-item" 
+             :orientation "v" 
+             :icon-size 20 
+             :spacing 5)))
+
+(defwidget tray_button0 []
+  (icon-module :class "tray ${tray0_active ? 'tray-active' : ''}"
+               :icon ""
+    (button :onclick "./scripts/toggle_tray.sh 0"
+      (label :text "${tray0_active ? '▼' : '▲'}"))))
+
+(defwidget tray_button1 []
+  (icon-module :class "tray ${tray1_active ? 'tray-active' : ''}"
+               :icon ""
+    (button :onclick "./scripts/toggle_tray.sh 1"
+      (label :text "${tray1_active ? '▼' : '▲'}"))))
