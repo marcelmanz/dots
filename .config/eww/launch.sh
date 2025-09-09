@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 pkill -f "eww open" 2>/dev/null
 pkill -f "eww daemon" 2>/dev/null
