@@ -1,5 +1,4 @@
 
-
 profile home_office_work {
     # Formula to place outputs side by side:
     #   next_x = current_x + (mode_width / scale)
@@ -22,8 +21,9 @@ profile home_office_work {
     # All outputs share y=346 for vertical alignment.
     output "HDMI-A-1" mode 3840x2160@60.00Hz position 2020,346 scale 1.666667
     output "DP-3"     mode 3840x2160@60.00Hz position 4324,346 scale 1.666667
-    output "eDP-1"    mode 1920x1200@60.00   position 6628,346 scale 1.25
-#    output "eDP-1" disable
+    # output "eDP-1"    mode 1920x1200@60.00   position 6628,346 scale 1.25
+    output "eDP-1" disable
+}
 
 profile work {
     # berlin

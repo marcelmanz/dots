@@ -33,20 +33,24 @@ window {
   }
 }
 
-.tray.tray-active {
-  color: $yellow;
+// Integrated tray styling
+.tray-item {
+  padding: 4px 6px;
+  margin: 0 2px;
+  border-radius: 4px;
 }
 
-.tray:hover {
-  color: $blue;
-}
+menu {
+  background-color: $black;
+  border: 1px solid $white;
+  color: $white;
+  padding: 10px;
 
-.tray button:hover {
-  color: $blue;
-}
-
-.tray:hover label {
-  color: $blue;
+  menuitem {
+    &:hover {
+      color: $blue;
+    }
+  }
 }
 
 .player {
@@ -77,4 +81,13 @@ window {
       background-color: rgba(255, 255, 255, 0.2);
     }
   }
+}
+
+.calendar-text {
+  font-family: monospace;
+  font-size: 12px;
+  color: $white;
+  background-color: $black;
+  border: 1px solid $white;
+  padding: 8px;
 }

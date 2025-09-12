@@ -13,21 +13,14 @@
   :geometry (geometry :anchor "top center" :x "0%" :y "0" :width "100%" :height "20px")
   (bar :screen 1))
 
-(defwindow tray-window0
+(defwindow calendar
   :monitor 0
+  :exclusive false
+  :focusable true
   :stacking "fg"
-  :focusable false
-  :windowtype "dock"
-  :geometry (geometry :anchor "top right" :x "0" :y "4px" :width "40px" :height "100px")
-  (tray))
+  :geometry (geometry :anchor "top right" :x "140px" :y "2px")
+  (calendar-widget))
 
-(defwindow tray-window1
-  :monitor 1
-  :stacking "fg"
-  :focusable false
-  :windowtype "dock"
-  :geometry (geometry :anchor "top right" :x "0" :y "4px" :width "40px" :height "100px")
-  (tray))
 ; foldend
 
 ; Bar foldstart
@@ -50,7 +43,7 @@
       ; (noisetorch)
       (microphone)
       (speaker)
-      (ping)
+      ; (ping)
       (network)
       (disk)
       (ram)
@@ -59,13 +52,14 @@
       (battery)
       (date)
       (time)
-      (box :visible {screen == 0} (tray_button0))
-      (box :visible {screen == 1} (tray_button1)))))
+      (box :visible {screen == 0} (systray :class "tray-item" :orientation "h" :icon-size 16 :spacing 3))
+      (box :visible {screen == 1} (systray :class "tray-item" :orientation "h" :icon-size 16 :spacing 3)))))
 ; foldend
 
 ; Variables foldstart
 (defpoll time_poll :interval "1s" "date +%H:%M")
 (defpoll date_poll :interval "1m" "date +%d/%m/%Y")
+(defpoll calendar_poll :interval "1h" "cal")
 (defpoll trash_poll :interval "10s" "./modules/trash.sh")
 (defpoll noisetorch_poll :initial "" :interval "10s" "./modules/noisetorch.sh")
 (defpoll updates_poll :initial "" :interval "1m" "./modules/updates.sh &") 
@@ -77,14 +71,13 @@
 (deflisten nvidia_listen "./modules/nvidia.sh")
 (deflisten notifications_listen :initial '{"show": "no", "content": ""}' "./modules/notifications.sh")
 
-; Make this cleaner at some point
-(defpoll microphone_poll :interval "999h" "./modules/microphone.sh")
-(defpoll speaker_poll :interval "999h" "./modules/speaker.sh")
+; Audio listeners for real-time updates across all monitors
+(deflisten speaker_listen :initial "{\"content\": \"--\", \"icon\": \"\"}" "./modules/speaker-listen.sh")
+(deflisten microphone_listen :initial "{\"content\": \"--\", \"icon\": \"\"}" "./modules/microphone-listen.sh")
 
-; Tray variables
-(defvar open_tray true)
-(defvar tray0_active false)
-(defvar tray1_active false)
+; Get active network interface dynamically
+(defpoll active_interface :interval "60s" :initial "tun0" "./scripts/network-interface.sh")
+
 ; foldend
 
 ; Modules foldstart
@@ -109,7 +102,8 @@
 
 (defwidget ram []
   (icon-module :class "ram" :icon "  " :visible {EWW_RAM.used_mem_perc != ""}
-    (label :text "${round(EWW_RAM.used_mem_perc, 0)}%")))
+    (button :onclick "foot btop"
+      (label :text "${round(EWW_RAM.used_mem_perc, 0)}%"))))
 
 (defwidget notifications []
   (icon-module :class "notifications" :icon "" :visible {notifications_listen.show == "yes"}
@@ -117,7 +111,7 @@
 
 (defwidget date []
   (icon-module :class "date" :icon "" 
-    (eventbox :onhover "cal"
+    (eventbox :onhover "cal" :onrightclick "eww close calendar 2>/dev/null || eww open calendar"
       (label :text date_poll))))
 
 (defwidget time []
@@ -130,12 +124,13 @@
 
 (defwidget cpu []
   (icon-module :class "cpu" :icon " " 
-    (button :onclick "kitty btop"
+    (button :onclick "foot btop"
       (label :text "${round(EWW_CPU.avg, 0)}%")))) 
 
 (defwidget disk []
   (icon-module :class "disk" :icon "" 
-    (label :text "${round(EWW_DISK["/"].used_perc, 0)}%"))) 
+    (button :onclick "foot btop"
+      (label :text "${round(EWW_DISK["/"].used_perc, 0)}%")))) 
 
 (defwidget trash []
   (icon-module :class "trash" :icon "" 
@@ -159,29 +154,34 @@
     (label :text ping_poll)))
 
 (defwidget battery []
-  (icon-module :class "battery" :icon "" 
+  (icon-module :class "battery" :icon "${EWW_BATTERY.BAT0.status == 'Charging' ? '' : EWW_BATTERY.BAT0.capacity >= 75 ? '' : EWW_BATTERY.BAT0.capacity >= 50 ? '' : EWW_BATTERY.BAT0.capacity >= 25 ? '' : EWW_BATTERY.BAT0.capacity >= 10 ? '' : ''}"
     (label :text "${EWW_BATTERY.BAT0.capacity}%"))) 
 
 (defwidget network []
   (icon-module :class "network" :icon ""
-    (label :text "${round(EWW_NET.enp42s0.NET_UP / 1000000, 2)}/${round(EWW_NET.enp42s0.NET_DOWN / 1000000, 2)}"))) 
+    (button :onclick "foot btop"
+      (label :text "${round(EWW_NET[active_interface].NET_UP / 1000000, 2)}/${round(EWW_NET[active_interface].NET_DOWN / 1000000, 2)}"))))
 
 (defwidget speaker []
   (icon-module :class "speaker" 
-               :icon {speaker_poll.icon}
-    (eventbox :onscroll `eww update speaker_poll="$(./modules/speaker.sh {})"`
-      (button :onclick `eww update speaker_poll="$(./modules/speaker.sh toogle)"`
-        (label :text {speaker_poll.content})))))
+               :icon {speaker_listen.icon}
+    (eventbox :onscroll `./modules/speaker.sh {}`
+      (button :onclick `./modules/speaker.sh toogle`
+        (label :text {speaker_listen.content})))))
 
 (defwidget microphone []
   (icon-module :class "microphone" 
-               :icon {microphone_poll.icon}
-    (eventbox :onscroll `eww update microphone_poll="$(./modules/microphone.sh {})"`
-      (button :onclick `eww update microphone_poll="$(./modules/microphone.sh toogle)"`
-        (label :text {microphone_poll.content})))))
+               :icon {microphone_listen.icon}
+    (eventbox :onscroll `./modules/microphone.sh {}`
+      (button :onclick `./modules/microphone.sh toogle`
+        (label :text {microphone_listen.content})))))
 
-; Include tray module
-(include "modules/tray.yuck")
+; Calendar popup widget
+(defwidget calendar-widget []
+  (eventbox :onclick "eww close calendar"
+    (label :text calendar_poll 
+           :class "calendar-text")))
+
 ; foldend
 
 ; vim:foldmarker=foldstart,foldend
