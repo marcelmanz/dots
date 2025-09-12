@@ -30,7 +30,7 @@
        :class "bar"
     (box :halign "start"
          :space-evenly false
-      (workspaces)
+      (workspaces :screen screen)
       (player))
     (box :halign "end"
          :spacing 12
@@ -66,7 +66,7 @@
 (defpoll github_poll :initial "" :interval "1m" "./modules/github.sh")
 (defpoll ping_poll :interval "10s" "./modules/ping.sh")
 
-(deflisten workspaces_listen "./modules/workspaces.sh")
+(deflisten workspaces_listen "hyprland-workspaces _")
 (deflisten player_listen :initial '{"show": "no", "content": ""}' "./modules/player.sh")
 (deflisten nvidia_listen "./modules/nvidia.sh")
 (deflisten notifications_listen :initial '{"show": "no", "content": ""}' "./modules/notifications.sh")
@@ -93,8 +93,14 @@
 ; foldend
 
 ; Polybar-Style modules foldstart
-(defwidget workspaces []
-  (literal :content workspaces_listen))
+(defwidget workspaces [screen]
+  (eventbox :onscroll "hyprctl dispatch workspace `echo {} | sed 's/up/+/' | sed 's/down/-/'`1"
+    (box :class "workspaces" :orientation "h" :space-evenly false
+      (for workspace in {workspaces_listen[screen].workspaces}
+        (button :visible {workspace.id >= 1}
+                :onclick "hyprctl dispatch workspace ${workspace.id}"
+                :class "${workspace.class}"
+                "${workspace.name}")))))
 
 (defwidget player []
   (icon-module :class "player" :icon " " :visible {player_listen.show == "yes"}

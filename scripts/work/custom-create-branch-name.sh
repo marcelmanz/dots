@@ -34,21 +34,24 @@ if [ -z "$ticket_number" ]; then
 	exit 1
 fi
 
-# If we have an auto-extracted description, show it and ask for confirmation
 if [ -n "$auto_description" ]; then
 	echo -e "${BLUE}Found description from URL:${NC} $auto_description"
 	echo -e "${BLUE}Do you want to use this description? (Y/n, default: Y):${NC}"
 	read -r use_auto_description
 
 	if [[ ! $use_auto_description =~ ^[Yy] && -n "$use_auto_description" ]]; then
-		echo -e "${BLUE}Enter a brief description:${NC}"
-		read -r description
-		auto_description=$(echo "$description" |
-			tr '[:upper:]' '[:lower:]' |
-			sed -e 's/[^a-zA-Z0-9]/-/g' |
-			sed -e 's/--*/-/g' |
-			sed -e 's/^-//' -e 's/-$//')
+		auto_description=""
 	fi
+fi
+
+if [ -z "$auto_description" ]; then
+	echo -e "${BLUE}Enter a brief description:${NC}"
+	read -r description
+	auto_description=$(echo "$description" |
+		tr '[:upper:]' '[:lower:]' |
+		sed -e 's/[^a-zA-Z0-9]/-/g' |
+		sed -e 's/--*/-/g' |
+		sed -e 's/^-//' -e 's/-$//')
 fi
 
 echo -e "${BLUE}Is this a bug, a hotfix or a feature? (b/h/f):${NC}"

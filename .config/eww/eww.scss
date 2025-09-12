@@ -62,21 +62,16 @@ menu {
   font-size: 15px;
   margin-right: 20px;
 
-  button {
+  .workspace-button {
     margin: 0px 3px;
     padding: 2px 6px;
     color: $foreground-alt;
 
-    &.occupied {
+    &.workspace-on-screen {
       color: $grey;
     }
 
-    &.focused {
-      color: $white;
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    &.occupiedfocused {
+    &.workspace-active {
       color: $white;
       background-color: rgba(255, 255, 255, 0.2);
     }
