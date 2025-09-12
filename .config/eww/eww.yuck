@@ -59,7 +59,7 @@
 ; Variables foldstart
 (defpoll time_poll :interval "1s" "date +%H:%M")
 (defpoll date_poll :interval "1m" "date +%d/%m/%Y")
-(defpoll calendar_poll :interval "1h" "cal")
+(defpoll calendar_poll :interval "1h" "./scripts/calendar-markup.sh")
 (defpoll trash_poll :interval "10s" "./modules/trash.sh")
 (defpoll noisetorch_poll :initial "" :interval "10s" "./modules/noisetorch.sh")
 (defpoll updates_poll :initial "" :interval "1m" "./modules/updates.sh &") 
@@ -185,7 +185,7 @@
 ; Calendar popup widget
 (defwidget calendar-widget []
   (eventbox :onclick "eww close calendar"
-    (label :text calendar_poll 
+    (label :markup calendar_poll 
            :class "calendar-text")))
 
 ; foldend
