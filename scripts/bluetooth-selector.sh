@@ -8,7 +8,7 @@ notify_user() {
 	notify-send "$icon $message"
 }
 
-mapfile -t devices < <(bluetoothctl devices)
+mapfile -t devices < <(bluetoothctl devices | grep "^Device")
 mapfile -t connected_device_names < <(bluetoothctl devices Connected | cut --fields 3- --delimiter ' ')
 mapfile -t all_device_names < <(printf '%s\n' "${devices[@]}" | cut --fields 3- --delimiter ' ')
 
