@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 case $1 in
-      "*") command="" ;;
       "up") command="--allow-boost -i 5" ;;
       "down") command="--allow-boost -d 5" ;;
-      "toogle") command="-t" ;;
+      "toggle") command="-t" ;;
+      *) command="" ;;
 esac
 
 [ -n "$command" ] && pamixer $command 

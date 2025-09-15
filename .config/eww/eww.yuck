@@ -172,7 +172,7 @@
   (icon-module :class "speaker" 
                :icon {speaker_listen.icon}
     (eventbox :onscroll `./modules/speaker.sh {}`
-      (button :onclick `./modules/speaker.sh toogle`
+      (button :onclick `./modules/speaker.sh toggle`
         (label :text {speaker_listen.content})))))
 
 (defwidget microphone []

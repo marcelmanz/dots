@@ -74,6 +74,8 @@ alias yjd="yarn jest --silent=false --watch (git_dirs)"
 alias zrc="nvim ~/.zshrc"
 alias ns="sudo nixos-rebuild switch --flake ~/.config/nix#nixos"
 alias nixu="nix flake update --flake ~/.config/nix"
+alias eww_kill="pkill -f 'eww open'"
+alias eww_start="~/clones/own/dots/.config/eww/launch.sh"
 alias nixiu="nix flake update --flake ~/.config/nix --update-input "
 alias hms="home-manager switch --flake ~/.config/nix#work"
 alias nus='cachix push marcelarie $(nix path-info /run/current-system)'
