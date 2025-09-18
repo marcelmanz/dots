@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 
-# pkill -f "eww open" 2>/dev/null
-# pkill -f "eww daemon" 2>/dev/null
-# eww kill 2>/dev/null
-# eww open bar0 &
-# eww open bar1 &
+# Initialize eww and close all bars (start with no bars visible)
+# Use toggle-bar.sh to show bars on demand
 
-# Close if already open
-eww close bar0
-eww close bar1
-
-# Reopen immediately (no daemon restart → instant)
-eww open bar0
-eww open bar1
+# Close all bars
+eww close bar0 2>/dev/null
+eww close bar1 2>/dev/null
+eww close bar2 2>/dev/null

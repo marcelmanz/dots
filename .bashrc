@@ -21,13 +21,13 @@ set -o vi
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
 _carapace_lazy_init() {
-    if [[ -z "$_CARAPACE_INITIALIZED" ]]; then
-        source <(carapace _carapace)
-        export _CARAPACE_INITIALIZED=1
-    fi
-    # Call the original complete_func
-    compopt -o default
-    COMPREPLY=()
+	if [[ -z "$_CARAPACE_INITIALIZED" ]]; then
+		source <(carapace _carapace)
+		export _CARAPACE_INITIALIZED=1
+	fi
+	# Call the original complete_func
+	compopt -o default
+	COMPREPLY=()
 }
 complete -F _carapace_lazy_init -D
 __post_first_prompt_init() {
@@ -47,6 +47,30 @@ if [[ $- == *i* ]] && [[ -t 0 ]]; then
 		PROMPT_COMMAND="__post_first_prompt_init;${PROMPT_COMMAND}"
 	fi
 fi
+
+vpn_connect() {
+	local vpn_name
+	vpn_name=$(nmcli connection show | grep -i vpn | fzf --prompt="Select VPN to connect: " --height=10 | awk '{print $1}')
+
+	if [ -n "$vpn_name" ]; then
+		echo "Connecting to $vpn_name..."
+		nmcli connection up "$vpn_name"
+	else
+		echo "No VPN selected"
+	fi
+}
+
+vpn_disconnect() {
+	local vpn_name
+	vpn_name=$(nmcli connection show --active | grep -i vpn | fzf --prompt="Select VPN to disconnect: " --height=10 | awk '{print $1}')
+
+	if [ -n "$vpn_name" ]; then
+		echo "Disconnecting $vpn_name..."
+		nmcli connection down "$vpn_name"
+	else
+		echo "No VPN selected"
+	fi
+}
 
 # Use bash-completion, if available
 # [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
@@ -98,7 +122,6 @@ export EDITOR=nvim
 export SUDO_EDITOR=nvim
 export TERMINAL=alacritty
 
-
 if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 	export MOZ_ENABLE_WAYLAND=1
 fi
@@ -145,4 +168,3 @@ fi
 # if command -v gcs >/dev/null 2>&1; then
 # 	eval "$(gcs --completion bash)"
 # fi
-

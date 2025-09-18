@@ -20,7 +20,8 @@ profile work {
 profile home_office_targus {
     output "DP-3"     mode 3840x2160@60.00Hz position 4328,346 scale  1.666667
     output "DP-4"     mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
-    output "eDP-1"    disable
+    output "eDP-1"    mode 3840x2160@60.01Hz position 0,0 scale 2.4
+    #output "eDP-1"    disable
 }
 
 profile laptop_only {

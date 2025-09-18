@@ -6,12 +6,19 @@
   :geometry (geometry :anchor "top center" :x "0%" :y "0" :width "100%" :height "20px")
   (bar :screen 0))
 
-(defwindow bar1  
+(defwindow bar1
   :monitor 1
   :exclusive true
   :focusable false
   :geometry (geometry :anchor "top center" :x "0%" :y "0" :width "100%" :height "20px")
   (bar :screen 1))
+
+(defwindow bar2
+  :monitor 2
+  :exclusive true
+  :focusable false
+  :geometry (geometry :anchor "top center" :x "0%" :y "0" :width "100%" :height "20px")
+  (bar :screen 2))
 
 (defwindow calendar
   :monitor 0
@@ -53,7 +60,8 @@
       (date)
       (time)
       (box :visible {screen == 0} (systray :class "tray-item" :orientation "h" :icon-size 16 :spacing 3))
-      (box :visible {screen == 1} (systray :class "tray-item" :orientation "h" :icon-size 16 :spacing 3)))))
+      (box :visible {screen == 1} (systray :class "tray-item" :orientation "h" :icon-size 16 :spacing 3))
+      (box :visible {screen == 2} (systray :class "tray-item" :orientation "h" :icon-size 16 :spacing 3)))))
 ; foldend
 
 ; Variables foldstart
