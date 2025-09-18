@@ -86,3 +86,11 @@ menu {
   border: 1px solid $white;
   padding: 8px;
 }
+
+button { padding: 2px 6px; border-radius: 4px; }
+button:hover,
+button:focus { background-color: rgba(104, 212, 255, 0.15); }
+
+// Hover state for GitHub module (clickable part only)
+// .github button:hover label,
+// .github button:focus label { color: $blue; }

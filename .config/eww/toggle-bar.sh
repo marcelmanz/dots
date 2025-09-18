@@ -1,19 +1,27 @@
 #!/usr/bin/env bash
 
-# Get current monitor ID from active window
-current_monitor=$(hyprctl activewindow -j | jq -r '.monitor // 0')
+# Toggle bars on all monitors: if any bar is open, close all; otherwise open on every monitor.
 
-# Check if bar is already open on current monitor
-if eww active-windows | grep -q "bar${current_monitor}"; then
-    # Bar is on current monitor - just close it
-    eww close "bar${current_monitor}"
+set -euo pipefail
+
+any_open=false
+if eww active-windows | grep -q '^bar'; then
+  any_open=true
+fi
+
+if $any_open; then
+  # Close all open bar windows that eww reports as active
+  eww active-windows | awk '/^bar/ {print $1}' | while read -r w; do
+    eww close "$w" 2>/dev/null || true
+  done
+  # Also try known bar IDs to be thorough
+  for id in 0 1 2; do
+    eww close "bar${id}" 2>/dev/null || true
+  done
 else
-    # Bar is either not open or on different monitor
-    # Close all bars first
-    eww close bar0 2>/dev/null
-    eww close bar1 2>/dev/null  
-    eww close bar2 2>/dev/null
-    
-    # Open bar on current monitor
-    eww open "bar${current_monitor}"
+  # Open on all detected monitors
+  monitors=$(hyprctl monitors -j | jq -r '.[].id')
+  for monitor in ${monitors}; do
+    eww open "bar${monitor}"
+  done
 fi
