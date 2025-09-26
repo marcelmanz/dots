@@ -21,6 +21,6 @@ touch "$EXCLUDE_FILE"
 echo "updated $EXCLUDE_FILE"
 
 touch .envrc
-echo 'use flake "/home/mmanzanares/clones/own/dev-templates/python"' >.envrc
+echo 'use flake "$HOME/clones/own/dev-templates/python"' >.envrc
 
 direnv allow

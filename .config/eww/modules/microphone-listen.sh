@@ -16,10 +16,16 @@ get_mic_state() {
 # Output initial state
 get_mic_state
 
-# Listen for pulseaudio events and output state on changes
-# Only listen for relevant source events to reduce overhead
+# Listen for PulseAudio/PipeWire events and output state on relevant changes
+# React to default-device changes and device add/remove, not just volume changes
 pactl subscribe | while read -r event; do
-    if echo "$event" | grep -E "change.*source" >/dev/null; then
+    # Examples:
+    #  - Event 'change' on source #18
+    #  - Event 'new' on source #21
+    #  - Event 'remove' on source #19
+    #  - Event 'change' on server
+    #  - Event 'change' on card #5
+    if echo "$event" | grep -E "on (source|server|card)" >/dev/null; then
         get_mic_state
     fi
 done

@@ -8,6 +8,9 @@ notify_user() {
 	notify-send "$icon $message"
 }
 
+HEADPHONES="F8:4E:17:80:51:2E"
+SPEAKERS="FC:E8:06:5A:8D:B2"
+
 mapfile -t devices < <(bluetoothctl devices | grep "^Device")
 mapfile -t connected_device_names < <(bluetoothctl devices Connected | cut --fields 3- --delimiter ' ')
 mapfile -t all_device_names < <(printf '%s\n' "${devices[@]}" | cut --fields 3- --delimiter ' ')
@@ -42,6 +45,15 @@ manage_connection() {
 
 	if bluetoothctl "$action" "$id"; then
 		notify_user "$action" "$device" "$sign"
+		if [[ "$action" == "connect" ]]; then
+			if [[ "$id" == "$HEADPHONES" ]]; then
+				bluetoothctl disconnect "$SPEAKERS" >/dev/null 2>&1 || true
+				mkdir -p "$HOME/.local/state" && printf '%s\n' HEADPHONES > "$HOME/.local/state/audio-preferred"
+			elif [[ "$id" == "$SPEAKERS" ]]; then
+				bluetoothctl disconnect "$HEADPHONES" >/dev/null 2>&1 || true
+				mkdir -p "$HOME/.local/state" && printf '%s\n' SPEAKERS > "$HOME/.local/state/audio-preferred"
+			fi
+		fi
 	else
 		notify_user "$action" "Failed to $action $device" "❌"
 	fi
