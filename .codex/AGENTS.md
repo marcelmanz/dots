@@ -28,6 +28,7 @@ When writing code:
 If a repository includes a `flake.nix`, try to use `nix develop` to run commands.
 If there is a `Makefile`, `Justfile`, or similar, check them first to see if common commands are already defined.
 If both exist, prefer the project’s documented setup flow over inventing new commands.
+Never run `rm` or `git` commands unless the user explicitly specifies them.
 
 ## Reasoning
 - Use concise explanations

@@ -72,6 +72,27 @@ vpn_disconnect() {
 	fi
 }
 
+vpn() {
+	local action
+	if [ -z "$1" ]; then
+		action=$(printf "connect\ndisconnect" | fzf --prompt="VPN action: " --height=5)
+	else
+		action=$1
+	fi
+
+	case "$action" in
+	connect)
+		vpn_connect
+		;;
+	disconnect)
+		vpn_disconnect
+		;;
+	*)
+		echo "Usage: vpn {connect|disconnect}"
+		;;
+	esac
+}
+
 # Use bash-completion, if available
 # [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
 # 	. /usr/share/bash-completion/bash_completion
@@ -120,7 +141,7 @@ export HYPRSHOT_DIR=$HOME/screenshots
 # export SUDO_EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
 export EDITOR=nvim
 export SUDO_EDITOR=nvim
-export TERMINAL=alacritty
+export TERMINAL=foot
 
 if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
 	export MOZ_ENABLE_WAYLAND=1
