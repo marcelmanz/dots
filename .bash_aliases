@@ -119,6 +119,7 @@ alias vu="nvim"
 alias visel="~/scripts/nvim-bob-selector.sh"
 alias mi="nvim -u ~/.config/nvim/minimal-init.lua"
 alias revi="bash ~/scripts/install-last-neovim.sh"
+alias vide="~/scripts/neovide-hide.sh"
 alias rc="nvim ~/.config/nvim/*init.*"
 alias jq="jaq"
 alias arch-backup="~/scripts/arch/backup.sh"
@@ -292,6 +293,7 @@ alias glgm="git log --graph --max-count 10"
 alias glo="git log --format='%C(auto) %h %s' --decorate"
 alias glod='git log --pretty=format:"%C(yellow)%h%Creset - %C(bold cyan)%an%Creset, %C(green)%ar%Creset : %C(reset)%s"'
 alias forc="nvim ~/.config/foot/foot.ini"
+alias alrc="nvim ~/.config/alacritty/alacritty.toml"
 # alias glol =
 # alias it log --graph --pretty:format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 # alias ola =

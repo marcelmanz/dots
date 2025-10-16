@@ -167,7 +167,7 @@ if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1
 	# Replace this shell with the sourses recorder (PTY spawn + indexing) exec ~/clones/own/sourses/target/debug/sourses record
 fi
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
 
 export _ZO_DOCTOR=0
 

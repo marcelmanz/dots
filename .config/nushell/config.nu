@@ -3,6 +3,8 @@ source bash-aliases.nu
 source func.nu
 source colors.nu
 
+alias vpn = bash -i -c 'vpn'
+
 # use ~/clones/external/nupm/nupm/
 
 # source external/get-weather.nu
@@ -202,4 +204,4 @@ $env.PROMPT_MULTILINE_INDICATOR = {colored_error_prompt ':> '}
 
 source ~/.zoxide.nu
 # source ~/.local/share/atuin/init.nu
-source $"($nu.home-path)/.cargo/env.nu"
+# source $"($nu.home-path)/.cargo/env.nu"
