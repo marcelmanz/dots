@@ -19,6 +19,13 @@ profile work {
     output "eDP-1"    mode 1920x1200@60.00 position 0,0 scale 1.25
 }
 
+#profile home_office_targus {
+#    output "DP-4"     mode 3840x2160@60.00Hz position 0,0      scale  1
+#    output "DP-3"     mode 3840x2160@60.00Hz position 3840,0   scale  1
+#    output "eDP-1"    mode 3840x2160@60.01Hz position 7680,346 scale 2
+#    #output "eDP-1"    disable
+#}
+
 profile home_office_targus {
     output "DP-4"     mode 3840x2160@60.00Hz position 0,0      scale  1.5
     output "DP-3"     mode 3840x2160@60.00Hz position 2560,0   scale  1.5
