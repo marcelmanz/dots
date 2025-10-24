@@ -20,9 +20,18 @@ first_pos="${positional[0]}"
 
 # Handle range syntax ("5..2")
 if [[ $first_pos == *".."* ]]; then
-	start_head=$(echo "$first_pos" | awk -F'\.\.' '{print $1}')
-	last_head=$(echo "$first_pos" | awk -F'\.\.' '{print $2}')
-	git diff "${flags[@]}" "HEAD~$start_head" "HEAD~$last_head" "${positional[@]:1}"
+	start_head="${first_pos%%..*}"
+	last_head="${first_pos#*..}"
+
+	# only prefix with HEAD~ if both are pure numbers
+	if [[ $start_head =~ ^[0-9]+$ ]]; then
+		start_head="HEAD~$start_head"
+	fi
+	if [[ $last_head =~ ^[0-9]+$ ]]; then
+		last_head="HEAD~$last_head"
+	fi
+
+	git diff "${flags[@]}" "$start_head" "$last_head" "${positional[@]:1}"
 	exit 0
 fi
 
