@@ -50,7 +50,7 @@ fi
 
 vpn_connect() {
 	local vpn_name
-	vpn_name=$(nmcli connection show | grep -i vpn | fzf --prompt="Select VPN to connect: " --height=10 | awk '{print $1}')
+	vpn_name="$(nmcli connection show | grep -i vpn | fzf --prompt="Select VPN to connect: " --height=10 | awk '{print $1}')"
 
 	if [ -n "$vpn_name" ]; then
 		echo "Connecting to $vpn_name..."
@@ -62,7 +62,7 @@ vpn_connect() {
 
 vpn_disconnect() {
 	local vpn_name
-	vpn_name=$(nmcli connection show --active | grep -i vpn | fzf --prompt="Select VPN to disconnect: " --height=10 | awk '{print $1}')
+	vpn_name="$(nmcli connection show --active | grep -i vpn | fzf --prompt="Select VPN to disconnect: " --height=10 | awk '{print $1}')"
 
 	if [ -n "$vpn_name" ]; then
 		echo "Disconnecting $vpn_name..."

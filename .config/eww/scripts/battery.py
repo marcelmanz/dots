@@ -12,12 +12,13 @@ def secs2hours(secs):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--c',
-                    choices=('status', 'left-click', 'middle-click', 'right-click'),
-                    dest='command',
-                    default='status',
-                    help='Allowed values are status, left-click, middle-click and right-click'
-                    )
+parser.add_argument(
+    "--c",
+    choices=("status", "left-click", "middle-click", "right-click"),
+    dest="command",
+    default="status",
+    help="Allowed values are status, left-click, middle-click and right-click",
+)
 args = parser.parse_args()
 
 battery = psutil.sensors_battery()
@@ -80,9 +81,20 @@ if args.command == "status":
         print(icon, message, end="")
 if args.command == "left-click":
     if not isPlugged:
-        subprocess.call(["notify-send", "-r", "55555", "-u", "normal", "Est remaining time left: " + remaining])
+        subprocess.call(
+            [
+                "notify-send",
+                "-r",
+                "55555",
+                "-u",
+                "normal",
+                "Est remaining time left: " + remaining,
+            ]
+        )
     else:
-        subprocess.call(["notify-send", "-r", "55555", "-u", "normal", str(percent) + "% Charged"])
+        subprocess.call(
+            ["notify-send", "-r", "55555", "-u", "normal", str(percent) + "% Charged"]
+        )
 if args.command == "middle-click":
     print("Middle click")
 if args.command == "right-click":
