@@ -25,6 +25,31 @@ When writing code:
 - Prefer minimal diffs and clean patches.
 - Follow Unix-style conventions: small, focused changes that are easy to review.
 
+# Changelog Updates
+
+When asked to write a new changelog entry:
+
+* Automatically create a new version section at the top of `CHANGELOG.md`
+* Follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+* Determine the next version based on the change type:
+  * **Major**: Increment the first digit (e.g. `3.76.0` → `4.0.0`)
+  * **Minor**: Increment the middle digit (e.g. `3.76.0` → `3.77.0`)
+  * **Patch**: Increment the last digit (e.g. `3.76.0` → `3.76.1`)
+* Use the **current date** in `YYYY-MM-DD` format
+* Insert the new section **above all previous versions**
+* Maintain this structure:
+  ```
+  ## <version> - <date>
+  ### <Category>
+  - <description>
+  - <description-2-if-needed>
+  ```
+
+Categories include: `Added`, `Changed` or `Fixed`
+
+Would you like me to make this more tailored to your CLI (e.g., referencing how the codex tool or its agent triggers the changelog generation)?
+
+
 If a repository includes a `flake.nix`, try to use `nix develop` to run commands.
 If there is a `Makefile`, `Justfile`, or similar, check them first to see if common commands are already defined.
 If both exist, prefer the project’s documented setup flow over inventing new commands.

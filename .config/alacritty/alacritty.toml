@@ -9,15 +9,6 @@ duration = 0
 # Falcon theme
 [colors]
 
-# Default colors
-[colors.primary]
-# background = "0x020221"
-background = "0x151515"
-foreground = "0xb4b4b9"
-
-[colors.cursor]
-text = "0x020221"
-cursor = "0xffe8c0"
 
 # [colors.normal]
 # black   = "0x000004"
@@ -28,7 +19,7 @@ cursor = "0xffe8c0"
 # magenta = "0xff761a"
 # cyan    = "0x34bfa4"
 # white   = "0xb4b4b9"
-#
+
 # # Bright colors
 # [colors.bright]
 # black   = "0x020221"
@@ -42,9 +33,6 @@ cursor = "0xffe8c0"
 
 
 # Lighthous theme
-# [colors]
-# draw_bold_text_with_bright_colors = false
-#
 # [[colors.indexed_colors]]
 # color = "#b6927b"
 # index = 16
@@ -480,3 +468,8 @@ y = 15
 
 [general]
 live_config_reload = true
+
+import = [
+  "~/.config/alacritty/themes/base-minimal.toml",
+  "~/.config/alacritty/themes/alabaster.toml"
+]
