@@ -109,7 +109,6 @@ alias vif="NVIM_PROFILE=full nvim"
 alias vi="~/scripts/vi.sh"
 alias feni='~/scripts/fennel-nvim.sh'
 alias vin="nvim-nightly"
-alias vinf="nvim-nightly"
 alias screen_shoot_partial='grim -g "$(slurp)" ~/screenshots/grim-"$(date '+%Y%m%d-%H:%M:%S')".png'
 alias cvi="vi"
 alias vico="~/scripts/vi.sh -c GitConflictListQf ."
