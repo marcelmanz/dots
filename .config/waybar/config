@@ -9,9 +9,9 @@
     "hyprland/workspaces",
     "hyprland/mode"
   ],
-  "modules-center": [
-  ],
+  "modules-center": [],
   "modules-right": [
+    "custom/pomodoro",
     "pulseaudio",
     "custom/media",
     "cpu",
@@ -207,5 +207,17 @@
     "signal": 10,
     "on-click": "playerctl --player=mpv play-pause; pkill -RTMIN+10 waybar",
     "on-click-right": "playerctl --player=mpv stop; pkill -RTMIN+10 waybar"
+  },
+  "custom/pomodoro": {
+    "format": "{text} ",
+    "format-running": "{text}",
+    "format-paused": "{text}",
+    "exec-on-event": true,
+    "format-stopped": "🍅",
+    "tooltip": true,
+    "return-type": "json",
+    "exec": "~/.cargo/bin/waybar-module-pomodoro",
+    "on-click": "~/.cargo/bin/waybar-module-pomodoro toggle",
+    "on-click-right": "~/.cargo/bin/waybar-module-pomodoro reset"
   }
 }

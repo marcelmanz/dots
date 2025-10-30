@@ -151,6 +151,42 @@ function so() {
 	source "$HOME/.bashrc"
 }
 
+syn() {
+	if [ $# -ne 1 ]; then
+		echo "Usage: syn <word>"
+		return 1
+	fi
+
+	local result
+	result=$(
+		curl -s "https://api.dictionaryapi.dev/api/v2/entries/en/$1" |
+			jq -r '.[].meanings[]? | (.synonyms[]?, .definitions[]?.synonyms[]?)'
+	)
+	if [ -z "$result" ]; then
+		echo "No synonyms found"
+	else
+		echo "$result"
+	fi
+}
+
+def() {
+	if [ $# -ne 1 ]; then
+		echo "Usage: def <word>"
+		return 1
+	fi
+
+	local result
+	result=$(
+		curl -s "https://api.dictionaryapi.dev/api/v2/entries/en/$1" |
+			jq -r '.[].meanings[]?.definitions[]?.definition'
+	)
+	if [ -z "$result" ]; then
+		echo "No definitions found"
+	else
+		echo "$result"
+	fi
+}
+
 # No need with nix, use the tempshell script instead
 # export PYENV_ROOT="$HOME/.pyenv"
 # export PATH="$PYENV_ROOT/bin:$PATH"
@@ -162,6 +198,7 @@ function so() {
 export PATH="/home/$USER/.local/share/bob/nvim-bin:$PATH"
 export PATH=$PATH:/usr/local/bin:/snap/bin
 export PATH="/home/$USER/.local/bin:$PATH"
+export PATH="/home/$USER/.cargo/bin:$PATH"
 
 if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1

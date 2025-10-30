@@ -53,7 +53,26 @@ Would you like me to make this more tailored to your CLI (e.g., referencing how 
 If a repository includes a `flake.nix`, try to use `nix develop` to run commands.
 If there is a `Makefile`, `Justfile`, or similar, check them first to see if common commands are already defined.
 If both exist, prefer the project’s documented setup flow over inventing new commands.
-Never run `rm` or `git` commands.
+Never run `rm` commands unless the user explicitly requests.
+Never these `git` dangerous commands unless the user explicitly requests it:
+* `git reset --hard`
+* `git clean -fd`
+* `git clean -fdx`
+* `git checkout -- <file>`
+* `git restore --source=HEAD`
+* `git reflog expire`
+* `git gc`
+* `git rebase`
+* `git commit --amend`
+* `git push --force`
+* `git push -f`
+* `git branch -D <branch>`
+* `git tag -d <tag>`
+* `git push origin :refs/tags/<tag>`
+* `git revert --no-commit <range>`
+* `git stash drop`
+* `git stash clear`
+
 
 ## Reasoning
 - Use concise explanations
