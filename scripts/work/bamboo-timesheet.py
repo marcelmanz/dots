@@ -1,8 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run
+
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#   "requests>=2.31.0",
+#   "python-dateutil>=2.9.0",
+# ]
+# ///
 
 # Example:
-# python3 ./scripts/work/bamboo-timesheet.py --csrf '<csrf-header>' --cookie '<cookie-header>' --month <month-relative-num>
-
+# ./scripts/work/bamboo-timesheet.py --csrf '<csrf-header>' --cookie '<cookie-header>' --month <month-relative-num>
 
 import argparse
 import requests
@@ -27,6 +34,7 @@ PROJECT_ID = 6
 TASK_ID = 9
 DAILY_HOURS = 8
 COUNTRY_ISO = 'ES'
+COUNTIES = {'ES-CT', 'ES-B'}
 
 if EMPLOYEE_ID == '<ID>':
     print("Error: Please set your EMPLOYEE_ID in the script.")
@@ -37,6 +45,7 @@ parser.add_argument("--csrf", required=True)
 parser.add_argument("--cookie", required=True)
 parser.add_argument("--month", type=int, default=0,
                     help="Relative month offset (e.g. -1 = last month, 0 = current, 1 = next)")
+parser.add_argument("--dry-run", action="store_true")
 args = parser.parse_args()
 
 print(f"\n{Colors.BOLD}BambooHR Timesheet Automation{Colors.END}")
@@ -69,8 +78,11 @@ def get_holidays(year):
         r = requests.get(url, timeout=10)
         r.raise_for_status()
         data = r.json()
-
-        return {item["date"] for item in data}
+        return {
+            item["date"]
+            for item in data
+            if not item.get("counties") or any(county in COUNTIES for county in item["counties"])
+        }
     except requests.RequestException:
         return set()
 
@@ -81,6 +93,7 @@ print(f"{Colors.BOLD}Processing timesheet for {Colors.BLUE}{year}-{month:02d}{Co
 print(f"{Colors.BOLD}{'Date':<12} {'Status':<10} {'Details'}{Colors.END}")
 print("-" * 50)
 
+total_hours = 0
 
 for day in range(1, days + 1):
     current_date = datetime(year, month, day)
@@ -95,6 +108,7 @@ for day in range(1, days + 1):
         continue
 
     date_str = f"{year}-{month:02d}-{day:02d}"
+    total_hours += DAILY_HOURS
     data = {
         "hours": [
             {
@@ -109,10 +123,15 @@ for day in range(1, days + 1):
             }
         ]
     }
+    if args.dry_run:
+        print(f"{date_str} {Colors.BLUE}DRY RUN{Colors.END}    {DAILY_HOURS} hours pending")
+        continue
+
     try:
         r = requests.post(BAMBOOHR_URL, headers=headers, json=data)
         r.raise_for_status()
-
         print(f"{date_str} {Colors.GREEN}SUCCESS{Colors.END}    {DAILY_HOURS} hours logged")
     except requests.RequestException as e:
         print(f"{date_str} {Colors.RED}ERROR{Colors.END}     {str(e)}")
+
+print(f"\n{Colors.BOLD}Total hours: {Colors.BLUE}{total_hours}{Colors.END}")
