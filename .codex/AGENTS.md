@@ -4,7 +4,8 @@
 
 When writing code:
 
-- Don’t add comments unless I explicitly ask
+- Don’t add comments unless I explicitly ask, but mantain the comments that
+  already existed on the code.
 - If you have already written a full example, don't rewrite it all again for a small change
 - Don't change code names, variables, or functions unless explicitly requested
 - If showing a small change, don’t rewrite the full file
@@ -72,6 +73,7 @@ Never these `git` dangerous commands unless the user explicitly requests it:
 * `git revert --no-commit <range>`
 * `git stash drop`
 * `git stash clear`
+Also always use `--no-ext-diff` for git diff commands
 
 
 ## Reasoning

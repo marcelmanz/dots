@@ -7,6 +7,9 @@ export VI_MODE_PROMPT=true
 
 source ~/.bash_aliases
 
+# nnn plugins
+export NNN_PLUG='m:mediainfo'
+
 if [[ $- == *i* ]] && [[ -t 0 ]]; then
 	source ~/clones/forks/xelabash/xela.bash
 fi

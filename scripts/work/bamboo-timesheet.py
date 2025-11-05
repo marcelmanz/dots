@@ -43,6 +43,7 @@ if EMPLOYEE_ID == '<ID>':
 parser = argparse.ArgumentParser(description=f"BambooHR Timesheet Automation Tool")
 parser.add_argument("--csrf", required=True)
 parser.add_argument("--cookie", required=True)
+parser.add_argument("--ignore", default="", help="Comma-separated list of days to skip (e.g. 2,3,5,7)")
 parser.add_argument("--month", type=int, default=0,
                     help="Relative month offset (e.g. -1 = last month, 0 = current, 1 = next)")
 parser.add_argument("--dry-run", action="store_true")
@@ -88,6 +89,7 @@ def get_holidays(year):
 
 
 holidays = get_holidays(year)
+ignore_days = {int(d) for d in args.ignore.split(",") if d.strip().isdigit()}
 
 print(f"{Colors.BOLD}Processing timesheet for {Colors.BLUE}{year}-{month:02d}{Colors.END}")
 print(f"{Colors.BOLD}{'Date':<12} {'Status':<10} {'Details'}{Colors.END}")
@@ -98,6 +100,10 @@ total_hours = 0
 for day in range(1, days + 1):
     current_date = datetime(year, month, day)
     date_str = current_date.strftime("%Y-%m-%d")
+
+    if day in ignore_days:
+        print(f"{date_str} {Colors.YELLOW}SKIPPED{Colors.END}    Ignored via --ignore flag")
+        continue
 
     if current_date.weekday() in (5, 6):
         print(f"{date_str} {Colors.YELLOW}SKIPPED{Colors.END}    Weekend")

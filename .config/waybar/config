@@ -12,7 +12,8 @@
   "modules-center": [],
   "modules-right": [
     "custom/pomodoro",
-    "pulseaudio",
+    "custom/active_sink",
+    // "custom/audio-output",
     "custom/media",
     "cpu",
     "memory",
@@ -170,15 +171,24 @@
     "format-disconnected": "Disconnected ",
     "format-alt": "{ifname}: {ipaddr}/{cidr}"
   },
-  "pulseaudio": {
-    "scroll-step": 5, // %, can be a float
-    "format": "{volume}%  {format_source}",
-    "format-bluetooth": "{volume}%  {format_source}",
-    "format-bluetooth-muted": " {format_source}",
-    "format-muted": " {format_source}",
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
-    "on-click": "pavucontrol"
+  "custom/active_sink": {
+    "exec": "~/.config/waybar/scripts/active-sink.sh",
+    "format": "VOL({text}) {percentage}%",
+    "format-muted": "VOL({text}) muted",
+    "return-type": "json",
+    "interval": 3,
+    "signal": 11,
+    "on-scroll-up": "~/.config/waybar/scripts/active-sink.sh volume-up",
+    "on-scroll-down": "~/.config/waybar/scripts/active-sink.sh volume-down",
+    "on-click": "~/.config/waybar/scripts/active-sink.sh next-sink",
+    "on-click-right": "~/.config/waybar/scripts/active-sink.sh toggle-mute"
+  },
+  "custom/audio-output": {
+    "format": "{icon} {desc}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/audio-output.sh",
+    "interval": 5,
+    "on-click-right": "~/.config/waybar/scripts/launch-audio-select.sh"
   },
   "custom/media": {
     "format": " {}",
