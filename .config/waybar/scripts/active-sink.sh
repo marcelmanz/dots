@@ -2,7 +2,7 @@
 
 WAYBAR_SIGNAL=${WAYBAR_SIGNAL:-11}
 VOLUME_STEP=${WAYBAR_VOLUME_STEP:-5}
-VOLUME_LIMIT=${WAYBAR_VOLUME_LIMIT:-1.5}
+VOLUME_LIMIT=${WAYBAR_VOLUME_LIMIT:-1.2}
 
 DEFAULT_SINK_ID=""
 DEFAULT_SINK_RAW_NAME=""
@@ -92,19 +92,45 @@ parse_sink_line() {
 }
 
 resolve_sink_display_name() {
-    local inspect_output description nickname fallback
+    local inspect_output profile_name card_name
     DEFAULT_SINK_DISPLAY_NAME="$DEFAULT_SINK_RAW_NAME"
     inspect_output=$(wpctl inspect "$DEFAULT_SINK_ID" 2>/dev/null) || return
-    description=$(printf '%s\n' "$inspect_output" | awk -F'"' '/node.description/ {print $2; exit}')
-    nickname=$(printf '%s\n' "$inspect_output" | awk -F'"' '/node.nick/ {print $2; exit}')
-    fallback=$(printf '%s\n' "$inspect_output" | awk -F'"' '/device.description/ {print $2; exit}')
-    if [[ -n $description ]]; then
-        DEFAULT_SINK_DISPLAY_NAME=$description
-    elif [[ -n $nickname ]]; then
-        DEFAULT_SINK_DISPLAY_NAME=$nickname
-    elif [[ -n $fallback ]]; then
-        DEFAULT_SINK_DISPLAY_NAME=$fallback
+
+    profile_name=$(printf '%s\n' "$inspect_output" | awk -F'"' '/device.profile.description/ {print $2; exit}')
+    card_name=$(printf '%s\n' "$inspect_output" | awk -F'"' '/alsa.card_name/ {print $2; exit}')
+
+    if [[ -n $profile_name ]]; then
+        local status_output all_profiles=()
+        status_output=$(wpctl status 2>&1)
+        if [[ $? -eq 0 ]]; then
+            collect_sink_lines "$status_output"
+            for line in "${sink_lines[@]}"; do
+                [[ -z $line ]] && continue
+                if [[ $line =~ ^([*![:space:]]*)([0-9]+)\. ]]; then
+                    local sink_id=${BASH_REMATCH[2]}
+                    local sink_inspect
+                    sink_inspect=$(wpctl inspect "$sink_id" 2>/dev/null) || continue
+                    local sink_profile
+                    sink_profile=$(printf '%s\n' "$sink_inspect" | awk -F'"' '/device.profile.description/ {print $2; exit}')
+                    [[ -n $sink_profile ]] && all_profiles+=("$sink_profile")
+                fi
+            done
+        fi
+
+        local duplicate=0
+        local count=0
+        for p in "${all_profiles[@]}"; do
+            [[ $p == "$profile_name" ]] && ((count++))
+        done
+        [[ $count -gt 1 ]] && duplicate=1
+
+        if [[ $duplicate -eq 1 && -n $card_name ]]; then
+            DEFAULT_SINK_DISPLAY_NAME="$card_name: $profile_name"
+        else
+            DEFAULT_SINK_DISPLAY_NAME="$profile_name"
+        fi
     fi
+
     DEFAULT_SINK_DISPLAY_NAME=$(printf '%s' "$DEFAULT_SINK_DISPLAY_NAME" | sed 's/[[:space:]]\+/ /g' | sed 's/[[:space:]]*$//')
 
     local mute_state

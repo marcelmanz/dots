@@ -173,7 +173,7 @@
   },
   "custom/active_sink": {
     "exec": "~/.config/waybar/scripts/active-sink.sh",
-    "format": "VOL({text}) {percentage}%",
+    "format": " VOL({text}) {percentage}%",
     "format-muted": "VOL({text}) muted",
     "return-type": "json",
     "interval": 3,

@@ -20,6 +20,16 @@ gpsup() {
 	git push --set-upstream origin "$branch"
 }
 
+nsh() {
+	local pkg="$1"
+	shift
+	if [ $# -gt 0 ]; then
+		nix shell "nixpkgs#$pkg" --command "$pkg" "$@"
+	else
+		nix shell "nixpkgs#$pkg"
+	fi
+}
+
 set -o vi
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
