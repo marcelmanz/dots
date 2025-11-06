@@ -1,11 +1,26 @@
 #!/usr/bin/env bash
 
-sessions=$(tmux list-sessions -F "#{session_name}")
+sessions=($(tmux list-sessions -F "#{session_name}"))
 current_session=$(tmux display-message -p "#{session_name}")
 
-for session in $sessions; do
+if ((${#sessions[@]} <= 1)); then
+	notify-send "tmux" "No other sessions to switch to.\nCurrent session is '$current_session'."
+	exit 0
+fi
+
+if ((${#sessions[@]} == 2)); then
+	for session in "${sessions[@]}"; do
+		if [[ "$session" != "$current_session" ]]; then
+			tmux switch-client -t "$session"
+			notify-send "tmux" "Automatically switched to session '$session'."
+			exit 0
+		fi
+	done
+fi
+
+for session in "${sessions[@]}"; do
 	if [[ "$session" == "$current_session" ]]; then
 		continue
 	fi
 	echo "$session"
-done | ~/.nix-profile/bin/tofi --width 350 --height 210 | xargs tmux switch-client -t
+done | tofi --width 350 --height 210 | xargs tmux switch-client -t
