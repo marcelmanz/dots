@@ -30,6 +30,94 @@ nsh() {
 	fi
 }
 
+hex() {
+	# Normalize input: lowercase and remove optional '#'
+	hex=$(echo "${1#"#"}" | tr '[:upper:]' '[:lower:]')
+	format=""
+
+	# Detect hex format and extract channels
+	case ${#hex} in
+	3)
+		format="RGB"
+		r=${hex:0:1}${hex:0:1}
+		g=${hex:1:1}${hex:1:1}
+		b=${hex:2:1}${hex:2:1}
+		;;
+	4)
+		format="RGBA"
+		r=${hex:0:1}${hex:0:1}
+		g=${hex:1:1}${hex:1:1}
+		b=${hex:2:1}${hex:2:1}
+		;;
+	6)
+		format="RRGGBB"
+		r=${hex:0:2}
+		g=${hex:2:2}
+		b=${hex:4:2}
+		;;
+	8)
+		format="RRGGBBAA"
+		r=${hex:0:2}
+		g=${hex:2:2}
+		b=${hex:4:2}
+		;;
+	*)
+		echo "Invalid color: $1" >&2
+		return 1
+		;;
+	esac
+
+	# Print a colored block, format type, and original input
+	printf "\e[48;2;%d;%d;%dm  \e[0m %-10s %s\n" $((16#$r)) $((16#$g)) $((16#$b)) "[$format]" "$1"
+}
+
+export -f hex
+
+fhex() {
+	# Requires: fzf, curl, jq, and the 'hex' function
+	for cmd in fzf curl jq; do
+		command -v "$cmd" >/dev/null 2>&1 || {
+			echo "$cmd not found" >&2
+			return 1
+		}
+	done
+	declare -f hex >/dev/null 2>&1 || {
+		echo "hex() not defined" >&2
+		return 1
+	}
+
+	# Cache file
+	cache="${XDG_CACHE_HOME:-$HOME/.cache}/fhex_colors.json"
+	mkdir -p "$(dirname "$cache")"
+
+	# Fetch color list if cache missing or older than 7 days
+	if [ ! -f "$cache" ] || [ $(($(date +%s) - $(stat -c %Y "$cache"))) -gt 604800 ]; then
+		echo "Fetching color list..."
+		curl -fsSL "https://api.color.pizza/v1/?list=bestOf" -o "$cache" || {
+			echo "Failed to fetch color list" >&2
+			return 1
+		}
+	fi
+
+	# Parse JSON → "name<TAB>#hex"
+	tmp=$(mktemp)
+	jq -r '.colors[] | "\(.name)\t\(.hex)"' "$cache" >"$tmp" || {
+		echo "Failed to parse color list" >&2
+		rm -f "$tmp"
+		return 1
+	}
+
+	# fzf picker with preview using hex
+	choice=$(fzf --ansi --preview-window=up:1:wrap \
+		--preview 'hex {2}' \
+		--delimiter='\t' \
+		--with-nth=1 \
+		<"$tmp")
+
+	[ -n "$choice" ] && hex "$(echo "$choice" | cut -f2)"
+	rm -f "$tmp"
+}
+
 set -o vi
 
 export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
