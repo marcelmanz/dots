@@ -3,6 +3,7 @@
 WAYBAR_SIGNAL=${WAYBAR_SIGNAL:-11}
 VOLUME_STEP=${WAYBAR_VOLUME_STEP:-5}
 VOLUME_LIMIT=${WAYBAR_VOLUME_LIMIT:-1.2}
+CACHE="$XDG_RUNTIME_DIR/volume-cache"
 
 DEFAULT_SINK_ID=""
 DEFAULT_SINK_RAW_NAME=""
@@ -190,14 +191,19 @@ load_default_sink() {
 }
 
 refresh_volume_state() {
-    local volume_output
-    volume_output=$(wpctl get-volume "$DEFAULT_SINK_ID" 2>/dev/null) || return
-    if [[ $volume_output =~ Volume:[[:space:]]*([0-9.]+) ]]; then
-        DEFAULT_SINK_VOLUME=${BASH_REMATCH[1]}
+    local volume_percent
+    volume_percent=$(pactl list sinks | grep -A15 "$(pactl get-default-sink)" | grep "Volume:" | head -1 | awk '{print $5}' | tr -d '%')
+
+    if [[ -n $volume_percent ]]; then
+        DEFAULT_SINK_VOLUME=$(awk -v v="$volume_percent" 'BEGIN { printf "%.2f", v / 100 }')
+        echo "$volume_percent" > "$CACHE"
     fi
-    if [[ $volume_output == *"[MUTED]"* ]]; then
+
+    local mute_output
+    mute_output=$(pactl list sinks | grep -A15 "$(pactl get-default-sink)" | grep "Mute:" | head -1 | awk '{print $2}')
+    if [[ $mute_output == "yes" ]]; then
         DEFAULT_SINK_MUTED=1
-    elif [[ $volume_output == *"[UNMUTED]"* ]]; then
+    else
         DEFAULT_SINK_MUTED=0
     fi
 }
@@ -258,6 +264,10 @@ print_status() {
 adjust_volume() {
     local delta=$1
     if wpctl set-volume @DEFAULT_AUDIO_SINK@ "$delta" --limit "$VOLUME_LIMIT" >/dev/null 2>&1; then
+        local volume_percent
+        volume_percent=$(pactl list sinks | grep -A15 "$(pactl get-default-sink)" | grep "Volume:" | head -1 | awk '{print $5}' | tr -d '%')
+        [[ -n $volume_percent ]] && echo "$volume_percent" > "$CACHE"
+        echo "$volume_percent" > "$XDG_RUNTIME_DIR/wob-volume.sock"
         signal_waybar
     fi
 }

@@ -13,6 +13,7 @@
   "modules-right": [
     "custom/pomodoro",
     "custom/active_sink",
+    "pulseaudio",
     // "custom/audio-output",
     "custom/media",
     "cpu",
@@ -173,15 +174,23 @@
   },
   "custom/active_sink": {
     "exec": "~/.config/waybar/scripts/active-sink.sh",
-    "format": " VOL({text}) {percentage}%",
-    "format-muted": "VOL({text}) muted",
+    "format": " VOL({text})",
     "return-type": "json",
     "interval": 3,
     "signal": 11,
-    "on-scroll-up": "~/.config/waybar/scripts/active-sink.sh volume-up",
-    "on-scroll-down": "~/.config/waybar/scripts/active-sink.sh volume-down",
     "on-click": "~/.config/waybar/scripts/active-sink.sh next-sink",
     "on-click-right": "~/.config/waybar/scripts/active-sink.sh toggle-mute"
+    // "format": " VOL({text}) {percentage}%",
+    // "format-muted": "VOL({text}) muted",
+    // "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ --limit 1.2 && pkill -RTMIN+11 waybar",
+    // "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- --limit 1.2 && pkill -RTMIN+11 waybar",
+  },
+  "pulseaudio": {
+    "format": "{volume}%",
+    "on-click-right": "~/.config/waybar/scripts/active-sink.sh toggle-mute",
+    "format-muted": "{volume}%",
+    "scroll-step": 1.0,
+    "on-click": "pavucontrol"
   },
   "custom/audio-output": {
     "format": "{icon} {desc}",
