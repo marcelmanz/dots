@@ -20,8 +20,8 @@
     "memory",
     "custom/sensors-temp",
     "clock",
-    "custom/gnome-terminal",
     "hyprland/language",
+    // "custom/gnome-terminal",
     // "idle_inhibitor",
     "battery",
     "tray"
