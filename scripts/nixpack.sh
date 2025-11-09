@@ -6,11 +6,11 @@ GUI_CONFIG=~/.config/nix/home/gui.nix
 parse_args() {
 	while [[ $# -gt 0 ]]; do
 		case $1 in
-		--gui)
+		gui)
 			TARGET="gui"
 			shift
 			;;
-		--term)
+		term)
 			TARGET="term"
 			shift
 			;;
@@ -27,7 +27,7 @@ parse_args() {
 	done
 
 	if [[ -z "$TARGET" || -z "$PACKAGE" ]]; then
-		echo "Usage: nixpack [--term|--gui] <package>"
+		echo "Usage: nixpack [term|gui] <package>"
 		exit 1
 	fi
 }

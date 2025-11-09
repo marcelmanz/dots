@@ -1,6 +1,6 @@
 # A complete reference of available options can be found in `man 5 tofi`.
 
-drun-launch = false
+drun-launch = true
 terminal = /usr/bin/foot
 
 # anchor = top
