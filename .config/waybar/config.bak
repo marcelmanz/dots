@@ -1,0 +1,242 @@
+// vim: filetype=jsonc :
+{
+  "layer": "top",
+  "position": "top",
+  "height": 5, // Waybar height (to be removed for auto height)
+  // "width": 1280, // Waybar width
+  // Choose the order of the modules
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/mode"
+  ],
+  "modules-center": [],
+  "modules-right": [
+    "custom/pomodoro",
+    "custom/active_sink",
+    "pulseaudio",
+    // "custom/audio-output",
+    "custom/media",
+    "cpu",
+    "memory",
+    "custom/sensors-temp",
+    "clock",
+    "hyprland/language",
+    // "custom/gnome-terminal",
+    // "idle_inhibitor",
+    "battery",
+    "tray"
+  ],
+  // Modules configuration
+  // "hyprland/workspaces": {
+  //     "disable-scroll": true,
+  //     "all-outputs": true,
+  //     "format": "{name}: {icon}",
+  //     "format-icons": {
+  //         "1": "",
+  //         "2": "",
+  //         "3": "",
+  //         "4": "",
+  //         "5": "",
+  //         "urgent": "",
+  //         "focused": "",
+  //         "default": ""
+  //     }
+  // },
+  "hyprland/mode": {
+    "format": "<span style=\"italic\">{}</span>"
+  },
+  "mpd": {
+    "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ ",
+    "format-disconnected": "Disconnected ",
+    "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+    "unknown-tag": "N/A",
+    "interval": 2,
+    "consume-icons": {
+      "on": " "
+    },
+    "random-icons": {
+      "off": "<span color=\"#f53c3c\"></span> ",
+      "on": " "
+    },
+    "repeat-icons": {
+      "on": " "
+    },
+    "single-icons": {
+      "on": "1 "
+    },
+    "state-icons": {
+      "paused": "",
+      "playing": ""
+    },
+    "tooltip-format": "MPD (connected)",
+    "tooltip-format-disconnected": "MPD (disconnected)"
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
+    }
+  },
+  "tray": {
+    // "icon-size": 21,
+    "spacing": 10
+  },
+  "clock": {
+    "format": "<tt>{:%d/%m - %H:%M} </tt>",
+    "format-alt": "<tt>{:%a %d/%m/%Y - %H:%M }</tt>",
+    // "on-click": "gsimplecal",
+    "on-click-right": "gsimplecal",
+    "tooltip": false,
+    "interval": 60
+  },
+  // "custom/clock": {
+  //     "exec": "date +'%H:%M'",
+  //     "interval": 60
+  // },
+  "cpu": {
+    "format": "  {usage}% ",
+    "tooltip": false,
+    "on-click": "foot -e btop"
+  },
+  "memory": {
+    "format": " {}% ",
+    "on-click": "foot -e btop"
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": [
+      "",
+      "",
+      ""
+    ]
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{percent}% ",
+    "format-icons": [
+      "",
+      ""
+    ]
+  },
+  "custom/battery": {
+    "format": " {} ",
+    "exec": "~/scripts/waybar/battery.sh",
+    "interval": 3,
+    "tooltip": false
+  },
+  "battery": {
+    "bat": "BAT0",
+    "adapter": "AC",
+    "interval": 5,
+    "states": { "warning": 30, "critical": 15 },
+    "format": "{icon} {capacity}%",
+    "format-discharging": "{icon} {capacity}% {time}",
+    "format-charging": "󱐋 {capacity}%",
+    "format-plugged": "󱘖 {capacity}%",
+    "format-full": "󰁹 {capacity}%",
+    "format-time": "{H}:{m}",
+    "format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "󰁹"]
+  },
+  "battery#bat2": {
+    "bat": "BAT2"
+  },
+  "upower": {
+    "icon-size": 20,
+    "hide-if-empty": true,
+    "tooltip": true,
+    "tooltip-spacing": 20
+  },
+  "hyprland/language": {
+    "format": " {}   ",
+    "format-en": "en",
+    "format-es": "es",
+    "keyboard-name": "keyd-virtual-keyboard",
+    "spacing": 10
+  },
+  "custom/sensors-temp": {
+    "exec": "$HOME/scripts/sensors-temp.sh",
+    "interval": 20,
+    "format": "󰌢  {}°C",
+    "max-length": 40
+  },
+  "network": {
+    // "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": "{essid} ({signalStrength}%) ",
+    "format-ethernet": "{ifname}: {ipaddr}/{cidr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "Disconnected ",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+  },
+  "custom/active_sink": {
+    "exec": "~/.config/waybar/scripts/active-sink.sh",
+    "format": " VOL({text})",
+    "return-type": "json",
+    "interval": 3,
+    "signal": 11,
+    "on-click": "~/.config/waybar/scripts/active-sink.sh next-sink",
+    "on-click-right": "~/.config/waybar/scripts/active-sink.sh toggle-mute"
+    // "format": " VOL({text}) {percentage}%",
+    // "format-muted": "VOL({text}) muted",
+    // "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+ --limit 1.2 && pkill -RTMIN+11 waybar",
+    // "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%- --limit 1.2 && pkill -RTMIN+11 waybar",
+  },
+  "pulseaudio": {
+    "format": "{volume}%",
+    "on-click-right": "~/.config/waybar/scripts/active-sink.sh toggle-mute",
+    "format-muted": "{volume}%",
+    "scroll-step": 1.0,
+    "on-click": "pavucontrol"
+  },
+  "custom/audio-output": {
+    "format": "{icon} {desc}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/audio-output.sh",
+    "interval": 5,
+    "on-click-right": "~/.config/waybar/scripts/launch-audio-select.sh"
+  },
+  "custom/media": {
+    "format": " {}",
+    "return-type": "json",
+    "max-length": 40,
+    "escape": true,
+    "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+    // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+  },
+  "bluetooth": {
+    "format-alt": "bluetooth: {status}",
+    "format-on": "",
+    "format-off": "!",
+    "on-click": "foot bluetoothctl",
+    "tooltip-format": "{status}"
+  },
+  "custom/gnome-terminal": {
+    "format": "   ",
+    "tooltip": "Open Foot Terminal",
+    "on-click": "/usr/bin/gnome-terminal"
+  },
+  "custom/media-toggle": {
+    "exec": "$HOME/scripts/waybar/playerctl-toggle.sh",
+    "return-type": "json",
+    "interval": 1,
+    "signal": 10,
+    "on-click": "playerctl --player=mpv play-pause; pkill -RTMIN+10 waybar",
+    "on-click-right": "playerctl --player=mpv stop; pkill -RTMIN+10 waybar"
+  },
+  "custom/pomodoro": {
+    "format": "{text} ",
+    "format-running": "{text}",
+    "format-paused": "{text}",
+    "exec-on-event": true,
+    "format-stopped": "🍅",
+    "tooltip": true,
+    "return-type": "json",
+    "exec": "~/.cargo/bin/waybar-module-pomodoro",
+    "on-click": "~/.cargo/bin/waybar-module-pomodoro toggle",
+    "on-click-right": "~/.cargo/bin/waybar-module-pomodoro reset"
+  }
+}
