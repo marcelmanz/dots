@@ -126,6 +126,7 @@ alias arch-backup="~/scripts/arch/backup.sh"
 
 alias arch-restore="~/scripts/arch/restore.sh"
 alias qr_scanner="~/scripts/hyprland/qr-code-reader.sh"
+alias rename_workspace="~/scripts/hyprland/rename-workspace.sh"
 alias gorc="cd ~/.config/nvim/"
 alias virc="nvim ~/.config/nvim/"
 alias zerc="nvim ~/.config/zellij/"

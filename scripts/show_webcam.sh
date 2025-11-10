@@ -13,4 +13,4 @@ if [ ! -e "$webcam_number" ]; then
 	exit 1
 fi
 
-gst-launch-1.0 -v v4l2src device="$webcam_number" ! video/x-raw,format=YUY2,width=640,height=480,framerate=30/1 ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
+gst-launch-1.0 -v v4l2src device="$webcam_number" ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
