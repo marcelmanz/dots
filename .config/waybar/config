@@ -95,12 +95,12 @@
   //     "interval": 60
   // },
   "cpu": {
-    "format": "  {usage}% ",
+    "format": "CPU {usage}%",
     "tooltip": false,
     "on-click": "foot -e btop"
   },
   "memory": {
-    "format": " {}% ",
+    "format": "MEM {}%",
     "on-click": "foot -e btop"
   },
   "temperature": {
