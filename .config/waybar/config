@@ -27,21 +27,21 @@
     "tray"
   ],
   // Modules configuration
-  // "hyprland/workspaces": {
-  //     "disable-scroll": true,
-  //     "all-outputs": true,
-  //     "format": "{name}: {icon}",
-  //     "format-icons": {
-  //         "1": "",
-  //         "2": "",
-  //         "3": "",
-  //         "4": "",
-  //         "5": "",
-  //         "urgent": "",
-  //         "focused": "",
-  //         "default": ""
-  //     }
-  // },
+  "hyprland/workspaces": {
+      "disable-scroll": true,
+      "all-outputs": true,
+      "format": "{id}:{icon}",
+      "format-icons": {
+          "1": "browse",
+          "2": "code",
+          "3": "learn",
+          "4": "-",
+          "5": "-",
+          "urgent": " ",
+          "focused": " ",
+          "default": " "
+      }
+  },
   "hyprland/mode": {
     "format": "<span style=\"italic\">{}</span>"
   },
