@@ -63,3 +63,6 @@
 [help]
 	autocorrect = prompt
 
+[includeIf "gitdir:~/clones/work/"]
+	path = ~/.gitconfig-work
+
