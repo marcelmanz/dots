@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+NOTES_DIR="$HOME/notes"
+
+if ! command -v fzf &> /dev/null; then
+    echo "Error: fzf is required but not installed"
+    exit 1
+fi
+
+cd "$NOTES_DIR"
+
+SELECTED=$(find . -maxdepth 1 -name "ytn-*.md" -type f | sed 's|^\./||' | sort -r | while read -r file; do
+    title=$(head -1 "$file" | sed 's/^# //')
+    echo "$title|$file"
+done | fzf --delimiter='|' --with-nth=1 --preview 'head -20 {2}' | cut -d'|' -f2)
+
+if [ -n "$SELECTED" ]; then
+    $EDITOR "${NOTES_DIR}/${SELECTED}"
+fi
