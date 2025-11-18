@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+    echo "Usage: yt-note <youtube-url>"
+    exit 1
+fi
+
+YOUTUBE_URL="$1"
+NOTES_DIR="$HOME/notes"
+
+slugify() {
+    echo "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//'
+}
+
+extract_video_id() {
+    echo "$1" | sed -E 's/.*[?&]v=([^&]+).*/\1/; s|.*youtu\.be/([^?]+).*|\1|'
+}
+
+VIDEO_ID=$(extract_video_id "$YOUTUBE_URL")
+
+if [ -z "$VIDEO_ID" ]; then
+    echo "Error: Could not extract video ID from URL"
+    exit 1
+fi
+
+shopt -s nullglob
+EXISTING_NOTES=("${NOTES_DIR}/ytn-${VIDEO_ID}"-*.md)
+
+if [ ${#EXISTING_NOTES[@]} -gt 0 ]; then
+    EXISTING_NOTE="${EXISTING_NOTES[0]}"
+    echo "Note already exists: ${EXISTING_NOTE}"
+    $EDITOR "$EXISTING_NOTE"
+    exit 0
+fi
+
+echo "Fetching video title..."
+VIDEO_TITLE=$(yt-dlp --get-title "$YOUTUBE_URL" 2>/dev/null)
+
+if [ -z "$VIDEO_TITLE" ]; then
+    echo "Error: Could not fetch video title"
+    exit 1
+fi
+
+DATE=$(date +%Y-%m-%d)
+SLUG=$(slugify "$VIDEO_TITLE")
+FILENAME="ytn-${VIDEO_ID}-${SLUG}-${DATE}.md"
+FILEPATH="${NOTES_DIR}/${FILENAME}"
+
+cat > "$FILEPATH" << EOF
+# ${VIDEO_TITLE}
+
+[link](${YOUTUBE_URL})
+
+## Notes
+
+### Key Points
+
+-
+
+### Timestamps
+
+- 00:00 -
+
+### Questions
+
+-
+
+### Summary
+
+EOF
+
+echo "Created note: ${FILEPATH}"
+$EDITOR "$FILEPATH"

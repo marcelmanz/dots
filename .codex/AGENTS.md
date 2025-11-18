@@ -26,6 +26,11 @@ When writing code:
 - Prefer minimal diffs and clean patches.
 - Follow Unix-style conventions: small, focused changes that are easy to review.
 
+# Shell
+- When running a command, if it's not found on the system, fall back to using
+  `nix shell`: nix shell nixpkgs#$pkg --command "$pkg" "$@"
+
+
 # Changelog Updates
 
 When asked to write a new changelog entry:
