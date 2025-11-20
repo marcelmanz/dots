@@ -4,6 +4,7 @@ export GIT_PROMPT=true
 export KUBE_PROMPT=true
 export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
+export GPG_PROGRAM=/usr/bin/gpg
 
 source ~/.bash_aliases
 
@@ -219,12 +220,12 @@ if [ -f "$SECRETS_CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$SECRETS_CACHE"))
 else
 	mkdir -p ~/.cache/sh
 	{
-		echo "export OPENAI_API_KEY=$(pass show openai/api-key)"
-		echo "export SRC_ACCESS_TOKEN=$(pass show sg/token)"
-		echo "export SRC_ENDPOINT=$(pass show sg/endpoint)"
-		echo "export GITLAB_TOKEN=$(pass show gitlab/access-token)"
-		echo "export GITHUB_TOKEN=$(pass show github/token)"
-		echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key)"
+		echo "export OPENAI_API_KEY=$(pass show openai/api-key 2>/dev/null)"
+		echo "export SRC_ACCESS_TOKEN=$(pass show sg/token 2>/dev/null)"
+		echo "export SRC_ENDPOINT=$(pass show sg/endpoint 2>/dev/null)"
+		echo "export GITLAB_TOKEN=$(pass show gitlab/access-token 2>/dev/null)"
+		echo "export GITHUB_TOKEN=$(pass show github/token 2>/dev/null)"
+		echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key 2>/dev/null)"
 	} >"$SECRETS_CACHE"
 
 	. "$SECRETS_CACHE"
