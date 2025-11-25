@@ -29,7 +29,7 @@
   // Modules configuration
   "hyprland/workspaces": {
       "disable-scroll": true,
-      "all-outputs": true,
+      "all-outputs": false,
       "format": "{id}:{icon}",
       "format-icons": {
           "1": "browse",
@@ -152,7 +152,7 @@
     "tooltip-spacing": 20
   },
   "hyprland/language": {
-    "format": " {}",
+    "format": "  {}",
     "format-en": "en",
     "format-es": "es",
     "keyboard-name": "at-translated-set-2-keyboard",

@@ -170,7 +170,7 @@ alias mc="mcfly search"
 # alias af="xdotool type --delay 0 ( alias | fzy | awk -F' ' '{print $2}')"
 # alias chs="cht.sh"
 
-alias ta='tmux attach -t $(tmux ls -F "#{session_name}" | fzf)'
+# alias ta='sessions=$(tmux ls 2>/dev/null) && [ -n "$sessions" ] && tmux attach -t $(printf "%s" "$sessions" | tmux ls -F "#{session_name}" | fzf) || echo "No tmux sessions running."'
 alias tcs='~/scripts/tmux/create-session-tmex.sh'
 alias trc='nvim ~/.config/tmux/tmux.conf'
 alias skrc='nvim ~/.config/skhd/skhdrc'
@@ -346,7 +346,7 @@ alias GS="gs"
 alias gst="git status --porcelain | sed -E 's/^(.)(.) (.*)$/\x1b[32m\1\x1b[0m\x1b[31m\2\x1b[0m \3/'"
 alias gsta="git stash save"
 alias gstaa="git stash apply"
-# dangerous -> # alias gstd="git stash drop" 
+# dangerous -> # alias gstd="git stash drop"
 alias gstl="git stash list"
 # dangerous  # alias gstpo="git stash pop"
 alias gstd="git stash show --text"

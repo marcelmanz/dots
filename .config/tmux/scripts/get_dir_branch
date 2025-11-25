@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+dir="$1"
+mode="$2"
+
+if [ -z "$dir" ]; then
+  echo "usage: get_dir_branch <path> [--tmux]" >&2
+  exit 1
+fi
+
+branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null) || {
+  if [ "$mode" = "--tmux" ]; then
+    exit 0
+  fi
+  echo "not a git repo"
+  exit 0
+}
+
+if [ "$mode" = "--tmux" ]; then
+  printf '%s\n' "$branch"
+  exit 0
+fi
+
+printf '%s\n' "$branch"

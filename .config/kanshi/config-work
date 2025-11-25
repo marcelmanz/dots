@@ -46,9 +46,10 @@ profile home_office_targus {
 }
 
 profile home_office_targus_inverted {
-    output "DP-5"  mode 3840x2160@60.00Hz position 4328,346  scale  1.666667
-    output "DP-6"  mode 3840x2160@60.00Hz position 2020,346  scale  1.666667
-    output "eDP-1" mode 3840x2160@60.01   position 2280,1498 scale 2.4
+    output "DP-5"  mode 3840x2160@60.00Hz position 0,346  scale  1.666667
+    output "DP-6"  mode 3840x2160@60.00Hz position 2299,346  scale  1.666667
+    # output "eDP-1" mode 3840x2160@60.01   position 2280,1498 scale 2.4
+    output "eDP-1" disable
 }
 
 profile laptop_only {

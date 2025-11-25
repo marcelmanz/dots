@@ -8,8 +8,7 @@
 
 * {
     border: none;
-    /* font-family: "Blex Mono Nerd Font", "Font Awesome 5 Free"; */
-    font-family: "Myna", "Font Awesome 5 Free";
+    font-family: "Myna", "Blex Mono Nerd Font", "Font Awesome 5 Free";
     font-size: 14px;
     min-height: 0;
     transition: background-color .1s ease, border-color .1s ease, color .1s ease;
@@ -31,13 +30,11 @@ window#waybar {
     border-color: @fg-main;
 }
 
-#workspaces button.focused {
-    background: @bg-accent;
-    border-bottom: 1px solid @fg-main;
+#workspaces button.active {
+    font-weight: bold;
 }
 
 #workspaces button.urgent { background: @bg-danger; }
-#workspaces button.visible { font-weight: bold; }
 
 #clock,
 #battery,
