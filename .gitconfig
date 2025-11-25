@@ -38,6 +38,7 @@
 
 [core]
 	editor = nvim
+	prependDotSlash = true
 	; pager = /sbin/moar --no-statusbar 
 
 [safe]

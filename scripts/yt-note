@@ -35,8 +35,15 @@ if [ ${#EXISTING_NOTES[@]} -gt 0 ]; then
     exit 0
 fi
 
-echo "Fetching video title..."
-VIDEO_TITLE=$(yt-dlp --get-title "$YOUTUBE_URL" 2>/dev/null)
+echo "Fetching video info..."
+yt_output=$(yt-dlp -q --no-warnings --no-progress \
+    --print "%(title)s" \
+    --print "%(channel)s" \
+    "$YOUTUBE_URL" 2>/dev/null)
+
+readarray -t lines <<<"$yt_output"
+VIDEO_TITLE="${lines[0]}"
+CHANNEL="${lines[1]}"
 
 if [ -z "$VIDEO_TITLE" ]; then
     echo "Error: Could not fetch video title"
@@ -48,26 +55,19 @@ SLUG=$(slugify "$VIDEO_TITLE")
 FILENAME="ytn-${VIDEO_ID}-${SLUG}-${DATE}.md"
 FILEPATH="${NOTES_DIR}/${FILENAME}"
 
-cat > "$FILEPATH" << EOF
+cat >"$FILEPATH" <<EOF
 # ${VIDEO_TITLE}
 
-[link](${YOUTUBE_URL})
+[Source Link](${YOUTUBE_URL}) \
+Channel: $CHANNEL \
+Authors: 
+    -
 
-## Notes
+## Key Points
 
-### Key Points
+## Findings
 
--
-
-### Timestamps
-
-- 00:00 -
-
-### Questions
-
--
-
-### Summary
+## Questions
 
 EOF
 
