@@ -11,7 +11,7 @@ number_of_scans=$(echo "$output" | grep -oP 'scanned \K\d+')
 scanned_content=$(echo "$output" | awk '/scanned [0-9]+ barcode symbols from [0-9]+ images in [0-9.]+ seconds/{exit} {print}')
 
 if [[ $number_of_scans -ge 2 ]]; then
-	selected=$(echo "$scanned_content" | ~/.nix-profile/bin/tofi)
+	selected=$(echo "$scanned_content" | tofi)
 	echo "$selected" | wl-copy
 	notify-send "Copied to clipboard" "$selected"
 else
