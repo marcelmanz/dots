@@ -31,6 +31,7 @@ nsh() {
 	fi
 }
 
+
 hex() {
 	# Normalize input: lowercase and remove optional '#'
 	hex=$(echo "${1#"#"}" | tr '[:upper:]' '[:lower:]')
@@ -302,9 +303,8 @@ export PATH=$PATH:/usr/local/bin:/snap/bin
 export PATH="/home/$USER/.local/bin:$PATH"
 export PATH="/home/$USER/.cargo/bin:$PATH"
 for d in "$HOME/scripts" "$HOME/scripts"/*; do
-  [ -d "$d" ] && PATH="$d:$PATH"
+	[ -d "$d" ] && PATH="$d:$PATH"
 done
-
 
 if [ -z "$SOURSES_RUNNING" ]; then
 	export SOURSES_RUNNING=1
