@@ -332,3 +332,5 @@ fi
 # if command -v gcs >/dev/null 2>&1; then
 # 	eval "$(gcs --completion bash)"
 # fi
+
+unset LS_COLORS
