@@ -1,0 +1,108 @@
+colourful: false
+
+filekinds:
+  normal: {foreground: "#eee"}
+  directory: {foreground: "#999"}
+  symlink: {foreground: "#00d787"}
+  pipe: {}
+  block_device: {}
+  char_device: {}
+  socket: {}
+  special: {foreground: "#FFA000"}
+  executable: {foreground: "#4CAF50"}
+  mount_point: {}
+
+perms:
+  user_read: {foreground: "#888"}
+  user_write: {foreground: "#888"}
+  user_execute_file: {foreground: "#888"}
+  user_execute_other: {foreground: "#888"}
+  group_read: {foreground: "#777"}
+  group_write: {foreground: "#777"}
+  group_execute: {foreground: "#777"}
+  other_read: {foreground: "#666"}
+  other_write: {foreground: "#666"}
+  other_execute: {foreground: "#666"}
+  special_user_file: {foreground: "#888"}
+  special_other: {foreground: "#777"}
+  attribute: {foreground: "#777"}
+
+size:
+  major: {}
+  minor: {}
+  number_byte: {}
+  number_kilo: {}
+  number_mega: {}
+  number_giga: {}
+  number_huge: {}
+  unit_byte: {}
+  unit_kilo: {}
+  unit_mega: {}
+  unit_giga: {}
+  unit_huge: {}
+
+users:
+  user_you: {foreground: "#555"}
+  user_root: {foreground: "#E53935"}
+  user_other: {foreground: "#555"}
+  group_yours: {foreground: "#555"}
+  group_other: {foreground: "#555"}
+  group_root: {foreground: "#555"}
+
+links:
+  normal: {}
+  multi_link_file: {}
+
+git:
+  new: {foreground: "#4CAF50"}
+  modified: {foreground: "#FFA000"}
+  deleted: {foreground: "#E53935"}
+  renamed: {}
+  typechange: {}
+  ignored: {}
+  conflicted: {foreground: "#E53935"}
+
+git_repo:
+  branch_main: {}
+  branch_other: {}
+  git_clean: {}
+  git_dirty: {}
+
+security_context:
+  colon: {}
+  user: {}
+  role: {}
+  typ: {}
+  range: {}
+
+file_type:
+  image: {}
+  video: {}
+  music: {}
+  lossless: {}
+  crypto: {foreground: "#E53935"}
+  document: {}
+  compressed: {}
+  temp: {foreground: "#555"}
+  compiled: {}
+  build: {}
+  source: {}
+
+punctuation: {foreground: "#666"}
+date: {foreground: "#5a8db0"}
+inode: {}
+blocks: {}
+header: {}
+octal: {}
+flags: {}
+
+symlink_path: {foreground: "#00d787"}
+control_char: {}
+broken_symlink: {foreground: "#E53935"}
+broken_path_overlay: {foreground: "#E53935"}
+
+# Custom filename-based overrides
+filenames: {}
+
+# Custom extension-based overrides
+extensions: {}
