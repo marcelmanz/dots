@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <service-name> [email]"
+    echo "Example: $0 codeberg user@example.com"
+    exit 1
+fi
+
+SERVICE="$1"
+EMAIL="${2:-$(git config --get user.email 2>/dev/null || echo "")}"
+
+if [ -z "$EMAIL" ]; then
+    echo "Error: No email provided and no git user.email configured"
+    echo "Usage: $0 <service-name> <email>"
+    exit 1
+fi
+
+KEY_PATH="$HOME/.ssh/id_ed25519_$SERVICE"
+
+if [ -f "$KEY_PATH" ]; then
+    echo "Error: SSH key already exists at $KEY_PATH"
+    echo "Public key:"
+    cat "$KEY_PATH.pub"
+    exit 1
+fi
+
+echo "Generating SSH key for $SERVICE..."
+ssh-keygen -t ed25519 -a 100 -C "$EMAIL" -f "$KEY_PATH" -N ""
+
+echo ""
+echo "SSH key created successfully!"
+echo "Private key: $KEY_PATH"
+echo "Public key: $KEY_PATH.pub"
+echo ""
+echo "Adding key to ssh-agent..."
+eval "$(ssh-agent -s)" > /dev/null
+ssh-add "$KEY_PATH"
+
+echo ""
+echo "=========================================="
+echo "Public key (copy this to $SERVICE):"
+echo "=========================================="
+cat "$KEY_PATH.pub"
+echo "=========================================="
+echo ""
+echo "Optional: Add this to ~/.ssh/config:"
+echo ""
+echo "Host $SERVICE $SERVICE.org $SERVICE.com"
+echo "    HostName $SERVICE.org"
+echo "    User git"
+echo "    IdentityFile $KEY_PATH"
+echo "    IdentitiesOnly yes"
