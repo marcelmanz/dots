@@ -418,6 +418,7 @@ alias kport="~/scripts/kill-port.sh"
 # Worldsensing
 
 alias ws-create-branch="~/scripts/work/custom-create-branch-name.sh"
+alias ws-get-dev-token="~/clones/work/scripts/token/get_my_token_only.sh"
 alias ws-bump="~/scripts/work/update-changelog-and-bump-version.sh"
 alias nix-remote-shell="~/scripts/nix-remote-init.sh"
 alias nrsh="~/scripts/nix-remote-init.sh"

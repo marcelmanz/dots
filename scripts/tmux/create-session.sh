@@ -6,7 +6,10 @@ selection=$(printf '%s\n' "$dirs" | fzf)
 
 if [ -n "${selection:-}" ]; then
     selection="$HOME/$selection"
-    session=$(basename "$selection" | tr -c '[:alnum:]_' '_')
+    session=$(basename "$selection" |
+        tr '[:upper:]' '[:lower:]' |
+        tr -c '[:alnum:]_' '_' |
+        sed 's/_\+/_/g; s/^_//; s/_$//')
     if ! tmux has-session -t "$session" 2>/dev/null; then
         tmux new-session -ds "$session" -c "$selection"
         tmux send-keys -t "$session" nvim C-m
