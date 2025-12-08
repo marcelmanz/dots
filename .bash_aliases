@@ -412,6 +412,7 @@ alias wiki="wiki-tui"
 alias chatd="chatd --ozone-platform=wayland"
 alias nchat="~/scripts/tmux/nchat-tmux.sh"
 alias clc="claude -c"
+alias oc="opencode"
 
 alias kport="~/scripts/kill-port.sh"
 
