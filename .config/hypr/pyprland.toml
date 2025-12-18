@@ -24,14 +24,14 @@ command = "foot -a nu -L nu"
 size = "75% 40%"
 lazy = true
 
-[scratchpads.whats]
-animation = ""
-command = "wasistlos %u"
-class = "wasistlos"
-size = "70% 80%"
-# size = "99% 97%"
-# position = "0% 3%"
-lazy = true
+# [scratchpads.whats]
+# animation = ""
+# command = "flatpak run com.rtosta.zapzap"
+# class = "com.rtosta.zapzap"
+# size = "70% 80%"
+# # size = "99% 97%"
+# # position = "0% 3%"
+# lazy = true
 
 [scratchpads.volume]
 animation = ""
