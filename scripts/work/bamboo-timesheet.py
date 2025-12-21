@@ -21,6 +21,7 @@ from calendar import monthrange
 from dateutil.relativedelta import relativedelta
 from requests.cookies import RequestsCookieJar
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse, parse_qs
 import random
 import base64
 import json
@@ -40,18 +41,15 @@ class Colors:
 BAMBOOHR_DOMAIN = "worldsensing.bamboohr.com"
 BAMBOOHR_URL = f"https://{BAMBOOHR_DOMAIN}/timesheet/hour/entries"
 TIMESHEET_URL = f"https://{BAMBOOHR_DOMAIN}/employees/timesheet/?id="
+TIMESHEET_PAGE_URL = f"https://{BAMBOOHR_DOMAIN}/employees/timesheet/"
 PUSHER_AUTH_URL = f"https://{BAMBOOHR_DOMAIN}/pusher/auth"
-EMPLOYEE_ID = '349'
-PROJECT_ID = 6
-TASK_ID = 9
+EMPLOYEE_ID = None
+PROJECT_ID = 16
+TASK_ID = 27
 DAILY_HOURS = 8
 COUNTRY_ISO = 'ES'
 COUNTIES = {'ES-CT', 'ES-B'}
 DEFAULT_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
-
-if EMPLOYEE_ID == '<ID>':
-    print("Error: Please set your EMPLOYEE_ID in the script.")
-    sys.exit(1)
 
 parser = argparse.ArgumentParser(description=f"BambooHR Timesheet Automation Tool")
 parser.add_argument("--csrf", default=None, help="Override CSRF token")
@@ -64,14 +62,12 @@ parser.add_argument("--browser", default="auto",
                     choices=["auto", "chrome", "chromium", "brave", "vivaldi", "edge", "firefox", "opera", "safari"],
                     help="Browser profile to read cookies from")
 parser.add_argument("--user-agent", default=DEFAULT_UA)
+parser.add_argument("--employee-id", default=None, help="Override auto-detected employee id")
 args = parser.parse_args()
 
-print(f"\n{Colors.BOLD}BambooHR Timesheet Automation{Colors.END}")
-print(f"Employee ID: {Colors.BLUE}{EMPLOYEE_ID}{Colors.END}")
-print(f"Project ID:  {Colors.BLUE}{PROJECT_ID}{Colors.END}")
-print(f"Task ID:     {Colors.BLUE}{TASK_ID}{Colors.END}")
-print(f"Daily Hours: {Colors.BLUE}{DAILY_HOURS}{Colors.END}")
-print(f"Country:     {Colors.BLUE}{COUNTRY_ISO}{Colors.END}\n")
+if PROJECT_ID is None or TASK_ID is None:
+    print(f"{Colors.RED}ERROR{Colors.END}     Please do a request in Bamboo and extract the IDs for project and task from https://worldsensing.bamboohr.com/timesheet/hour/entries")
+    sys.exit(1)
 
 def header_to_cookiejar(cookie_header):
     jar = RequestsCookieJar()
@@ -139,8 +135,12 @@ def decode_bhr_features(value):
         return {}
     try:
         padding = '=' * (-len(value) % 4)
-        decoded = base64.b64decode(value + padding).decode("utf-8", errors="ignore")
-        return json.loads(decoded)
+        for decoder in (base64.b64decode, base64.urlsafe_b64decode):
+            try:
+                decoded = decoder(value + padding).decode("utf-8", errors="ignore")
+                return json.loads(decoded)
+            except Exception:
+                continue
     except Exception:
         return {}
 
@@ -158,6 +158,58 @@ def get_ll_values(cookie_jar):
         if llcid and lluid:
             return llcid, lluid
     return None, None
+
+
+def extract_employee_id_from_text(text):
+    patterns = [
+        r"[\"']?employeeId[\"']?\s*[:=]\s*[\"']?(?P<id>\d+)",
+        r"[\"']?currentEmployeeId[\"']?\s*[:=]\s*[\"']?(?P<id>\d+)",
+        r"data-employee-id\s*=\s*[\"'](?P<id>\d+)[\"']",
+        r"employee-id\s*=\s*[\"'](?P<id>\d+)[\"']",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            return match.group("id")
+    return None
+
+
+def detect_employee_id(session):
+    if args.employee_id:
+        return str(args.employee_id)
+    cookie_jar = session.cookies
+    cookie_names = ["employeeId", "employeeID", "employee_id", "currentEmployeeId"]
+    for name in cookie_names:
+        value = get_cookie_value(cookie_jar, name)
+        if value:
+            return str(value)
+    features_cookie = get_cookie_value(cookie_jar, "bhr_features")
+    features = decode_bhr_features(features_cookie)
+    if isinstance(features, dict):
+        for key in ["employeeId", "employeeID", "employee_id"]:
+            value = features.get(key)
+            if value:
+                return str(value)
+    try:
+        for cookie in cookie_jar:
+            name_lower = (cookie.name or "").lower()
+            value = (cookie.value or "").strip()
+            if "employee" in name_lower and "id" in name_lower and value.isdigit():
+                return value
+        response = session.get(TIMESHEET_PAGE_URL, timeout=15, allow_redirects=True)
+        session.cookies.update(response.cookies)
+        parsed = urlparse(response.url or "")
+        query_id = parse_qs(parsed.query or "").get("id", [None])[0]
+        if query_id and query_id.isdigit():
+            return query_id
+        text = response.text or ""
+        employee_id = extract_employee_id_from_text(text)
+        if employee_id:
+            return employee_id
+    except requests.RequestException:
+        pass
+    print(f"{Colors.RED}ERROR{Colors.END}     Could not determine employee ID. Provide it with --employee-id or ensure the browser profile is logged into BambooHR.")
+    sys.exit(1)
 
 
 def build_pusher_payload(cookie_jar):
@@ -280,7 +332,7 @@ def detect_csrf_token(session):
     if not token:
         token = get_csrf_from_cookies(session.cookies)
     if not token:
-        print(f"{Colors.RED}ERROR{Colors.END}     Could not determine CSRF token")
+        print(f"{Colors.RED}ERROR{Colors.END}     Could not determine CSRF token. Did you log in via the selected browser profile?")
         sys.exit(1)
     return token
 
@@ -291,6 +343,8 @@ if not len(cookie_jar):
     sys.exit(1)
 session = requests.Session()
 session.cookies.update(cookie_jar)
+session.headers["User-Agent"] = args.user_agent
+EMPLOYEE_ID = detect_employee_id(session)
 base_headers = {
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "en-US,en;q=0.7,es-ES;q=0.3",
@@ -303,6 +357,12 @@ base_headers = {
     "Sec-Fetch-Site": "same-origin",
 }
 session.headers.update(base_headers)
+print(f"\n{Colors.BOLD}BambooHR Timesheet Automation{Colors.END}")
+print(f"Employee ID: {Colors.BLUE}{EMPLOYEE_ID}{Colors.END}")
+print(f"Project ID:  {Colors.BLUE}{PROJECT_ID}{Colors.END}")
+print(f"Task ID:     {Colors.BLUE}{TASK_ID}{Colors.END}")
+print(f"Daily Hours: {Colors.BLUE}{DAILY_HOURS}{Colors.END}")
+print(f"Country:     {Colors.BLUE}{COUNTRY_ISO}{Colors.END}\n")
 csrf_token = detect_csrf_token(session)
 session.headers["X-CSRF-TOKEN"] = csrf_token
 
