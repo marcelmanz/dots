@@ -16,6 +16,7 @@ When writing code:
 ## Code Style
 - Follow project conventions for naming, formatting, and structure
 - Keep code minimal and production-ready
+- Never use emojis on code or docs
 
 ## Testing
 - Always explain how to run tests

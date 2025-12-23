@@ -104,6 +104,9 @@ alias farc="nvim ~/.bash_aliases"
 # alias zko="cd ~/notes; nvim -c 'ZkNotes'; cd -"
 # alias zkwo="nvim ~/notes/ix07-work-to-do-s.md"
 # alias zkpe="nvim ~/notes/hz98-personal-to-do-s.md"
+alias note='~/scripts/note.sh'
+alias fnote='~/scripts/find-notes.sh'
+alias how='~/scripts/how.sh'
 alias todo="~/scripts/todos.sh"
 alias ftodo="~/scripts/find-todos.sh"
 alias 1:1="~/scripts/open-1:1-notes.sh"
@@ -270,6 +273,7 @@ alias cha="checkalias"
 # alias gddef="~/scripts/git/default-git-diff.sh"
 alias gddef="~/scripts/gd-spread.sh --no-ext-diff"
 alias gd="~/scripts/gd-spread.sh"
+alias gdnf="git ls-files --others --exclude-standard | xargs -n1 git diff --no-index /dev/null"
 alias domu="~/scripts/do-to-mulitple-dirs.sh"
 alias gdts="GIT_CONFIG_PARAMETERS=\"'diff.tool=diffsitter' 'difftool.prompt=false' 'difftool.diffsitter.cmd=diffsitter \"\$LOCAL\" \"\$REMOTE\"'\" git difftool"
 alias gdt="GIT_EXTERNAL_DIFF=difft git diff"
