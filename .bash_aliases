@@ -417,6 +417,7 @@ alias chatd="chatd --ozone-platform=wayland"
 alias nchat="~/scripts/tmux/nchat-tmux.sh"
 alias clc="claude -c"
 alias oc="opencode"
+alias make="make --output-sync=line"
 
 alias kport="~/scripts/kill-port.sh"
 

@@ -135,7 +135,7 @@
     "interval": 5,
     "states": { "warning": 30, "critical": 15 },
     "format": "{icon} {capacity}%",
-    "format-discharging": "{icon} {capacity}% {time}",
+    "format-discharging": "{icon} {capacity}% tleft: {time}",
     "format-charging": "󱐋 {capacity}%",
     "format-plugged": "󱘖 {capacity}%",
     "format-full": "󰁹 {capacity}%",
