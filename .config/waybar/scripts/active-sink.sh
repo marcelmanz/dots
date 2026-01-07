@@ -279,8 +279,8 @@ toggle_mute() {
 }
 
 cycle_default_sink() {
-    if command -v pulse-next-output >/dev/null 2>&1; then
-        if pulse-next-output >/dev/null 2>&1; then
+    if command -v pulseaudio-next-output >/dev/null 2>&1; then
+        if pulseaudio-next-output >/dev/null 2>&1; then
             signal_waybar
         fi
         return
