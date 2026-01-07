@@ -4,7 +4,7 @@
 alias l = eza -l --no-time --no-filesize --no-permissions --no-user
 alias ls = eza
 alias ll = eza -l
-alias lsm = eza -l --no-permissions --no-user
+alias lm = eza -l --no-permissions --no-user
 alias cowlol = cowsay hello | lolcat
 alias lla = eza -la
 alias cp = cp -i

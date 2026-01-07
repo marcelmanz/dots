@@ -14,7 +14,7 @@ SELECTED=$(
   if $USE_FZF; then
      echo "$PDFS"| fzf --preview "pdftotext -- $HOME/{} - | head -40"
   else
-    echo "$PDFS" | tofi --width 50% --prompt "Select PDF"
+    echo "$PDFS" | tofi --width 50% --prompt "Select PDF: "
   fi
 )
 
