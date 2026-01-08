@@ -3,14 +3,20 @@ set -euo pipefail
 
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/how"
 STATE_FILE="$STATE_DIR/session"
-mkdir -p "$STATE_DIR"
+CACHE_DIR="$STATE_DIR/cache"
+mkdir -p "$STATE_DIR" "$CACHE_DIR"
 
 continue=false
+no_cache=false
 pager=""
 while [[ $# -gt 0 ]]; do
 	case "${1:-}" in
 	--continue | -c)
 		continue=true
+		shift
+		;;
+	--no-cache)
+		no_cache=true
 		shift
 		;;
 	--pager)
@@ -26,6 +32,20 @@ done
 q="$*"
 if [[ -z "$q" ]]; then
 	q="$(cat)"
+fi
+
+query_hash="$(printf '%s' "$q" | sha256sum | cut -d' ' -f1)"
+cache_file="$CACHE_DIR/$query_hash"
+
+if [[ -f "$cache_file" ]] && ! $continue && ! $no_cache; then
+	if [[ -n "$pager" ]]; then
+		$pager <"$cache_file"
+	elif command -v bat >/dev/null && [[ -t 1 ]]; then
+		bat --language markdown --paging never --style plain <"$cache_file"
+	else
+		cat "$cache_file"
+	fi
+	exit 0
 fi
 
 out="$(mktemp)"
@@ -94,6 +114,8 @@ if jq -e . >/dev/null 2>&1 <"$out"; then
 		rm -f "$out" "$err"
 		exit 1
 	fi
+
+	printf '%s\n' "$result" >"$cache_file"
 
 	if [[ -n "$pager" ]]; then
 		$pager <<<"$result"
