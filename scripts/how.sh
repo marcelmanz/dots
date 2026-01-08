@@ -9,6 +9,8 @@ mkdir -p "$STATE_DIR" "$CACHE_DIR"
 continue=false
 no_cache=false
 pager=""
+query_parts=()
+
 while [[ $# -gt 0 ]]; do
 	case "${1:-}" in
 	--continue | -c)
@@ -24,12 +26,13 @@ while [[ $# -gt 0 ]]; do
 		shift 2
 		;;
 	*)
-		break
+		query_parts+=("$1")
+		shift
 		;;
 	esac
 done
 
-q="$*"
+q="${query_parts[*]}"
 if [[ -z "$q" ]]; then
 	q="$(cat)"
 fi
