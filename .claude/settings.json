@@ -1,9 +1,8 @@
 {
   "permissions": {
     "deny": [
-      "Read(ENV)",
-      "Read(./.env)",
-      "Read(./.env.*)"
+      "Read(**/.env)",
+      "Read(**/.env.*)"
     ]
   },
   "statusLine": {
