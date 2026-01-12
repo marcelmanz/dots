@@ -17,12 +17,31 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-for path in "${paths[@]}"; do
+pids=()
+outputs=()
+
+for i in "${!paths[@]}"; do
+  path="${paths[$i]}"
+  tmp=$(mktemp)
+  outputs+=("$tmp")
+
   if [[ -d "$path/.git" ]]; then
-    echo "==> $path"
-    git -C "$path" $cmd
+    {
+      echo "==> $path"
+      git -C "$path" $cmd
+      echo
+    } > "$tmp" 2>&1 &
+    pids+=($!)
   else
-    echo "==> $path: Not a repo"
+    echo -e "==> $path: Not a repo\n" > "$tmp"
   fi
-  echo
+done
+
+for pid in "${pids[@]}"; do
+  wait "$pid" 2>/dev/null
+done
+
+for tmp in "${outputs[@]}"; do
+  cat "$tmp"
+  rm -f "$tmp"
 done
