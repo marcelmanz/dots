@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+paths=()
+cmd="status --short --branch"
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --git)
+      shift
+      cmd="$*"
+      break
+      ;;
+    *)
+      paths+=("$1")
+      shift
+      ;;
+  esac
+done
+
+for path in "${paths[@]}"; do
+  if [[ -d "$path/.git" ]]; then
+    echo "==> $path"
+    git -C "$path" $cmd
+  else
+    echo "==> $path: Not a repo"
+  fi
+  echo
+done

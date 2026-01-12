@@ -19,11 +19,11 @@
     "cpu",
     "memory",
     "custom/sensors-temp",
-    "clock",
     "hyprland/language",
     // "custom/gnome-terminal",
     // "idle_inhibitor",
     "battery",
+    "clock",
     "tray"
   ],
   // Modules configuration

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "ollama": {
+      "npm": "ai-sdk-ollama",
+      "name": "Ollama",
+      "options": {
+        "baseURL": "http://localhost:11434"
+      },
+      "models": {
+        "qwen2.5-coder:7b": {
+          "name": "Qwen 2.5 Coder 7B (Recommended)",
+          "tools": true
+        },
+        "granite4:3b": {
+          "name": "Granite 4 3B (too small)",
+          "tools": false
+        },
+        "llama3.2:latest": {
+          "name": "Llama 3.2 (too small)",
+          "tools": false
+        }
+      }
+    }
+  }
+}
