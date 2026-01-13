@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+paths=()
+cmd="status --short --branch"
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --git)
+      shift
+      cmd="$*"
+      break
+      ;;
+    *)
+      paths+=("$1")
+      shift
+      ;;
+  esac
+done
+
+pids=()
+outputs=()
+
+for i in "${!paths[@]}"; do
+  path="${paths[$i]}"
+  tmp=$(mktemp)
+  outputs+=("$tmp")
+
+  if [[ -d "$path/.git" ]]; then
+    {
+      echo "==> $path"
+      git -C "$path" $cmd
+      echo
+    } > "$tmp" 2>&1 &
+    pids+=($!)
+  else
+    echo -e "==> $path: Not a repo\n" > "$tmp"
+  fi
+done
+
+for pid in "${pids[@]}"; do
+  wait "$pid" 2>/dev/null
+done
+
+for tmp in "${outputs[@]}"; do
+  cat "$tmp"
+  rm -f "$tmp"
+done
