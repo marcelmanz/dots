@@ -2,7 +2,11 @@ sort=-time
 background-color=#000000
 border-color=#3d3d3d
 max-icon-size=64
+height=400
+width=600
 
-default-timeout=7000
+history=1
+max-history=500
+default-timeout=15000
 ignore-timeout=1
 # on-notify=exec mpv ~/music/notification_laser_sound.ogg

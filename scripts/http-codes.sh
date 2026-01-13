@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+notify=false
+[[ "$1" == "--notify" ]] && { notify=true; shift; }
+
 cache_file="/tmp/http-status-cache.csv"
 max_age_days=$((180))
 
@@ -25,14 +28,23 @@ details() {
 		htmlq ".content-section p" --text
 }
 
+output() {
+	if $notify; then
+		notify-send "HTTP Status Code" "$1"
+	else
+		echo "$1"
+	fi
+}
+
 if [[ -n "$1" && "$1" =~ ^[0-9]+$ ]]; then
 	out=$(lookup "$1")
 	if [[ -z "$out" ]]; then
-		echo "No info available"
+		output "No info available"
 	else
-		echo "$out"
-		echo ""
-		details "$1"
+		detail=$(details "$1")
+		output "$out
+
+$detail"
 	fi
 	exit
 fi
@@ -43,6 +55,7 @@ selected=$(echo "$data" | tail -n +2 | awk -F, '{print $1 " " $2}' | fzf --promp
 code=$(echo "$selected" | awk '{print $1}')
 
 out=$(lookup "$code")
-echo "$out"
-echo ""
-details "$code"
+detail=$(details "$code")
+output "$out
+
+$detail"
