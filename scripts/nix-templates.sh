@@ -7,6 +7,7 @@ edit=false
 remote=""
 lang=""
 add_envrc=false
+extra_args=()
 
 declare -A ext_to_lang=(
 	[py]=python
@@ -73,8 +74,20 @@ while [[ $# -gt 0 ]]; do
 		add_envrc=true
 		shift
 		;;
+	--)
+		shift
+		while [[ $# -gt 0 ]]; do
+			extra_args+=("$1")
+			shift
+		done
+		break
+		;;
 	*)
-		lang="$1"
+		if [[ -z "$lang" ]]; then
+			lang="$1"
+		else
+			extra_args+=("$1")
+		fi
 		shift
 		;;
 	esac
@@ -109,7 +122,7 @@ if [[ -n "$remote" ]]; then
 	fi
 	[[ -z "$lang" ]] && exit 0
 	$edit && echo "--edit ignored with --remote" >&2
-	exec nix develop "${remote}?dir=${lang}"
+	exec nix develop "${remote}?dir=${lang}" "${extra_args[@]}"
 fi
 
 if [[ -z "$lang" ]]; then
@@ -122,4 +135,4 @@ if $edit; then
 	"${EDITOR:-vi}" "$flake"
 fi
 
-exec nix develop "$REPO/$lang"
+exec nix develop "$REPO/$lang" "${extra_args[@]}"
