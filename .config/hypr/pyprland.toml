@@ -19,8 +19,8 @@ plugins = [
 
 [scratchpads.term]
 animation = ""
-class = "nu"
-command = "foot -a nu -L nu"
+class = "bash"
+command = "foot -a bash -L bash"
 size = "75% 40%"
 lazy = true
 

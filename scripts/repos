@@ -28,7 +28,7 @@ for i in "${!paths[@]}"; do
   if [[ -d "$path/.git" ]]; then
     {
       echo "==> $path"
-      git -C "$path" $cmd
+      git -C "$path" -c color.ui=always $cmd
       echo
     } > "$tmp" 2>&1 &
     pids+=($!)

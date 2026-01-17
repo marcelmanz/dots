@@ -1,9 +1,15 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(xargs ls:*)",
+      "Bash(grep:*)"
+    ],
     "deny": [
       "Read(**/.env)",
       "Read(**/.env.*)"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "statusLine": {
     "type": "command",

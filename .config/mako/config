@@ -3,7 +3,6 @@ background-color=#000000
 border-color=#3d3d3d
 max-icon-size=64
 height=400
-width=600
 
 history=1
 max-history=500

@@ -19,8 +19,8 @@ profile home_office_work {
     #   end_x   = 6628 + 1536 = 8164
     #
     # All outputs share y=346 for vertical alignment.
-    output "HDMI-A-1" mode 3840x2160@60.00Hz position 2020,346 scale 1.666667
-    output "DP-3"     mode 3840x2160@60.00Hz position 4324,346 scale 1.666667
+    output "HDMI-A-1" mode 3840x2160@60.00Hz position 4324,346 scale 1.666667
+    output "DP-3"     mode 3840x2160@60.00Hz position 2020,346 scale 1.666667
     # output "eDP-1"    mode 1920x1200@60.00   position 6628,346 scale 1.25
     output "eDP-1" disable
 }
@@ -37,6 +37,13 @@ profile work {
     # office
     output "HDMI-A-1" mode 1920x1080@60.00Hz  position 3080,960    scale 1
     output "eDP-1"    mode 1920x1200@60.00    position 1544,1080   scale 1.25
+}
+
+profile home_office_split {
+    output "DP-5"  mode 3840x2160@60.00Hz position 0,346  scale  1.666667
+    output "DP-6"  mode 3840x2160@60.00Hz position 2299,346  scale  1.666667
+    output "HDMI-A-1" mode 3840x2160@60.00Hz position 4598,346 scale  1.666667
+    output "eDP-1" disable
 }
 
 profile home_office_targus {
