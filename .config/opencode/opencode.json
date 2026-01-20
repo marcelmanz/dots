@@ -5,15 +5,33 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama",
       "options": {
-        "baseURL": "http://localhost:11434/v1"
+        "baseURL": "https://jerusalem-brush-thee-pull.trycloudflare.com/v1",
+        "apiKey": "{env:OPEN_BUTTON_TOKEN}"
       },
       "models": {
-        "llama3:instruct": {
-          "name": "Llama 3 Instruct",
-        },
-        "RobinBially/qwen2.5-coder-16k:7b-instruct-q4_K_M": {
-          "name": "Qwen 2.5 Coder 16k",
-        }
+        "qwen3-coder:30b": {},
+        "bjoernb/qwen3-coder-30b-1m": {}
+      }
+    }
+  },
+  "permission": {
+    "skill": {
+      "*": "allow",
+      "pr-review": "allow",
+      "internal-*": "deny",
+      "experimental-*": "ask"
+    }
+  },
+  "mode": {
+    "build": {
+      "tools": {
+        "bash": true,
+        "read": true,
+        "write": true,
+        "edit": true,
+        "grep": true,
+        "glob": true,
+        "list": true
       }
     }
   }

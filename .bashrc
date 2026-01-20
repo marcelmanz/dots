@@ -28,45 +28,44 @@ nsh() {
 	local flake="github:nixos/nixpkgs/nixos-25.11"
 	local unstable_flag=0
 	local custom_flake=0
-	
+
 	# Parse flags
 	while [[ "$1" == -* ]]; do
 		case "$1" in
-			-u|--unstable)
-				if [ $unstable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
-					echo "Error: cannot use -u/--unstable with -f/--flake" >&2
-					return 1
-				fi
-				flake="github:nixos/nixpkgs/nixos-unstable"
-				unstable_flag=1
-				shift
-				;;
-			-f|--flake)
-				if [ $unstable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
-					echo "Error: cannot use -f/--flake with -u/--unstable" >&2
-					return 1
-				fi
-				flake="$2"
-				custom_flake=1
-				shift 2
-				;;
-			*)
-				echo "Unknown option: $1" >&2
+		-u | --unstable)
+			if [ $unstable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
+				echo "Error: cannot use -u/--unstable with -f/--flake" >&2
 				return 1
-				;;
+			fi
+			flake="github:nixos/nixpkgs/nixos-unstable"
+			unstable_flag=1
+			shift
+			;;
+		-f | --flake)
+			if [ $unstable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
+				echo "Error: cannot use -f/--flake with -u/--unstable" >&2
+				return 1
+			fi
+			flake="$2"
+			custom_flake=1
+			shift 2
+			;;
+		*)
+			echo "Unknown option: $1" >&2
+			return 1
+			;;
 		esac
 	done
-	
+
 	local pkg="$1"
 	shift
-	
+
 	if [ $# -gt 0 ]; then
 		nix shell "${flake}#${pkg}" --command "$pkg" "$@"
 	else
 		nix shell "${flake}#${pkg}"
 	fi
 }
-
 
 hex() {
 	# Normalize input: lowercase and remove optional '#'
@@ -325,6 +324,15 @@ def() {
 	else
 		echo "$result"
 	fi
+}
+
+wttr() {
+	if [ -z "$1" ]; then
+		echo 'City argument missing'
+		echo 'wttr <city>'
+		return 1
+	fi
+	curl "wttr.in/$1?format=Location:%l\nCondition:%C\nTemp:%t\nFeels:%f\nWind:%w\nHumidity:%h\nPressure:%P\nPrecip:%p"
 }
 
 # No need with nix, use the tempshell script instead
