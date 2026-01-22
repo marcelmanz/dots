@@ -1,0 +1,11 @@
+color background default default
+
+color listnormal color252 default
+color listnormal_unread color250 default
+
+color listfocus color255 color236
+color listfocus_unread color255 color238
+
+color info color244 default
+color article color252 default
+

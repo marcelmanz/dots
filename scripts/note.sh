@@ -14,21 +14,21 @@ TITLE=()
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        --)
-            shift
-            TITLE=("$@")
-            break
-            ;;
-        *)
-            ZK_ARGS+=("$1")
-            shift
-            ;;
+    --)
+        shift
+        TITLE=("$@")
+        break
+        ;;
+    *)
+        ZK_ARGS+=("$1")
+        shift
+        ;;
     esac
 done
 
 if [ ${#TITLE[@]} -eq 0 ]; then
-    echo "Error: missing title"
-    exit 1
+    TITLE=("${ZK_ARGS[@]}")
+    ZK_ARGS=()
 fi
 
 cd "$NOTES_DIR" || exit 1
@@ -44,4 +44,3 @@ else
 fi
 
 cd - >/dev/null 2>&1
-

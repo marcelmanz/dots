@@ -262,6 +262,7 @@ else
 		echo "export GITLAB_TOKEN=$(pass show gitlab/access-token 2>/dev/null)"
 		echo "export GITHUB_TOKEN=$(pass show github/token 2>/dev/null)"
 		echo "export OPEN_BUTTON_TOKEN=$(pass show open_button/token 2>/dev/null)"
+		echo "export MINI_FLUX_TOKEN=$(pass show miniflux/pika-token-1 2>/dev/null)"
 		# echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key 2>/dev/null)"
 	} >"$SECRETS_CACHE"
 

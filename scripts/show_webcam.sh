@@ -55,4 +55,4 @@ if [ ! -e "$webcam_number" ]; then
 	exit 1
 fi
 
-gst-launch-1.0 -v v4l2src device="$webcam_number" ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
+/usr/bin/gst-launch-1.0 -v v4l2src device="$webcam_number" ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
