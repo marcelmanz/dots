@@ -15,6 +15,7 @@
     }
   },
   "permission": {
+    "edit": "ask",
     "skill": {
       "*": "allow",
       "pr-review": "allow",
