@@ -1,0 +1,10 @@
+directory: ~/Music
+time_format: '%Y-%m-%d'
+
+paths:
+  # default: '$genre/$added/$album/$title'
+  default: '$genre/$added/$title'
+
+import:
+  copy: yes
+  resume: yes
