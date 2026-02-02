@@ -21,6 +21,20 @@ gpsup() {
 	git push --set-upstream origin "$branch"
 }
 
+sleep_in() {
+	local minutes="$1"
+	local seconds=$((minutes * 60))
+
+	while [ "$seconds" -gt 0 ]; do
+		printf "\rSuspending in %02d:%02d" $((seconds / 60)) $((seconds % 60))
+		sleep 1
+		seconds=$((seconds - 1))
+	done
+
+	echo
+	systemctl suspend
+}
+
 # nsh: run package in temporary nix shell
 # Usage: nsh [-u|--unstable] [-f|--flake <ref>] <pkg> [args...]
 # Options: -u/--unstable (use nixpkgs unstable), -f/--flake (custom flake ref)
