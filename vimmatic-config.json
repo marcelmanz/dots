@@ -25,8 +25,8 @@
     "x$": { "type": "tabs.close.right" },
     "!d": { "type": "tabs.close", "force": true },
     "u": { "type": "tabs.reopen" },
-    "K": { "type": "tabs.prev" },
-    "J": { "type": "tabs.next" },
+    "J": { "type": "tabs.prev" },
+    "K": { "type": "tabs.next" },
     "gT": { "type": "tabs.prev" },
     "gt": { "type": "tabs.next" },
     "g0": { "type": "tabs.first" },
@@ -76,20 +76,17 @@
     "<S-Esc>": { "type": "addon.toggle.enabled" }
   },
   "search": {
-    "default": "kangi",
+    "default": "kagi",
     "engines": {
       "google": "https://google.com/search?q={}",
-      "yahoo": "https://search.yahoo.com/search?p={}",
-      "bing": "https://www.bing.com/search?q={}",
+      "kagi": "https://kagi.com/search?q={}",
       "duckduckgo": "https://duckduckgo.com/?q={}",
-      "twitter": "https://twitter.com/search?q={}",
-      "wikipedia": "https://en.wikipedia.org/w/index.php?search={}",
-      "kagi": "https://kagi.com/search?q=%s"
+      "wikipedia": "https://en.wikipedia.org/w/index.php?search={}"
     }
   },
   "properties": {
     "hintchars": "abcdefghijklmnopqrstuvwxyz",
-    "smoothscroll": true,
+    "smoothscroll": false,
     "complete": "sbh",
     "colorscheme": "system",
     "ignorecase": true,
