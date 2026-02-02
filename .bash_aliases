@@ -425,6 +425,7 @@ alias nchat="~/scripts/tmux/nchat-tmux.sh"
 alias clc="claude -c"
 alias oc="opencode"
 alias make="make --output-sync=line"
+alias passff="~/scripts/passff.sh"
 
 alias kport="~/scripts/kill-port.sh"
 
