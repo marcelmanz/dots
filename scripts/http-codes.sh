@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# deps: bash curl awk fzf notify-send htmlq coreutils
 
 notify=false
 [[ "$1" == "--notify" ]] && { notify=true; shift; }

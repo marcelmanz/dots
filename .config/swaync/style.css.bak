@@ -1,0 +1,190 @@
+@define-color bg-main   #000000;
+@define-color bg-muted  rgba(0, 0, 0, 0.85);
+@define-color fg-main   #ffffff;
+@define-color fg-muted  #808080;
+@define-color bg-accent #64727D;
+@define-color bg-danger #f53c3c;
+@define-color bg-warning #f0932b;
+
+* {
+    font-family: "Blex Mono Nerd Font", "Font Awesome 5 Free", sans-serif;
+    font-size: 14px;
+}
+
+.control-center {
+    background: @bg-muted;
+    border: 1px solid @fg-muted;
+    border-radius: 8px;
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.floating-notifications {
+    background: transparent;
+}
+
+.notification {
+    background: @bg-main;
+    border: 1px solid @fg-muted;
+    border-radius: 6px;
+    margin: 6px;
+    padding: 12px;
+}
+
+.notification:hover {
+    background: @bg-muted;
+}
+
+.notification-content {
+    color: @fg-main;
+}
+
+.notification-title {
+    font-weight: bold;
+    color: @fg-main;
+}
+
+.notification-body {
+    color: @fg-muted;
+}
+
+.notification-action {
+    background: @bg-accent;
+    color: @fg-main;
+    border-radius: 4px;
+    padding: 6px 12px;
+    margin: 4px;
+}
+
+.notification-action:hover {
+    background: @fg-main;
+    color: @bg-main;
+}
+
+.notification-default-action {
+    background: @bg-accent;
+    color: @fg-main;
+    border-radius: 4px;
+}
+
+.notification-default-action:hover {
+    background: @fg-main;
+    color: @bg-main;
+}
+
+.close-button {
+    background: @bg-danger;
+    color: @fg-main;
+    border-radius: 50%;
+    padding: 4px 8px;
+}
+
+.close-button:hover {
+    background: @fg-main;
+    color: @bg-danger;
+}
+
+.widget-title {
+    color: @fg-main;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+}
+
+.widget-label {
+    color: @fg-muted;
+}
+
+.widget-mpris {
+    background: @bg-main;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 6px;
+}
+
+.widget-mpris-player {
+    background: transparent;
+}
+
+.widget-mpris-title {
+    color: @fg-main;
+    font-weight: bold;
+}
+
+.widget-mpris-artist {
+    color: @fg-muted;
+}
+
+.widget-buttons-grid {
+    background: @bg-main;
+    border-radius: 6px;
+    padding: 8px;
+    margin: 6px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+    background: @bg-accent;
+    color: @fg-main;
+    border-radius: 4px;
+    padding: 8px;
+    margin: 4px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+    background: @fg-main;
+    color: @bg-main;
+}
+
+.widget-volume {
+    background: @bg-main;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 6px;
+}
+
+.widget-volume trough {
+    background: @bg-muted;
+    border-radius: 4px;
+    min-height: 8px;
+}
+
+.widget-volume trough highlight {
+    background: @bg-accent;
+    border-radius: 4px;
+}
+
+.widget-backlight {
+    background: @bg-main;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 6px;
+}
+
+.widget-backlight trough {
+    background: @bg-muted;
+    border-radius: 4px;
+    min-height: 8px;
+}
+
+.widget-backlight trough highlight {
+    background: @bg-accent;
+    border-radius: 4px;
+}
+
+.widget-dnd {
+    background: @bg-main;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 6px;
+}
+
+.widget-dnd switch {
+    background: @bg-muted;
+    border-radius: 12px;
+}
+
+.widget-dnd switch:checked {
+    background: @bg-accent;
+}
