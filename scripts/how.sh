@@ -56,9 +56,9 @@ err="$(mktemp)"
 
 if $continue && [[ -f "$STATE_FILE" ]]; then
 	sid="$(cat "$STATE_FILE")"
-	cmd=(claude -p --output-format json --resume "$sid")
+	cmd=(opencode run --format json --model synthetic/hf:zai-org/GLM-4.7 --session "$sid")
 else
-	cmd=(claude -p --output-format json)
+	cmd=(opencode run --format json --model synthetic/hf:zai-org/GLM-4.7)
 fi
 
 prompt=$'Answer concisely in Markdown.\n\n'"$q"
@@ -97,38 +97,35 @@ if [[ -s "$err" ]]; then
 	cat "$err" >&2
 fi
 
-if jq -e . >/dev/null 2>&1 <"$out"; then
-	sid="$(jq -r 'if type == "array" then .[] | select(.type == "result") | .session_id // empty else select(.type == "result") | .session_id // empty end' <"$out")"
-	result="$(jq -r 'if type == "array" then .[] | select(.type == "result") | .result // empty else select(.type == "result") | .result // empty end' <"$out")"
-	is_error="$(jq -r 'if type == "array" then .[] | select(.type == "result") | .is_error // false else select(.type == "result") | .is_error // false end' <"$out")"
+sid="$(jq -r 'select(.sessionID!=null) | .sessionID' <"$out" | head -n1)"
+result="$(jq -r 'select(.type=="text") | .part.text' <"$out")"
+error="$(jq -r 'select(.type=="error") | .error.message' <"$out")"
 
-	if [[ -n "$sid" ]]; then
-		printf '%s\n' "$sid" >"$STATE_FILE"
-	fi
+if [[ -n "$sid" ]]; then
+	printf '%s\n' "$sid" >"$STATE_FILE"
+fi
 
-	if [[ -z "$result" ]]; then
-		cat "$out"
-		rm -f "$out" "$err"
-		exit "${status:-1}"
-	fi
+if [[ -n "$error" ]]; then
+	printf '%s\n' "$error" >&2
+	rm -f "$out" "$err"
+	exit 1
+fi
 
-	if [[ "$is_error" == "true" ]]; then
-		printf '%s\n' "$result" >&2
-		rm -f "$out" "$err"
-		exit 1
-	fi
-
-	printf '%s\n' "$result" >"$cache_file"
-
-	if [[ -n "$pager" ]]; then
-		$pager <<<"$result"
-	elif command -v bat >/dev/null && [[ -t 1 ]]; then
-		bat --language markdown --paging never --style plain <<<"$result"
-	else
-		printf '%s\n' "$result"
-	fi
-else
+if [[ -z "$result" ]]; then
 	cat "$out"
+	rm -f "$out" "$err"
+	exit "${status:-1}"
+fi
+
+printf '%s\n' "$result" >"$cache_file"
+
+if [[ -n "$pager" ]]; then
+	$pager <<<"$result"
+elif command -v bat >/dev/null && [[ -t 1 ]]; then
+	bat --language markdown --paging never --style plain <<<"$result"
+else
+	printf '%s\n' "$result"
 fi
 
 rm -f "$out" "$err"
+
