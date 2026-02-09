@@ -1,2 +1,3 @@
+cache.db.lock
 *.db
 *.lock
