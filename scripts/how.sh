@@ -34,7 +34,20 @@ done
 
 q="${query_parts[*]}"
 if [[ -z "$q" ]]; then
-	q="$(cat)"
+	# if no query is provided show cached queries
+	if [[ -t 0 ]] && [[ -t 1 ]]; then
+		script_path="$(dirname "$0")/how-get-cache.sh"
+		if [[ -x "$script_path" ]]; then
+			exec "$script_path"
+		elif command -v how-get-cache.sh >/dev/null 2>&1; then
+			exec how-get-cache.sh
+		else
+			echo "how-get-cache.sh not found. Please install it." >&2
+			exit 1
+		fi
+	else
+		q="$(cat)"
+	fi
 fi
 
 query_hash="$(printf '%s' "$q" | sha256sum | cut -d' ' -f1)"
@@ -128,4 +141,3 @@ else
 fi
 
 rm -f "$out" "$err"
-
