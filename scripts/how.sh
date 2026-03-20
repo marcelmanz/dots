@@ -54,11 +54,14 @@ fi
 out="$(mktemp)"
 err="$(mktemp)"
 
+# model="hf:zai-org/GLM-4.7"
+model="hf:MiniMaxAI/MiniMax-M2.5"
+
 if $continue && [[ -f "$STATE_FILE" ]]; then
 	sid="$(cat "$STATE_FILE")"
-	cmd=(opencode run --format json --model synthetic/hf:zai-org/GLM-4.7 --session "$sid")
+	cmd=(opencode run --format json --model "synthetic/${model}" --session "$sid")
 else
-	cmd=(opencode run --format json --model synthetic/hf:zai-org/GLM-4.7)
+	cmd=(opencode run --format json --model "synthetic/${model}")
 fi
 
 prompt=$'Answer concisely in Markdown.\n\n'"$q"
@@ -128,4 +131,3 @@ else
 fi
 
 rm -f "$out" "$err"
-
