@@ -188,6 +188,7 @@ __post_first_prompt_init() {
 	eval "$(zoxide init bash)"
 	[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 	PROMPT_COMMAND="${PROMPT_COMMAND//__post_first_prompt_init;/}"
+	PROMPT_COMMAND="${PROMPT_COMMAND//;;/;}"
 	unset -f __post_first_prompt_init
 }
 

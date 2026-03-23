@@ -18,19 +18,19 @@ if [ -n "$1" ]; then
 	webcam_number="/dev/video$1"
 else
 	mapfile -t all_devices < <(ls /dev/video* 2>/dev/null)
-	
+
 	devices=()
 	for device in "${all_devices[@]}"; do
 		if is_primary_capture_device "$device"; then
 			devices+=("$device")
 		fi
 	done
-	
+
 	if [ ${#devices[@]} -eq 0 ]; then
 		echo "Error: No webcam devices found."
 		exit 1
 	fi
-	
+
 	if [ ${#devices[@]} -eq 1 ]; then
 		webcam_number="${devices[0]}"
 	else
@@ -38,14 +38,14 @@ else
 		for device in "${devices[@]}"; do
 			webcam_list+="$(get_webcam_info "$device")"$'\n'
 		done
-		
+
 		selected=$(echo -n "$webcam_list" | tofi --prompt-text "Select webcam: ")
-		
+
 		if [ -z "$selected" ]; then
 			echo "No webcam selected."
 			exit 0
 		fi
-		
+
 		webcam_number=$(echo "$selected" | cut -d' ' -f1)
 	fi
 fi
@@ -55,4 +55,9 @@ if [ ! -e "$webcam_number" ]; then
 	exit 1
 fi
 
-/usr/bin/gst-launch-1.0 -v v4l2src device="$webcam_number" ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
+GST_LAUNCH="gst-launch-1.0"
+if ! command -v "$GST_LAUNCH" &>/dev/null; then
+	GST_LAUNCH="/usr/bin/gst-launch-1.0"
+fi
+
+"$GST_LAUNCH" -v v4l2src device="$webcam_number" ! videoconvert ! videoflip method=horizontal-flip ! autovideosink
