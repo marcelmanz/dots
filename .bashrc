@@ -5,6 +5,7 @@ export KUBE_PROMPT=true
 export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 export GPG_PROGRAM=/usr/bin/gpg
+export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt
 
 source ~/.bash_aliases
 
