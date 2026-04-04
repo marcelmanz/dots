@@ -446,6 +446,10 @@ alias python-nix-init="~/scripts/work/python-nix-init.sh"
 
 # development alias
 alias sour="~/clones/own/sourses/target/debug/sourses"
+alias beeti="beet import -A -s"
+
+alias rootlab="~/scripts/tmux-se.sh root mlab root_mlab"
+alias devlab="~/scripts/tmux-se.sh dev mlab dev_mlab"
 
 # Only adds aliases if the shell is bash
 # if [ -n "$BASH_VERSION" ]; then
