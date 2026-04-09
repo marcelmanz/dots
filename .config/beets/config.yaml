@@ -4,6 +4,8 @@ time_format: '%Y-%m-%d'
 paths:
   # default: '$genre/$added/$album/$title'
   default: '$genre/$added/$title'
+  singleton: '$genre/$added/$title'
+  comp: '$genre/$added/$title'
 
 import:
   copy: yes

@@ -6,6 +6,7 @@ export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 export GPG_PROGRAM=/usr/bin/gpg
 export OPENCODE_MODELS_PATH="/home/$USER/clones/forks/models.dev/packages/web/dist/_api.json"
+export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt
 
 source ~/.bash_aliases
 
@@ -35,6 +36,20 @@ sleep_in() {
 	echo
 	systemctl suspend
 }
+
+refresh_techno_playlist() {
+	password="$(pass show slskd/account | head -n1)"
+
+	sldl \
+		--input "https://www.youtube.com/watch?v=QAyrU6hhVRc&list=PLHa2a9cVibtnn69H5nJ-hMLGmm3t6lz1z&pp=sAgC" \
+		--user marcelarie \
+		--password "${password}" \
+		--pref-format=flac,wav,mp3 \
+		--reverse \
+		--path="${HOME}/techno-electronica/"
+}
+
+
 
 # nsh: run package in temporary nix shell
 # Usage: nsh [-u|--unstable] [-f|--flake <ref>] <pkg> [args...]
