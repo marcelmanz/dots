@@ -5,6 +5,7 @@ export KUBE_PROMPT=true
 export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 export GPG_PROGRAM=/usr/bin/gpg
+export OPENCODE_MODELS_PATH="/home/$USER/clones/forks/models.dev/packages/web/dist/_api.json"
 
 source ~/.bash_aliases
 
