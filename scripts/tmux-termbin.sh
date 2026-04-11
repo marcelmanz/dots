@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
-INPUT=$(cat)
-URL=$(echo "$INPUT" | nc termbin.com 9999)
+URL=$(cat | curl -s --data-binary @- https://paste.rs)
 
-tmux display-message "Uploaded to: $URL"
+URL=$(echo "$URL" | tr -d '\n\r')
+
+if [ -z "$URL" ] || [[ "$URL" != *"paste.rs"* ]]; then
+	tmux display-message "Paste upload failed!"
+	exit 1
+fi
+
+tmux display-message -d 0 "Uploaded to: $URL  (Press any key to clear)"
