@@ -22,6 +22,8 @@ case "$CONNECTION_TYPE" in
 	URL=$(echo "$INPUT" | curl -s --data-binary @- https://paste.rs | tr -d '\n\r')
 	if [ -n "$URL" ] && [[ "$URL" == *"paste.rs"* ]]; then
 		tmux display-message -d 0 "Mosh Detected: Uploaded to $URL (Press any key)"
+	else
+		tmux display-message "Mosh failed to upload to paste.rs!"
 	fi
 	;;
 "local")
