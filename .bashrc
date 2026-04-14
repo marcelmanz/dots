@@ -49,8 +49,6 @@ refresh_techno_playlist() {
 		--path="${HOME}/techno-electronica/"
 }
 
-
-
 # nsh: run package in temporary nix shell
 # Usage: nsh [-u|--unstable] [-f|--flake <ref>] <pkg> [args...]
 # Options: -u/--unstable (use nixpkgs unstable), -f/--flake (custom flake ref)
@@ -139,6 +137,18 @@ hex() {
 }
 
 export -f hex
+
+se() {
+	local user=$1
+	local env="mlab"
+	local timeout=2
+
+	if ssh -q -o ConnectTimeout=$timeout -o BatchMode=yes root@mlab-local exit 2>/dev/null; then
+		env="mlab-local"
+	fi
+
+	~/scripts/tmux-se.sh "$user" "$env" "${user}_mlab"
+}
 
 fhex() {
 	# Requires: fzf, curl, jq, and the 'hex' function
