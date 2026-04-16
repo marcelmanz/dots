@@ -1,3 +1,7 @@
 .cargo/
 old-scripts/
 .config/nushell/history.txt
+.pi/agent/*
+!.pi/agent/models.json
+!.pi/agent/settings.json
+

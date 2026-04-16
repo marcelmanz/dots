@@ -1,0 +1,15 @@
+{
+  "providers": {
+    "synthetic": {
+      "apiKey": "SYNTHETIC_API_KEY",
+      "api": "openai-completions",
+      "baseUrl": "https://api.synthetic.new/openai/v1",
+      "models": [
+        {
+          "id": "hf:Qwen/Qwen3.5-397B-A17B",
+          "name": "Qwen 3.5 (387B)"
+        }
+      ]
+    }
+  }
+}
