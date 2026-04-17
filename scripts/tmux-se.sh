@@ -8,7 +8,31 @@ fi
 
 TARGET_USER=$1
 TARGET_HOST=$2
-SESSION_NAME=${3:-main}
+DEFAULT_SESSION=${3:-main}
+
+SESSIONS=$(ssh -q "${TARGET_USER}@${TARGET_HOST}" "tmux ls -F '#S' 2>/dev/null")
+
+if [ -n "$SESSIONS" ]; then
+	if command -v fzf &>/dev/null; then
+		SELECTED=$(printf "%s\n[Create New Session]" "$SESSIONS" | fzf --prompt="Select session on ${TARGET_HOST}: ")
+
+		if [ -z "$SELECTED" ]; then
+			echo "No session selected. Aborting."
+			exit 0
+		fi
+
+		if [ "$SELECTED" = "[Create New Session]" ]; then
+			SESSION_NAME=$DEFAULT_SESSION
+		else
+			SESSION_NAME=$SELECTED
+		fi
+	else
+		echo "fzf not found. Defaulting to session: ${DEFAULT_SESSION}"
+		SESSION_NAME=$DEFAULT_SESSION
+	fi
+else
+	SESSION_NAME=$DEFAULT_SESSION
+fi
 
 if command -v mosh &>/dev/null; then
 	mosh "${TARGET_USER}@${TARGET_HOST}" -- tmux new-session -A -s "${SESSION_NAME}"

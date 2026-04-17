@@ -418,9 +418,12 @@ if command -v tarea >/dev/null 2>&1; then
 	. ~/.cache/bash-completions/tarea.bash
 fi
 
-# need to go back and work on gcs again so it generates completions
 # if command -v gcs >/dev/null 2>&1; then
 # 	eval "$(gcs --completion bash)"
 # fi
+
+if command -v timer >/dev/null 2>&1; then
+	eval "$(timer completion bash)"
+fi
 
 unset LS_COLORS
