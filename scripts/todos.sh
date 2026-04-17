@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-# -----------------------------
+# -----------------------------------------------------------------------------#
 # Usage: ./script.sh [-i]
 #   -i       Ignore local TODO.md and always use the daily notes
 #   offset   0 (default) = today, -1 = yesterday, -2 = two days ago,
-# -----------------------------
+# -----------------------------------------------------------------------------#
 
 ignore_local=0
+cmd="nvim"
 offset=0
 for arg in "$@"; do
   if [[ $arg =~ ^-[0-9]+$ ]]; then
@@ -16,10 +17,13 @@ for arg in "$@"; do
   fi
 done
 
-while getopts ":i" opt; do
+while getopts ":i:w" opt; do
   case $opt in
   i)
     ignore_local=1
+    ;;
+  w)
+    use_viewer=1
     ;;
   \?)
     echo "Invalid option: -$OPTARG" >&2
@@ -34,12 +38,16 @@ if ! [[ $offset =~ ^-?[0-9]+$ ]]; then
   exit 1
 fi
 
+if [[ $use_viewer -eq 1 ]]; then
+  cmd="glow"
+fi
+
 # 1) If not ignoring and there's a TODO.md in cwd, open it and exit
 if [[ $ignore_local -eq 0 && (-f "./TODO.md" || -f "./todo.md") ]]; then
   if [[ -f "./TODO.md" ]]; then
-    nvim "./TODO.md"
+    $cmd "./TODO.md"
   else
-    nvim "./todo.md"
+    $cmd "./todo.md"
   fi
   exit 0
 fi
@@ -58,7 +66,7 @@ if ((offset != 0)); then
     echo "No TODO at that offset" >&2
     exit 1
   fi
-  nvim "${todo_files[$index]}"
+  $cmd "${todo_files[$index]}"
   cd - >/dev/null 2>&1
   exit 0
 fi
@@ -77,6 +85,6 @@ if [[ ! -f $current_date_todo ]]; then
   } >>"$current_date_todo"
 fi
 
-nvim "$current_date_todo"
+$cmd "$current_date_todo"
 
-cd - >/dev/null 2>&1
+cd - >/dev/null 2>&1 || exit

@@ -38,66 +38,13 @@ profile work {
     # office
     output "HDMI-A-1" mode 1920x1080@60.00Hz  position 3080,960    scale 1
     output "eDP-1"    mode 1920x1200@60.00    position 1544,1080   scale 1.5
-}
-
-profile home_office_split {
-    output "DP-5"  mode 3840x2160@60.00Hz position 0,346  scale  1.666667
-    output "DP-6"  mode 3840x2160@60.00Hz position 2299,346  scale  1.666667
-    output "HDMI-A-1" mode 3840x2160@60.00Hz position 4598,346 scale  1.666667
-    output "eDP-1" disable
-}
-
-profile home_office_targus {
-    output "DP-3" mode 3840x2160@60.00Hz position 4328,346 scale  1.666667
-    output "DP-4" mode 3840x2160@60.00Hz position 2020,346 scale  1.666667
-    output "eDP-1" disable
-}
-
-profile home_office_targus_inverted {
-    output "DP-5"  mode 3840x2160@60.00Hz position 0,346  scale  1.666667
-    output "DP-6"  mode 3840x2160@60.00Hz position 2299,346  scale  1.666667
-    # output "eDP-1" mode 3840x2160@60.01   position 2280,1498 scale 2.4
-    output "eDP-1" disable
+    # output "eDP-1" disable
 }
 
 profile laptop_only {
-    output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.5
+    output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 2
 }
 
 profile undocked {
     output "eDP-1" enable
 }
-
-# profile home_office {
-#     # output "DP-2" mode 3840x2160@60Hz position 4328,346 scale 1.875
-#     output "DP-2" mode 3840x2160@60Hz position 4328,346 scale  1.5
-#     # output "HDMI-A-1" mode 3840x2160@60Hz position 2280,346 scale 1.875
-#     output "HDMI-A-1" mode 3840x2160@60Hz position 2020,346 scale  1.5
-#     output "eDP-1" disable
-# }
-#
-# profile work_main_screen {
-#     output "HDMI-A-1" mode 3840x2160@60Hz position 4328,346 scale 1.666667
-#     output "eDP-1" disable
-# }
-#
-
-
-#
-# #profile just_one_screen {
-# #    output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
-# #    # output "HDMI-A-1" mode 3840x2160@60Hz position 2280,346 scale  1.666667
-# #    output "DP-2" mode 3840x2160@60Hz position 4328,346 scale  1.666667
-# #}
-#
-# profile projector_and_lg  {
-#     output "eDP-1" mode 3840x2160@60.01 position 2280,1498 scale 2.4
-#     # output "HDMI-A-1" mode 3840x2160@60Hz position 2280,346 scale  1.666667
-#     output "DP-2" mode 3840x2160@60Hz position 4328,346 scale  1.666667
-# }
-#
-# profile projector  {
-#     output "HDMI-A-1" mode 3840x2160@60Hz position 2280,346 scale  1.666667
-#     output "DP-2" mode 3840x2160@60Hz position 4328,346 scale  1.666667
-# }
-#

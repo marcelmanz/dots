@@ -5,6 +5,7 @@ export KUBE_PROMPT=true
 export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 export GPG_PROGRAM=/usr/bin/gpg
+export OPENCODE_MODELS_PATH="/home/$USER/clones/forks/models.dev/packages/web/dist/_api.json"
 export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt
 
 source ~/.bash_aliases
@@ -196,28 +197,24 @@ fhex() {
 
 set -o vi
 
-export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense' # optional
-_carapace_lazy_init() {
-	if [[ -z "$_CARAPACE_INITIALIZED" ]]; then
-		source <(carapace _carapace)
-		export _CARAPACE_INITIALIZED=1
-	fi
-	# Call the original complete_func
-	compopt -o default
-	COMPREPLY=()
-}
-complete -F _carapace_lazy_init -D
+if command -v carapace >/dev/null 2>&1; then
+	source <(carapace _carapace bash)
+fi
+
 __post_first_prompt_init() {
-	eval "$(direnv hook bash)"
-	eval "$(atuin init bash --disable-up-arrow)"
-	eval "$(zoxide init bash)"
+	if [[ -n "$_POST_PROMPT_DONE" ]]; then return; fi
+	export _POST_PROMPT_DONE=1
+
+	command -v direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
+	command -v atuin >/dev/null 2>&1 && eval "$(atuin init bash --disable-up-arrow)"
+	command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
 	[[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
+
 	PROMPT_COMMAND="${PROMPT_COMMAND//__post_first_prompt_init;/}"
+	PROMPT_COMMAND="${PROMPT_COMMAND//__post_first_prompt_init/}"
 	PROMPT_COMMAND="${PROMPT_COMMAND//;;/;}"
-	unset -f __post_first_prompt_init
 }
 
-# Initialize immediately in tmux (after xela.bash is loaded), otherwise use deferred init
 if [[ $- == *i* ]] && [[ -t 0 ]]; then
 	if [[ -n "$TMUX" ]]; then
 		__post_first_prompt_init
@@ -291,7 +288,8 @@ export SSH_AUTH_SOCK
 
 # pass
 SECRETS_CACHE=~/.cache/sh/secret-env
-if [ -f "$SECRETS_CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$SECRETS_CACHE"))) -lt 3600 ]; then
+if [ -f "$SECRETS_CACHE" ] && [ ! ~/.bashrc -nt "$SECRETS_CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$SECRETS_CACHE"))) -lt 3600 ]; then
+	# shellcheck disable=SC1090
 	. "$SECRETS_CACHE"
 else
 	mkdir -p ~/.cache/sh
@@ -307,9 +305,11 @@ else
 		echo "export SLSKD_SLSK_PASSWORD=$(pass show slskd/slsk_password 2>/dev/null)"
 		echo "export SLSKD_USERNAME=$(pass show slskd/username 2>/dev/null)"
 		echo "export SLSKD_PASSWORD=$(pass show slskd/password 2>/dev/null)"
+		echo "export SYNTHETIC_API_KEY=$(pass show synthetic.new/api-key 2>/dev/null)"
 		# echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key 2>/dev/null)"
 	} >"$SECRETS_CACHE"
 
+	# shellcheck disable=SC1090
 	. "$SECRETS_CACHE"
 fi
 
@@ -415,6 +415,7 @@ gstp() {
 mkdir -p ~/.cache/bash-completions
 if command -v tarea >/dev/null 2>&1; then
 	[ -f ~/.cache/bash-completions/tarea.bash ] || tarea --completions bash >~/.cache/bash-completions/tarea.bash
+	# shellcheck disable=SC1090
 	. ~/.cache/bash-completions/tarea.bash
 fi
 
