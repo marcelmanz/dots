@@ -306,6 +306,7 @@ else
 		echo "export SLSKD_USERNAME=$(pass show slskd/username 2>/dev/null)"
 		echo "export SLSKD_PASSWORD=$(pass show slskd/password 2>/dev/null)"
 		echo "export SYNTHETIC_API_KEY=$(pass show synthetic.new/api-key 2>/dev/null)"
+		echo "export MINIFLUX_API_KEY=$(pass show rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
 		# echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key 2>/dev/null)"
 	} >"$SECRETS_CACHE"
 

@@ -454,6 +454,8 @@ alias rootloc="~/scripts/tmux-se.sh root mlab-local root_mlab"
 alias devlab="~/scripts/tmux-se.sh dev mlab dev_mlab"
 alias devloc="~/scripts/tmux-se.sh dev mlab-local dev_mlab"
 
+alias authx4="~/scripts/work/thread-x4/auth.py"
+
 # Only adds aliases if the shell is bash
 # if [ -n "$BASH_VERSION" ]; then
 #     alias oh-shit-git='$(xdg-open https://ohshitgit.com/)'
