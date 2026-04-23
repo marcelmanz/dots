@@ -1,6 +1,9 @@
 {
-  "lastChangelogVersion": "0.64.0",
+  "lastChangelogVersion": "0.66.1",
   "defaultProvider": "github-copilot",
   "defaultModel": "claude-opus-4.6",
-  "defaultThinkingLevel": "medium"
+  "defaultThinkingLevel": "high",
+  "packages": [
+    "npm:@mjakl/pi-kagi-search"
+  ]
 }
