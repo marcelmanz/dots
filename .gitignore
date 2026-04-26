@@ -2,6 +2,7 @@
 old-scripts/
 .config/nushell/history.txt
 .pi/agent/*
+.pi/npm/*
 !.pi/agent/models.json
 !.pi/agent/settings.json
 

@@ -1,0 +1,4 @@
+server_url = "https://rss.marcel.cool"
+api_key = "env:MINIFLUX_API_KEY"
+allow_invalid_certs = false
+use_rustls = false
