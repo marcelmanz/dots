@@ -9,6 +9,7 @@ export OPENCODE_MODELS_PATH="/home/$USER/clones/forks/models.dev/packages/web/di
 export SOPS_AGE_KEY_FILE=$HOME/.config/sops/age/keys.txt
 
 source ~/.bash_aliases
+unset _POST_PROMPT_DONE
 
 # nnn plugins
 export NNN_PLUG='m:mediainfo'
@@ -203,7 +204,7 @@ fi
 
 __post_first_prompt_init() {
 	if [[ -n "$_POST_PROMPT_DONE" ]]; then return; fi
-	export _POST_PROMPT_DONE=1
+	_POST_PROMPT_DONE=1
 
 	command -v direnv >/dev/null 2>&1 && eval "$(direnv hook bash)"
 	command -v atuin >/dev/null 2>&1 && eval "$(atuin init bash --disable-up-arrow)"
