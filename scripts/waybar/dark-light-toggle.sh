@@ -26,11 +26,13 @@ if [[ "$current" == "dark" ]]; then
     color_scheme="prefer-dark"
     gtk_theme="Adwaita-dark"
     cursor_theme="retrosmart-xcursor-white"
+    wallpaper="$HOME/img/dark-grey.png"
 else
     icon="󰖨"
     color_scheme="prefer-light"
     gtk_theme="Adwaita"
     cursor_theme="retrosmart-xcursor-black-shadow"
+    wallpaper="$HOME/img/light-spring.png"
 fi
 
 gsettings set org.gnome.desktop.interface color-scheme "$color_scheme"
@@ -46,6 +48,11 @@ else
 fi
 
 if [[ "$1" == "toggle" ]]; then
+    hyprctl hyprpaper preload "$wallpaper" >/dev/null 2>&1
+    for mon in eDP-1 DP-1 DP-2 HDMI-A-1; do
+        hyprctl hyprpaper wallpaper "$mon,$wallpaper" >/dev/null 2>&1
+    done
+
     ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
     pkill -SIGUSR2 waybar 2>/dev/null
     pkill -RTMIN+12 waybar 2>/dev/null
