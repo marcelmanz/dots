@@ -34,6 +34,7 @@ fi
 gsettings set org.gnome.desktop.interface color-scheme "$color_scheme"
 gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 
+sed -i "s/^initial-color-theme=.*/initial-color-theme=${current}/" "$HOME/.config/foot/foot.ini"
 if [[ "$current" == "dark" ]]; then
     pkill -SIGUSR1 foot 2>/dev/null
 else
@@ -43,6 +44,10 @@ fi
 if [[ "$1" == "toggle" ]]; then
     ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
     pkill -SIGUSR2 waybar 2>/dev/null
+
+    for sock in /run/user/$(id -u)/nvim.*.0 ; do
+        [ -S "$sock" ] && nvim --server "$sock" --remote-send "<Cmd>set background=${current}<CR>" 2>/dev/null &
+    done
 fi
 
 echo "{\"text\": \"$icon\", \"tooltip\": \"Theme: $current\", \"class\": \"$current\"}"
