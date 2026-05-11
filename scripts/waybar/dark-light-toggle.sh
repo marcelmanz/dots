@@ -5,7 +5,7 @@ MODE_FILE="$HOME/.cache/.theme_mode"
 if [[ -f "$MODE_FILE" ]]; then
     current=$(cat "$MODE_FILE")
 else
-    current="dark"
+    current="light"
 fi
 
 toggle() {
@@ -47,13 +47,9 @@ else
     pkill -SIGUSR2 foot 2>/dev/null
 fi
 
-if [[ "$1" == "toggle" ]]; then
-    hyprctl hyprpaper preload "$wallpaper" >/dev/null 2>&1
-    for mon in eDP-1 DP-1 DP-2 HDMI-A-1; do
-        hyprctl hyprpaper wallpaper "$mon,$wallpaper" >/dev/null 2>&1
-    done
+ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
 
-    ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
+if [[ "$1" == "toggle" ]]; then
     pkill -SIGUSR2 waybar 2>/dev/null
     pkill -RTMIN+12 waybar 2>/dev/null
 
@@ -61,5 +57,9 @@ if [[ "$1" == "toggle" ]]; then
         [ -S "$sock" ] && nvim --server "$sock" --remote-send "<Cmd>set background=${current}<CR>" 2>/dev/null &
     done
 fi
+
+pkill swaybg 2>/dev/null
+sleep 0.2
+setsid swaybg --image "$wallpaper" --mode fill >/dev/null 2>&1 & disown
 
 echo "{\"text\": \"$icon\", \"tooltip\": \"Theme: $current\", \"class\": \"$current\"}"

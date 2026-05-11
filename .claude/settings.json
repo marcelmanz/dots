@@ -32,6 +32,5 @@
         "repo": "netresearch/claude-code-marketplace"
       }
     }
-  },
-  "model": "opus"
+  }
 }
