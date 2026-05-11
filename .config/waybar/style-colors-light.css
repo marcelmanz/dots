@@ -1,0 +1,7 @@
+@define-color bg-main   #e8e8e8;
+@define-color bg-muted  rgba(232,232,232,0.9);
+@define-color fg-main   #1a1a1a;
+@define-color fg-muted  #666666;
+@define-color bg-accent #8899a6;
+@define-color bg-danger #d32f2f;
+@define-color bg-warning #e65100;
