@@ -27,18 +27,24 @@ if [[ "$current" == "dark" ]]; then
     gtk_theme="Adwaita-dark"
     cursor_theme="retrosmart-xcursor-white"
     wallpaper="$HOME/img/dark-grey.png"
+    hypr_active_border="rgba(33ccffee)"
+    hypr_inactive_border="rgba(595959aa)"
 else
     icon="󰖨"
     color_scheme="prefer-light"
     gtk_theme="Adwaita"
     cursor_theme="retrosmart-xcursor-black-shadow"
     wallpaper="$HOME/img/light-spring.png"
+    hypr_active_border="rgba(ffffffff)"
+    hypr_inactive_border="rgba(64666caa)"
 fi
 
 gsettings set org.gnome.desktop.interface color-scheme "$color_scheme"
 gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
 gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
 hyprctl setcursor "$cursor_theme" 24 >/dev/null 2>&1
+hyprctl keyword general:col.active_border "$hypr_active_border" >/dev/null 2>&1
+hyprctl keyword general:col.inactive_border "$hypr_inactive_border" >/dev/null 2>&1
 
 sed -i "s/^initial-color-theme=.*/initial-color-theme=${current}/" "$HOME/.config/foot/foot.ini"
 if [[ "$current" == "dark" ]]; then
