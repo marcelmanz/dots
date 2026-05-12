@@ -22,6 +22,7 @@
     // "custom/gnome-terminal",
     // "idle_inhibitor",
     "battery",
+    "custom/darklight",
     "clock",
     "tray"
   ],
@@ -225,6 +226,14 @@
     "signal": 10,
     "on-click": "playerctl --player=mpv play-pause; pkill -RTMIN+10 waybar",
     "on-click-right": "playerctl --player=mpv stop; pkill -RTMIN+10 waybar"
+  },
+  "custom/darklight": {
+    "format": "{text}",
+    "return-type": "json",
+    "exec": "~/scripts/waybar/dark-light-toggle.sh",
+    "on-click": "~/scripts/waybar/dark-light-toggle.sh toggle",
+    "interval": "once",
+    "signal": 12
   },
   "custom/pomodoro": {
     "format": "{text} ",

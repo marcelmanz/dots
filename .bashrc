@@ -327,6 +327,7 @@ export HYPRSHOT_DIR=$HOME/screenshots
 # export EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
 # export SUDO_EDITOR=/home/marcel/.local/share/bob/nvim-bin/nvim
 export EDITOR=nvim
+export DFT_BACKGROUND=light
 export SUDO_EDITOR=nvim
 export TERMINAL=foot
 

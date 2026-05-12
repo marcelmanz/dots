@@ -1,6 +1,7 @@
 {
   "lastChangelogVersion": "0.70.5",
   "defaultProvider": "github-copilot",
-  "defaultModel": "claude-opus-4.6",
-  "defaultThinkingLevel": "high"
+  "defaultModel": "claude-sonnet-4.6",
+  "defaultThinkingLevel": "high",
+  "theme": "light"
 }

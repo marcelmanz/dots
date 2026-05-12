@@ -60,6 +60,7 @@ bind -M insert \cr _atuin_search
 # end
 
 # ENV VARS
+set -g -x DFT_BACKGROUND light
 set -g -x EDITOR nvim
 set -g -x VISUAL nvim
 set -g -x SUDO_EDITOR nvim

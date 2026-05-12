@@ -1,31 +1,32 @@
-colourful: false
-
 filekinds:
-  normal: {foreground: "#fff"}
-  directory: {foreground: "#eee"}
-  symlink: {foreground: "#00d787"}
+  normal: {foreground: "#839496"}
+  directory: {foreground: "#268bd2"}
+  symlink: {foreground: "#2aa198"}
+  executable: {foreground: "#5f8700"}
+  archive: {foreground: "#d33682"}
+  image: {foreground: "#cb4b16"}
+  video: {foreground: "#cb4b16"}
   pipe: {}
   block_device: {}
   char_device: {}
   socket: {}
-  special: {foreground: "#FFA000"}
-  executable: {foreground: "#4CAF50"}
+  special: {foreground: "#b58900"}
   mount_point: {}
 
 perms:
-  user_read: {foreground: "#888"}
-  user_write: {foreground: "#888"}
-  user_execute_file: {foreground: "#888"}
-  user_execute_other: {foreground: "#888"}
-  group_read: {foreground: "#777"}
-  group_write: {foreground: "#777"}
-  group_execute: {foreground: "#777"}
-  other_read: {foreground: "#666"}
-  other_write: {foreground: "#666"}
-  other_execute: {foreground: "#666"}
-  special_user_file: {foreground: "#888"}
-  special_other: {foreground: "#777"}
-  attribute: {foreground: "#777"}
+  user_read: {foreground: "#839496"}
+  user_write: {foreground: "#839496"}
+  user_execute_file: {foreground: "#839496"}
+  user_execute_other: {foreground: "#839496"}
+  group_read: {foreground: "#839496"}
+  group_write: {foreground: "#839496"}
+  group_execute: {foreground: "#839496"}
+  other_read: {foreground: "#839496"}
+  other_write: {foreground: "#839496"}
+  other_execute: {foreground: "#839496"}
+  special_user_file: {foreground: "#839496"}
+  special_other: {foreground: "#839496"}
+  attribute: {foreground: "#839496"}
 
 size:
   major: {}
@@ -42,25 +43,25 @@ size:
   unit_huge: {}
 
 users:
-  user_you: {foreground: "#555"}
-  user_root: {foreground: "#E53935"}
-  user_other: {foreground: "#555"}
-  group_yours: {foreground: "#555"}
-  group_other: {foreground: "#555"}
-  group_root: {foreground: "#555"}
+  user_you: {foreground: "#839496"}
+  user_root: {foreground: "#dc322f"}
+  user_other: {foreground: "#839496"}
+  group_yours: {foreground: "#839496"}
+  group_other: {foreground: "#839496"}
+  group_root: {foreground: "#839496"}
 
 links:
   normal: {}
   multi_link_file: {}
 
 git:
-  new: {foreground: "#4CAF50"}
-  modified: {foreground: "#FFA000"}
-  deleted: {foreground: "#E53935"}
+  new: {foreground: "#5f8700"}
+  modified: {foreground: "#b58900"}
+  deleted: {foreground: "#dc322f"}
   renamed: {}
   typechange: {}
   ignored: {}
-  conflicted: {foreground: "#E53935"}
+  conflicted: {foreground: "#dc322f"}
 
 git_repo:
   branch_main: {}
@@ -80,15 +81,15 @@ file_type:
   video: {}
   music: {}
   lossless: {}
-  crypto: {foreground: "#E53935"}
+  crypto: {foreground: "#dc322f"}
   document: {}
   compressed: {}
-  temp: {foreground: "#555"}
+  temp: {foreground: "#839496"}
   compiled: {}
   build: {}
   source: {}
 
-punctuation: {foreground: "#666"}
+punctuation: {foreground: "#839496"}
 date: {foreground: "#5a8db0"}
 inode: {}
 blocks: {}
@@ -96,10 +97,10 @@ header: {}
 octal: {}
 flags: {}
 
-symlink_path: {foreground: "#00d787"}
+symlink_path: {foreground: "#2aa198"}
 control_char: {}
-broken_symlink: {foreground: "#E53935"}
-broken_path_overlay: {foreground: "#E53935"}
+broken_symlink: {foreground: "#dc322f"}
+broken_path_overlay: {foreground: "#dc322f"}
 
 # Custom filename-based overrides
 filenames: {}

@@ -1,15 +1,9 @@
-@define-color bg-main   #000000;
-@define-color bg-muted  rgba(0,0,0,0.9);
-@define-color fg-main   #ffffff;
-@define-color fg-muted  #808080;
-@define-color bg-accent #64727D;
-@define-color bg-danger #f53c3c;
-@define-color bg-warning #f0932b;
+@import "style-colors.css";
 
 * {
     border: none;
     font-family: "Myna", "Blex Mono Nerd Font", "Font Awesome 5 Free";
-    font-size: 16px;
+    font-size: 14px;
     min-height: 0;
     transition: background-color .1s ease, border-color .1s ease, color .1s ease;
 }
@@ -64,6 +58,8 @@ window#waybar {
 #mpd                                    { background: #66cc99; color: #2a5c45; }
 #mpd.disconnected, #mpd.stopped        { background: @bg-danger; }
 #language                              { background: @bg-main; color: @fg-muted; padding: 0; margin: 0; min-width: 0; }
+
+#custom-darklight { padding: 0 10px; margin: 6px 3px; }
 
 #window, #workspaces { margin: 0 4px; }
 .modules-left  > widget:first-child > #workspaces { margin-left: 0; }
