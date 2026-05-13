@@ -1,0 +1,106 @@
+filekinds:
+  normal: {foreground: "#9a9b9f"}
+  directory: {foreground: "#5fafd7"}
+  symlink: {foreground: "#29d9d8"}
+  executable: {foreground: "#5faf87"}
+  archive: {foreground: "#d75faf"}
+  image: {foreground: "#d7875f"}
+  video: {foreground: "#d7875f"}
+  pipe: {}
+  block_device: {}
+  char_device: {}
+  socket: {}
+  special: {foreground: "#afaf5f"}
+  mount_point: {}
+
+perms:
+  user_read: {foreground: "#9a9b9f"}
+  user_write: {foreground: "#9a9b9f"}
+  user_execute_file: {foreground: "#9a9b9f"}
+  user_execute_other: {foreground: "#9a9b9f"}
+  group_read: {foreground: "#9a9b9f"}
+  group_write: {foreground: "#9a9b9f"}
+  group_execute: {foreground: "#9a9b9f"}
+  other_read: {foreground: "#9a9b9f"}
+  other_write: {foreground: "#9a9b9f"}
+  other_execute: {foreground: "#9a9b9f"}
+  special_user_file: {foreground: "#9a9b9f"}
+  special_other: {foreground: "#9a9b9f"}
+  attribute: {foreground: "#9a9b9f"}
+
+size:
+  major: {}
+  minor: {}
+  number_byte: {}
+  number_kilo: {}
+  number_mega: {}
+  number_giga: {}
+  number_huge: {}
+  unit_byte: {}
+  unit_kilo: {}
+  unit_mega: {}
+  unit_giga: {}
+  unit_huge: {}
+
+users:
+  user_you: {foreground: "#9a9b9f"}
+  user_root: {foreground: "#ff5f87"}
+  user_other: {foreground: "#9a9b9f"}
+  group_yours: {foreground: "#9a9b9f"}
+  group_other: {foreground: "#9a9b9f"}
+  group_root: {foreground: "#9a9b9f"}
+
+links:
+  normal: {}
+  multi_link_file: {}
+
+git:
+  new: {foreground: "#87d75f"}
+  modified: {foreground: "#d7875f"}
+  deleted: {foreground: "#ff5f5f"}
+  renamed: {}
+  typechange: {}
+  ignored: {}
+  conflicted: {foreground: "#ff5f5f"}
+
+git_repo:
+  branch_main: {}
+  branch_other: {}
+  git_clean: {}
+  git_dirty: {}
+
+security_context:
+  colon: {}
+  user: {}
+  role: {}
+  typ: {}
+  range: {}
+
+file_type:
+  image: {}
+  video: {}
+  music: {}
+  lossless: {}
+  crypto: {foreground: "#ff5f87"}
+  document: {}
+  compressed: {}
+  temp: {foreground: "#9a9b9f"}
+  compiled: {}
+  build: {}
+  source: {}
+
+punctuation: {foreground: "#9a9b9f"}
+date: {foreground: "#5fafd7"}
+inode: {}
+blocks: {}
+header: {}
+octal: {}
+flags: {}
+
+symlink_path: {foreground: "#29d9d8"}
+control_char: {}
+broken_symlink: {foreground: "#ff5f5f"}
+broken_path_overlay: {foreground: "#ff5f5f"}
+
+filenames: {}
+extensions: {}
