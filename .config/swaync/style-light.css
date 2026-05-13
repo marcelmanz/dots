@@ -1,0 +1,235 @@
+@define-color bg        #d4d8d2;
+@define-color bg-edge   #cacec8;
+@define-color bg-mid    #adb0ab;
+@define-color fg        #2c2e33;
+@define-color fg-mid    #64666c;
+@define-color accent    #2e5e00;
+@define-color red       #700015;
+
+* {
+    font-family: "Blex Mono Nerd Font", "Font Awesome 5 Free", sans-serif;
+    font-size: 14px;
+    color: @fg;
+}
+
+.floating-notifications,
+.blank-window,
+.control-center-list {
+    background: transparent;
+}
+
+.control-center {
+    background: @bg-edge;
+    border: 1px solid @bg-mid;
+    border-radius: 6px;
+}
+
+.notification-row {
+    outline: none;
+}
+
+.notification-row:focus,
+.notification-row:hover {
+    background: transparent;
+}
+
+.notification {
+    background: @bg;
+    border: 1px solid @bg-mid;
+    border-radius: 4px;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+.notification:hover {
+    border-color: @fg-mid;
+    box-shadow: none;
+}
+
+.notification-content {
+    background: transparent;
+    padding: 8px;
+    margin: 0;
+}
+
+.notification-default-action,
+.notification-action {
+    background: transparent;
+    border: none;
+    color: @fg;
+}
+
+.notification-default-action:hover,
+.notification-action:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.notification-default-action {
+    border-radius: 4px;
+}
+
+.notification-action:last-child {
+    border-bottom-right-radius: 4px;
+}
+
+.notification-action:first-child {
+    border-bottom-left-radius: 4px;
+}
+
+.close-button {
+    background: transparent;
+    color: @fg-mid;
+    border: none;
+    border-radius: 50%;
+    min-width: 24px;
+    min-height: 24px;
+    margin-top: 8px;
+    margin-right: 8px;
+    box-shadow: none;
+}
+
+.close-button:hover {
+    background: @bg-mid;
+    color: @red;
+}
+
+.critical {
+    border-color: @red;
+}
+
+.summary {
+    font-size: 13px;
+    font-weight: bold;
+    color: @fg;
+    background: transparent;
+    text-shadow: none;
+}
+
+.time {
+    font-size: 12px;
+    color: @fg-mid;
+    background: transparent;
+    text-shadow: none;
+    margin-right: 18px;
+}
+
+.body {
+    font-size: 12px;
+    color: @fg;
+    background: transparent;
+    text-shadow: none;
+}
+
+.top-action-title {
+    color: @fg;
+    text-shadow: none;
+}
+
+.widget-title {
+    margin: 8px;
+    font-size: 15px;
+    color: @fg;
+}
+
+.widget-title > button {
+    font-size: initial;
+    color: @fg;
+    background: @bg;
+    border: 1px solid @bg-mid;
+    border-radius: 4px;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.widget-title > button:hover {
+    background: @bg-mid;
+}
+
+.widget-dnd {
+    margin: 8px;
+    font-size: 1.1rem;
+    color: @fg;
+}
+
+.widget-dnd > switch {
+    background: @bg-mid;
+    border: 1px solid @bg-mid;
+    border-radius: 4px;
+    box-shadow: none;
+}
+
+.widget-dnd > switch:checked {
+    background: @accent;
+}
+
+.widget-dnd > switch slider {
+    background: @bg-edge;
+    border-radius: 4px;
+}
+
+.widget-label {
+    margin: 4px 8px 8px;
+    color: @fg-mid;
+}
+
+.widget-label > label {
+    font-size: 15px;
+}
+
+.widget-mpris-player {
+    padding: 8px;
+    margin: 8px;
+}
+
+.widget-mpris-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: @fg;
+}
+
+.widget-mpris-subtitle {
+    font-size: 1rem;
+    color: @fg-mid;
+}
+
+.widget-buttons-grid {
+    padding: 4px 8px 8px;
+    margin: 0px 8px 8px;
+    border-radius: 4px;
+    background: @bg;
+    font-size: 14px;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+    background: transparent;
+    color: @fg;
+    border-radius: 4px;
+    border: 1px solid @bg-mid;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+    background: @bg-mid;
+}
+
+.widget-volume,
+.widget-backlight {
+    background: @bg;
+    padding: 8px;
+    margin: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.widget-volume trough,
+.widget-backlight trough {
+    background: @bg-mid;
+    border-radius: 4px;
+    min-height: 6px;
+}
+
+.widget-volume trough highlight,
+.widget-backlight trough highlight {
+    background: @accent;
+    border-radius: 4px;
+}
