@@ -58,6 +58,7 @@ fi
 
 ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
+ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
 
 if [[ "$1" == "toggle" ]]; then
     pkill -SIGUSR2 waybar 2>/dev/null
