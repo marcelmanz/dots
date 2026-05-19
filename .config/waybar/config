@@ -6,8 +6,8 @@
   // "width": 1280, // Waybar width
   // Choose the order of the modules
   "modules-left": [
-    "hyprland/workspaces",
-    "hyprland/mode"
+    "hyprland/workspaces"
+    // "hyprland/mode"
   ],
   "modules-center": [],
   "modules-right": [
@@ -28,19 +28,19 @@
   ],
   // Modules configuration
   "hyprland/workspaces": {
-      "disable-scroll": true,
-      "all-outputs": false,
-      "format": "{id}:{icon}",
-      "format-icons": {
-          "1": "browse",
-          "2": "code",
-          "3": "learn",
-          "4": "-",
-          "5": "-",
-          "urgent": " (u)",
-          "focused": " (f)",
-          "default": " (d)"
-      }
+    "disable-scroll": false,
+    "all-outputs": false,
+    "format": "{id}:{icon}",
+    "format-icons": {
+      "1": "browse",
+      "2": "code",
+      "3": "learn",
+      "4": "-",
+      "5": "-",
+      "urgent": " (u)",
+      "focused": " (f)",
+      "default": " (d)"
+    }
   },
   "hyprland/mode": {
     "format": "<span style=\"italic\">{}</span>"
