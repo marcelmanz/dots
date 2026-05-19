@@ -1,7 +1,10 @@
 {
-  "lastChangelogVersion": "0.67.68",
+  "lastChangelogVersion": "0.73.0",
   "defaultProvider": "github-copilot",
   "defaultModel": "claude-sonnet-4.6",
   "defaultThinkingLevel": "high",
-  "theme": "light"
+  "theme": "light",
+  "packages": [
+    "npm:@ff-labs/pi-fff"
+  ]
 }
