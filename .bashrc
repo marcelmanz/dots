@@ -1,5 +1,7 @@
 # shellcheck disable=2148
 
+shopt -s expand_aliases
+
 export GIT_PROMPT=true
 export KUBE_PROMPT=true
 export NIX_PROMPT=true
@@ -196,10 +198,12 @@ fhex() {
 	rm -f "$tmp"
 }
 
-set -o vi
+if [[ $- == *i* ]]; then
+	set -o vi
 
-if command -v carapace >/dev/null 2>&1; then
-	source <(carapace _carapace bash)
+	if command -v carapace >/dev/null 2>&1; then
+		source <(carapace _carapace bash)
+	fi
 fi
 
 __post_first_prompt_init() {

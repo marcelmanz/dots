@@ -39,5 +39,5 @@
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
   "autoCompactEnabled": false,
-  "model": "opus[1m]"
+  "skipAutoPermissionPrompt": true
 }
