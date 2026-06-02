@@ -33,9 +33,11 @@
       }
     }
   },
+  "effortLevel": "high",
   "theme": "custom:light-alternative",
   "editorMode": "vim",
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
-  "autoCompactEnabled": false
+  "autoCompactEnabled": false,
+  "skipAutoPermissionPrompt": true
 }
