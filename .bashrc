@@ -26,6 +26,29 @@ gpsup() {
 	git push --set-upstream origin "$branch"
 }
 
+mmview() {
+	[ -z "$1" ] && {
+		echo "usage: mmview <file.md>"
+		return 1
+	}
+	local out
+	out=$(mktemp -d)
+	nix shell nixpkgs#mermaid-cli --command mmdc -i "$1" -o "$out/out.md" >/dev/null || return 1
+	{
+		printf '<!doctype html><meta charset=utf-8><title>%s</title>' "$1"
+		printf '<style>'
+		printf 'body{margin:0;background:#111}'
+		printf 'section{min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:auto}'
+		printf 'img{max-height:100vh;max-width:100vw;background:#fff;padding:1em;box-sizing:border-box;cursor:zoom-in}'
+		printf 'img.z{max-height:none;max-width:none;cursor:zoom-out}'
+		printf '</style>'
+		for f in "$out"/out-*.svg; do
+			[ -e "$f" ] && printf '<section><img src="%s" onclick="this.classList.toggle(%c%c%c)"></section>' "$f" 39 z 39
+		done
+	} >"$out/index.html"
+	brave-origin "$out/index.html"
+}
+
 sleep_in() {
 	local minutes="$1"
 	local seconds=$((minutes * 60))
