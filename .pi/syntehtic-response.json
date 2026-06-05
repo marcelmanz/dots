@@ -1,0 +1,614 @@
+{
+  "data": [
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "syn:large:text",
+      "hugging_face_id": "zai-org/GLM-5.1",
+      "name": "syn:large:text",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 196608,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.000001",
+        "completion": "$0.000003",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.000001",
+        "input_cache_writes": "0"
+      },
+      "created": 1775520000,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "zai-org/glm-5.1"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "syn:small:text",
+      "hugging_face_id": "zai-org/GLM-4.7-Flash",
+      "name": "syn:small:text",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 196608,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.0000001",
+        "completion": "$0.0000005",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.0000001",
+        "input_cache_writes": "0"
+      },
+      "created": 1768780800,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "minimaxai/minimax-m2.5"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "syn:large:vision",
+      "hugging_face_id": "moonshotai/Kimi-K2.6",
+      "name": "syn:large:vision",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.00000095",
+        "completion": "$0.000004",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.00000095",
+        "input_cache_writes": "0"
+      },
+      "created": 1776643200,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "moonshotai/kimi-k2.6"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "syn:small:vision",
+      "hugging_face_id": "Qwen/Qwen3.6-27B",
+      "name": "syn:small:vision",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.00000045",
+        "completion": "$0.0000036",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.00000045",
+        "input_cache_writes": "0"
+      },
+      "created": 1776729600,
+      "quantization": "fp8",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "qwen/qwen3.6-27b"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:zai-org/GLM-5.1",
+      "hugging_face_id": "zai-org/GLM-5.1",
+      "name": "zai-org/GLM-5.1",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 196608,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.000001",
+        "completion": "$0.000003",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.000001",
+        "input_cache_writes": "0"
+      },
+      "created": 1775520000,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "zai-org/glm-5.1"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:moonshotai/Kimi-K2.6",
+      "hugging_face_id": "moonshotai/Kimi-K2.6",
+      "name": "moonshotai/Kimi-K2.6",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.00000095",
+        "completion": "$0.000004",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.00000095",
+        "input_cache_writes": "0"
+      },
+      "created": 1776643200,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "moonshotai/kimi-k2.6"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:Qwen/Qwen3.6-27B",
+      "hugging_face_id": "Qwen/Qwen3.6-27B",
+      "name": "Qwen/Qwen3.6-27B",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.00000045",
+        "completion": "$0.0000036",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.00000045",
+        "input_cache_writes": "0"
+      },
+      "created": 1776729600,
+      "quantization": "fp8",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "qwen/qwen3.6-27b"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:MiniMaxAI/MiniMax-M2.5",
+      "hugging_face_id": "MiniMaxAI/MiniMax-M2.5",
+      "name": "MiniMaxAI/MiniMax-M2.5",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 191488,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.0000004",
+        "completion": "$0.000002",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.0000004",
+        "input_cache_writes": "0"
+      },
+      "created": 1770854400,
+      "quantization": "fp8",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "minimaxai/minimax-m2.5"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:zai-org/GLM-4.7-Flash",
+      "hugging_face_id": "zai-org/GLM-4.7-Flash",
+      "name": "zai-org/GLM-4.7-Flash",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 196608,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.0000001",
+        "completion": "$0.0000005",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.0000001",
+        "input_cache_writes": "0"
+      },
+      "created": 1768780800,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "minimaxai/minimax-m2.5"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "hugging_face_id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.0000003",
+        "completion": "$0.000001",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.0000003",
+        "input_cache_writes": "0"
+      },
+      "created": 1773187200,
+      "quantization": "nvfp4",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "nvidia/nvidia-nemotron-3-super-120b-a12b-nvfp4"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "synthetic",
+      "always_on": true,
+      "id": "hf:zai-org/GLM-4.7",
+      "hugging_face_id": "zai-org/GLM-4.7",
+      "name": "zai-org/GLM-4.7",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 202752,
+      "max_output_length": 65536,
+      "pricing": {
+        "prompt": "$0.00000045",
+        "completion": "$0.00000219",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.00000045",
+        "input_cache_writes": "0"
+      },
+      "created": 1766361600,
+      "quantization": "fp8",
+      "supported_sampling_parameters": [
+        "temperature",
+        "top_k",
+        "top_p",
+        "repetition_penalty",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed"
+      ],
+      "supported_features": [
+        "tools",
+        "json_mode",
+        "structured_outputs",
+        "reasoning"
+      ],
+      "openrouter": {
+        "slug": "z-ai/glm-4.7"
+      },
+      "datacenters": [
+        {
+          "country_code": "US"
+        }
+      ]
+    },
+    {
+      "provider": "fireworks",
+      "always_on": true,
+      "id": "hf:openai/gpt-oss-120b",
+      "hugging_face_id": "openai/gpt-oss-120b",
+      "name": "openai/gpt-oss-120b",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 131072,
+      "pricing": {
+        "prompt": "$0.0000001",
+        "completion": "$0.0000001",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.0000001",
+        "input_cache_writes": "0"
+      }
+    },
+    {
+      "provider": "together",
+      "always_on": true,
+      "id": "hf:Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "hugging_face_id": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "pricing": {
+        "prompt": "$0.000002",
+        "completion": "$0.000002",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.000002",
+        "input_cache_writes": "0"
+      }
+    },
+    {
+      "provider": "together",
+      "always_on": true,
+      "id": "hf:Qwen/Qwen3.5-397B-A17B",
+      "hugging_face_id": "Qwen/Qwen3.5-397B-A17B",
+      "name": "Qwen/Qwen3.5-397B-A17B",
+      "input_modalities": [
+        "text",
+        "image"
+      ],
+      "output_modalities": [
+        "text"
+      ],
+      "context_length": 262144,
+      "pricing": {
+        "prompt": "$0.0000006",
+        "completion": "$0.0000036",
+        "image": "0",
+        "request": "0",
+        "input_cache_reads": "$0.0000006",
+        "input_cache_writes": "0"
+      }
+    }
+  ]
+}

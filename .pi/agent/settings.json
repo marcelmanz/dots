@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.73.0",
-  "defaultProvider": "github-copilot",
-  "defaultModel": "claude-sonnet-4.6",
+  "defaultProvider": "synthetic",
+  "defaultModel": "hf:Qwen/Qwen3.6-27B",
   "defaultThinkingLevel": "high",
   "theme": "light",
   "packages": [
