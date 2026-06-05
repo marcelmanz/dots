@@ -14,28 +14,30 @@
 # ./scripts/work/bamboo-timesheet.py --month <month-relative-num>
 
 import argparse
-import requests
-import browser_cookie3
-from datetime import datetime
-from calendar import monthrange
-from dateutil.relativedelta import relativedelta
-from requests.cookies import RequestsCookieJar
-from bs4 import BeautifulSoup
-from urllib.parse import urlparse, parse_qs
-import random
 import base64
+import os
 import json
+import random
 import re
 import sys
+from calendar import monthrange
+from datetime import datetime
+from urllib.parse import parse_qs, urlparse
+
+import browser_cookie3
+import requests
+from bs4 import BeautifulSoup
+from dateutil.relativedelta import relativedelta
+from requests.cookies import RequestsCookieJar
 
 
 class Colors:
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BLUE = '\033[94m'
-    BOLD = '\033[1m'
-    END = '\033[0m'
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    RED = "\033[91m"
+    BLUE = "\033[94m"
+    BOLD = "\033[1m"
+    END = "\033[0m"
 
 
 BAMBOOHR_DOMAIN = "worldsensing.bamboohr.com"
@@ -47,27 +49,50 @@ EMPLOYEE_ID = None
 PROJECT_ID = 16
 TASK_ID = 27
 DAILY_HOURS = 8
-COUNTRY_ISO = 'ES'
-COUNTIES = {'ES-CT', 'ES-B'}
+COUNTRY_ISO = "ES"
+COUNTIES = {"ES-CT", "ES-B"}
 DEFAULT_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
 
 parser = argparse.ArgumentParser(description=f"BambooHR Timesheet Automation Tool")
 parser.add_argument("--csrf", default=None, help="Override CSRF token")
 parser.add_argument("--cookie", default=None, help="Override cookies header")
-parser.add_argument("--ignore", default="", help="Comma-separated list of days to skip (e.g. 2,3,5,7)")
-parser.add_argument("--month", type=int, default=0,
-                    help="Relative month offset (e.g. -1 = last month, 0 = current, 1 = next)")
+parser.add_argument(
+    "--ignore", default="", help="Comma-separated list of days to skip (e.g. 2,3,5,7)"
+)
+parser.add_argument(
+    "--month",
+    type=int,
+    default=0,
+    help="Relative month offset (e.g. -1 = last month, 0 = current, 1 = next)",
+)
 parser.add_argument("--dry-run", action="store_true")
-parser.add_argument("--browser", default="auto",
-                    choices=["auto", "chrome", "chromium", "brave", "vivaldi", "edge", "firefox", "opera", "safari"],
-                    help="Browser profile to read cookies from")
+parser.add_argument(
+    "--browser",
+    default="auto",
+    choices=[
+        "auto",
+        "chrome",
+        "chromium",
+        "brave",
+        "brave-origin",
+        "vivaldi",
+        "edge",
+        "firefox",
+        "opera",
+        "safari",
+    ],
+    help="Browser profile to read cookies from",
+)
 parser.add_argument("--user-agent", default=DEFAULT_UA)
 parser.add_argument("--employee-id", default=None, help="Override auto-detected employee id")
 args = parser.parse_args()
 
 if PROJECT_ID is None or TASK_ID is None:
-    print(f"{Colors.RED}ERROR{Colors.END}     Please do a request in Bamboo and extract the IDs for project and task from https://worldsensing.bamboohr.com/timesheet/hour/entries")
+    print(
+        f"{Colors.RED}ERROR{Colors.END}     Please do a request in Bamboo and extract the IDs for project and task from https://worldsensing.bamboohr.com/timesheet/hour/entries"
+    )
     sys.exit(1)
+
 
 def header_to_cookiejar(cookie_header):
     jar = RequestsCookieJar()
@@ -81,10 +106,22 @@ def header_to_cookiejar(cookie_header):
 
 
 def load_browser_cookies(browser_choice):
+    brave_origin_beta_cookies = os.path.expanduser(
+        "~/.config/BraveSoftware/Brave-Origin-Beta/Default/Cookies"
+    )
+    brave_origin_beta_key = os.path.expanduser(
+        "~/.config/BraveSoftware/Brave-Origin-Beta/Local State"
+    )
+
     loaders = {
         "chrome": browser_cookie3.chrome,
         "chromium": browser_cookie3.chromium,
         "brave": browser_cookie3.brave,
+        "brave-origin": lambda domain_name="": browser_cookie3.Brave(
+            cookie_file=brave_origin_beta_cookies,
+            domain_name=domain_name,
+            key_file=brave_origin_beta_key,
+        ).load(),
         "vivaldi": browser_cookie3.vivaldi,
         "edge": browser_cookie3.edge,
         "firefox": browser_cookie3.firefox,
@@ -108,7 +145,9 @@ def load_browser_cookies(browser_choice):
                     return jar
             except (browser_cookie3.BrowserCookieError, TypeError, FileNotFoundError):
                 continue
-        raise browser_cookie3.BrowserCookieError("No supported browser profile with BambooHR cookies was found.")
+        raise browser_cookie3.BrowserCookieError(
+            "No supported browser profile with BambooHR cookies was found."
+        )
     loader = loaders[browser_choice]
     return filter_cookies(loader())
 
@@ -134,7 +173,7 @@ def decode_bhr_features(value):
     if not value:
         return {}
     try:
-        padding = '=' * (-len(value) % 4)
+        padding = "=" * (-len(value) % 4)
         for decoder in (base64.b64decode, base64.urlsafe_b64decode):
             try:
                 decoded = decoder(value + padding).decode("utf-8", errors="ignore")
@@ -208,7 +247,9 @@ def detect_employee_id(session):
             return employee_id
     except requests.RequestException:
         pass
-    print(f"{Colors.RED}ERROR{Colors.END}     Could not determine employee ID. Provide it with --employee-id or ensure the browser profile is logged into BambooHR.")
+    print(
+        f"{Colors.RED}ERROR{Colors.END}     Could not determine employee ID. Provide it with --employee-id or ensure the browser profile is logged into BambooHR."
+    )
     sys.exit(1)
 
 
@@ -223,7 +264,7 @@ def build_pusher_payload(cookie_jar):
 
 def get_csrf_from_cookies(cookie_jar):
     for cookie in cookie_jar:
-        if 'csrf' in cookie.name.lower():
+        if "csrf" in cookie.name.lower():
             return cookie.value
     return None
 
@@ -270,14 +311,14 @@ def extract_csrf_from_response(response):
                     values = [attr_value]
                 elif isinstance(attr_value, (list, tuple)):
                     values = [v for v in attr_value if isinstance(v, str)]
-                if 'csrf' in attr_name_lower:
+                if "csrf" in attr_name_lower:
                     value = tag.attrs.get("content") or tag.attrs.get("value")
                     if value:
                         return value
                     if values:
                         return values[0]
                 for val in values:
-                    if 'csrf' in val.lower():
+                    if "csrf" in val.lower():
                         value = tag.attrs.get("content") or tag.attrs.get("value")
                         if value:
                             return value
@@ -326,20 +367,26 @@ def detect_csrf_token(session):
         response = session.get(url, timeout=15)
     session.cookies.update(response.cookies)
     if response.status_code >= 400:
-        print(f"{Colors.RED}ERROR{Colors.END}     Unable to fetch CSRF token, status {response.status_code}")
+        print(
+            f"{Colors.RED}ERROR{Colors.END}     Unable to fetch CSRF token, status {response.status_code}"
+        )
         sys.exit(1)
     token = extract_csrf_from_response(response)
     if not token:
         token = get_csrf_from_cookies(session.cookies)
     if not token:
-        print(f"{Colors.RED}ERROR{Colors.END}     Could not determine CSRF token. Did you log in via the selected browser profile?")
+        print(
+            f"{Colors.RED}ERROR{Colors.END}     Could not determine CSRF token. Did you log in via the selected browser profile?"
+        )
         sys.exit(1)
     return token
 
 
 cookie_jar = detect_cookies()
 if not len(cookie_jar):
-    print(f"{Colors.RED}ERROR{Colors.END}     No cookies found. Ensure you are logged into BambooHR in the selected browser profile.")
+    print(
+        f"{Colors.RED}ERROR{Colors.END}     No cookies found. Ensure you are logged into BambooHR in the selected browser profile."
+    )
     sys.exit(1)
 session = requests.Session()
 session.cookies.update(cookie_jar)
@@ -424,7 +471,7 @@ for day in range(1, days + 1):
                 "hours": DAILY_HOURS,
                 "note": "",
                 "projectId": PROJECT_ID,
-                "taskId": TASK_ID
+                "taskId": TASK_ID,
             }
         ]
     }

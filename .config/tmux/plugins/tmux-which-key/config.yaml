@@ -1,0 +1,16 @@
+command_alias_start_index: 200
+keybindings:
+  prefix_table: "Space"
+items:
+  - key: "l"
+    name: "Layouts..."
+    items:
+      - key: "h"
+        name: "Even Horizontal (Columns)"
+        command: "select-layout even-horizontal"
+      - key: "v"
+        name: "Even Vertical (Rows)"
+        command: "select-layout even-vertical"
+      - key: "n"
+        name: "Cycle Next Layout"
+        command: "next-layout"
