@@ -456,6 +456,7 @@ alias devlab="~/scripts/tmux-se.sh dev mlab dev_mlab"
 alias devloc="~/scripts/tmux-se.sh dev mlab-local dev_mlab"
 
 alias authx4="~/scripts/work/thread-x4/auth.py"
+alias vulnerability_scanner="nsh vulnix -- ~/result/"
 
 # Only adds aliases if the shell is bash
 # if [ -n "$BASH_VERSION" ]; then

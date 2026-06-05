@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Switch foot font profile and reload running foot instances.
+# Usage: set-font <profile>   (profile = filename in font.d/ without .ini)
+
+set -eu
+
+profile="${1:-screen}"
+dir="${XDG_CONFIG_HOME:-$HOME/.config}/foot"
+target="font.d/${profile}.ini"
+
+if [ ! -e "${dir}/${target}" ]; then
+    echo "set-font: missing ${dir}/${target}" >&2
+    exit 1
+fi
+
+ln -sfn "${target}" "${dir}/font-active.ini"
+pkill -USR1 foot 2>/dev/null || true
