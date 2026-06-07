@@ -35,7 +35,7 @@
     }
   },
   "effortLevel": "high",
-  "theme": "custom:light-alternative",
+  "theme": "light",
   "editorMode": "vim",
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
