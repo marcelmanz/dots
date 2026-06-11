@@ -22,7 +22,7 @@ case "$selected" in
 	hyprctl dispatch exit
 	;;
 "Suspend")
-	exec systemctl suspend
+	systemctl suspend
 	;;
 "Reboot")
 	exec systemctl reboot
