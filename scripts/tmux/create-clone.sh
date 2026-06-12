@@ -21,12 +21,20 @@ if [ -z "$url" ]; then
 fi
 
 repo=$(basename "$url" .git)
+create_label='[CREATE FROM URL PATH]'
 
 groups=$(find "$clones_dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
-group=$(printf '%s\n' "$groups" |
+choice=$(printf '%s\n%s\n' "$create_label" "$groups" |
     fzf --print-query --prompt='clone into group> ' |
     tail -n1)
-[ -z "${group:-}" ] && exit 0
+[ -z "${choice:-}" ] && exit 0
+
+if [ "$choice" = "$create_label" ]; then
+    group=$(basename "$(dirname "$url")")
+    group=${group##*:}
+else
+    group="$choice"
+fi
 
 target="$clones_dir/$group/$repo"
 
