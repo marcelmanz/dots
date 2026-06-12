@@ -10,7 +10,7 @@ if [ -z "$url" ]; then
     existing=$(find "$clones_dir" -mindepth 2 -maxdepth 2 -type d -print0 |
         tr '\0' '\n' | sed "s|^$HOME/||")
     selection=$(printf '%s\n' "$existing" |
-        fzf --print-query --prompt='clone url or pick existing> ' |
+        fzf --print-query --prompt='pick existing or clone url> ' |
         tail -n1)
     [ -z "${selection:-}" ] && exit 0
 
@@ -21,10 +21,14 @@ if [ -z "$url" ]; then
 fi
 
 repo=$(basename "$url" .git)
-owner=$(basename "$(dirname "$url")")
-owner=${owner##*:}
 
-target="$clones_dir/$owner/$repo"
+groups=$(find "$clones_dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+group=$(printf '%s\n' "$groups" |
+    fzf --print-query --prompt='clone into group> ' |
+    tail -n1)
+[ -z "${group:-}" ] && exit 0
+
+target="$clones_dir/$group/$repo"
 
 if [ ! -d "$target" ]; then
     mkdir -p "$(dirname "$target")"
