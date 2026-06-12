@@ -1,7 +1,7 @@
 {
   "providers": {
     "synthetic": {
-      "apiKey": "SYNTHETIC_API_KEY",
+      "apiKey": "$SYNTHETIC_API_KEY",
       "api": "openai-completions",
       "baseUrl": "https://api.synthetic.new/openai/v1",
       "models": [
@@ -64,7 +64,7 @@
       ]
     },
     "fireworks": {
-      "apiKey": "FIREWORKS_API_KEY",
+      "apiKey": "$FIREWORKS_API_KEY",
       "api": "openai-completions",
       "baseUrl": "https://api.fireworks.ai/inference/v1",
       "models": [
@@ -75,7 +75,7 @@
       ]
     },
     "together": {
-      "apiKey": "TOGETHER_API_KEY",
+      "apiKey": "$TOGETHER_API_KEY",
       "api": "openai-completions",
       "baseUrl": "https://api.together.xyz/v1",
       "models": [
@@ -91,4 +91,3 @@
     }
   }
 }
-

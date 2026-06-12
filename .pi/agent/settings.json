@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.75.4",
+  "lastChangelogVersion": "0.78.0",
   "defaultProvider": "synthetic",
   "defaultModel": "hf:Qwen/Qwen3.5-397B-A17B",
   "defaultThinkingLevel": "high",

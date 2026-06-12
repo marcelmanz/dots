@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-dirs=$(find "$HOME/clones" -mindepth 2 -maxdepth 2 -type d -print0 | tr '\0' '\n' | sed "s|^$HOME/||")
-selection=$(printf '%s\n' "$dirs" | fzf)
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+if [ -n "${1:-}" ]; then
+    case "$1" in
+        *://*|*@*:*|*.git)
+            exec "$script_dir/create-clone.sh" "$1"
+            ;;
+    esac
+    selection=$(printf '%s\n' "$1" | sed "s|^$HOME/||")
+else
+    dirs=$(find "$HOME/clones" -mindepth 2 -maxdepth 2 -type d -print0 | tr '\0' '\n' | sed "s|^$HOME/||")
+    selection=$(printf '%s\n' "$dirs" | fzf)
+fi
 
 if [ -n "${selection:-}" ]; then
     selection="$HOME/$selection"
