@@ -67,19 +67,19 @@ fi
 out="$(mktemp)"
 err="$(mktemp)"
 
-# model="hf:zai-org/GLM-4.7"
-model="hf:MiniMaxAI/MiniMax-M2.5"
+# Use Synthetic's fast small text model
+# For quick how queries, speed matters more than max capability
+model="syn:small:text"
 
 if $continue && [[ -f "$STATE_FILE" ]]; then
-	sid="$(cat "$STATE_FILE")"
-	cmd=(opencode run --format json --model "synthetic/${model}" --session "$sid")
+	cmd=(pi --provider synthetic --model "$model" -c -p)
 else
-	cmd=(opencode run --format json --model "synthetic/${model}")
+	cmd=(pi --provider synthetic --model "$model" -p)
 fi
 
 prompt=$'Answer concisely in Markdown.\n\n'"$q"
 
-"${cmd[@]}" "$prompt" >"$out" 2>"$err" &
+printf '%s' "$prompt" | "${cmd[@]}" >"$out" 2>"$err" &
 pid=$!
 
 if [[ -t 1 ]]; then
@@ -113,13 +113,9 @@ if [[ -s "$err" ]]; then
 	cat "$err" >&2
 fi
 
-sid="$(jq -r 'select(.sessionID!=null) | .sessionID' <"$out" | head -n1)"
-result="$(jq -r 'select(.type=="text") | .part.text' <"$out")"
-error="$(jq -r 'select(.type=="error") | .error.message' <"$out")"
-
-if [[ -n "$sid" ]]; then
-	printf '%s\n' "$sid" >"$STATE_FILE"
-fi
+# pi print mode outputs plain text directly, no JSON parsing needed
+result="$(cat "$out")"
+error="$(grep -i 'error:' "$err" | head -n1 || true)"
 
 if [[ -n "$error" ]]; then
 	printf '%s\n' "$error" >&2
