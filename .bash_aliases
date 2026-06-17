@@ -314,6 +314,8 @@ alias glgm="git log --graph --max-count 10"
 alias glo="git log --format='%C(auto) %h %s' --decorate"
 alias glod='git log --pretty=format:"%C(yellow)%h%Creset - %C(bold cyan)%an%Creset, %C(green)%ar%Creset : %C(reset)%s"'
 alias forc="nvim ~/.config/foot/foot.ini"
+alias foot_dark=" pkill --signal SIGUSR2 foot"
+alias folight=" pkill --signal SIGUSR2 foot"
 alias alrc="nvim ~/.config/alacritty/alacritty.toml"
 # alias glol =
 # alias it log --graph --pretty:format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
@@ -449,6 +451,7 @@ alias python-nix-init="~/scripts/work/python-nix-init.sh"
 # development alias
 alias sour="~/clones/own/sourses/target/debug/sourses"
 alias beeti="beet import -A -s"
+alias to_kebab="~/scripts/to-kebab"
 
 alias rootlab="~/scripts/tmux-se.sh root mlab root_mlab"
 alias rootloc="~/scripts/tmux-se.sh root mlab-local root_mlab"

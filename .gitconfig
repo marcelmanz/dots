@@ -24,8 +24,8 @@
 
 [diff]
 	algorithm = histogram
-	tool = difftastic
-	external = difft
+	; tool = difftastic
+	; external = difft
 
 ; [difftool]
 ; 	prompt = false
