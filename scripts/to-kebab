@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+python3 - "$*" <<'PYEOF'
+import sys, re
+
+def transform(s):
+    tokens = s.split()
+    parts = []
+    for token in tokens:
+        subparts = re.sub(r'([a-z])([A-Z])', r'\1-\2', token).split('-')
+        for sp in subparts:
+            if re.match(r'^[A-Z]{2,}$', sp):
+                parts.append(sp)
+            else:
+                parts.append(sp.lower())
+    return '-'.join(parts)
+
+print(transform(sys.argv[1]))
+PYEOF

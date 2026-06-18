@@ -4,6 +4,7 @@ profile home_office_work {
     output "HDMI-A-1" mode 3840x2160@60.00Hz position 4328,346 scale  2
     output "DP-3"     mode 3840x2160@60.00Hz position 2020,346 scale  2
     output "eDP-1"    disable
+    exec ~/.config/foot/set-font screen
 }
 
 profile home_office {
@@ -12,6 +13,7 @@ profile home_office {
     #output "DP-2"     mode 3840x2160@60.00Hz position 0,0 scale  1.666667
     #output "HDMI-A-1" mode 3840x2160@60.00Hz position 2304,0 scale  1.666667
     output "eDP-1"    disable
+    exec ~/.config/foot/set-font screen
 }
 
 #profile home_single {
@@ -28,6 +30,7 @@ profile home_office {
 profile home {
     output "HDMI-A-1" mode 3840x2160@60.00Hz position 4328,346 scale  2
     output "eDP-1"    mode 3840x2160@60.00Hz position 640,1440 scale  2
+    exec ~/.config/foot/set-font screen
 }
 
 #profile home_office_targus {
@@ -42,9 +45,11 @@ profile home_office_targus {
     output "DP-4"     mode 3840x2160@60.00Hz position 2560,0 scale  2
     #output "eDP-1"    mode 3840x2160@60.01Hz position 5120,346 scale 2
     output "eDP-1"    disable
+    exec ~/.config/foot/set-font screen
 }
 
 profile laptop_only {
     output "eDP-1" mode 3840x2160@60.01Hz position 0,0 scale 2.5
     # output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
+    exec ~/.config/foot/set-font laptop
 }
