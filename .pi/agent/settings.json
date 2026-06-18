@@ -1,10 +1,13 @@
 {
-  "lastChangelogVersion": "0.75.4",
+  "lastChangelogVersion": "0.79.1",
   "defaultProvider": "synthetic",
   "defaultModel": "hf:Qwen/Qwen3.5-397B-A17B",
   "defaultThinkingLevel": "high",
   "theme": "light",
   "packages": [
-    "npm:@ff-labs/pi-fff"
+    "npm:@ff-labs/pi-fff",
+    "git:github.com/DietrichGebert/ponytail",
+    "npm:@aliou/pi-guardrails",
+    "npm:pi-mcp-adapter"
   ]
 }
