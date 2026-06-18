@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.79.1",
   "defaultProvider": "synthetic",
-  "defaultModel": "hf:Qwen/Qwen3.5-397B-A17B",
+  "defaultModel": "syn:large:text",
   "defaultThinkingLevel": "high",
   "theme": "light",
   "packages": [
