@@ -9,6 +9,7 @@
     "git:github.com/DietrichGebert/ponytail",
     "npm:@aliou/pi-guardrails",
     "npm:pi-mcp-adapter",
-    "npm:@tintinweb/pi-subagents"
+    "npm:@tintinweb/pi-subagents",
+    "npm:pi-subagents"
   ]
 }
