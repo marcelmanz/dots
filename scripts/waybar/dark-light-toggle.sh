@@ -38,7 +38,7 @@ else
     wallpaper="$HOME/img/light-spring.png"
     hypr_active_border="rgba(007f86ee)"
     hypr_inactive_border="rgba(64666c55)"
-    hypr_locked_border="rgba(00008bff)"
+    hypr_locked_border="rgba(ff79c6ff)"
 fi
 
 gsettings set org.gnome.desktop.interface color-scheme "$color_scheme"
