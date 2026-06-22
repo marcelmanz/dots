@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-# fuzzy menu of open tmux sessions, local + remote. remote hosts probed in
-# parallel from recent ssh history (atuin); BatchMode + short timeout so
-# key-only hosts never hang. remote lines shown as host:session, local bare.
+# fuzzy menu of open tmux sessions. local sessions show the instant fzf opens;
+# remote hosts are probed async in parallel and stream in as each responds.
+# dedup by remote hostname #H so aliases to one box (mlab / mlab-local) collapse.
 
-# local sessions
-lines=$(tmux list-sessions -F '#{session_name}' 2>/dev/null || true)
-
-# remote: top recent ssh hosts
+# top recent ssh hosts (atuin frequency order)
 hosts=$(atuin search --cmd-only 'ssh ' 2>/dev/null |
     awk '
         /^ssh[[:space:]]/ {
@@ -24,37 +21,30 @@ hosts=$(atuin search --cmd-only 'ssh ' 2>/dev/null |
     awk '{ $1 = ""; sub(/^ /, ""); print }' |
     head -8)
 
-# ponytail: dedup by remote hostname #H — mlab (WAN) and mlab-local (LAN) are
-# one box; both report #H=mlab, so collapse to a single entry. atuin frequency
-# order surfaces the most-used alias first (usually LAN), which wins.
-tmp=$(mktemp -d)
-trap 'rm -rf "$tmp"' EXIT
-i=0
-for h in $hosts; do
-    (
-        timeout 4 ssh -o ConnectTimeout=2 -o BatchMode=yes "$h" \
-            "tmux list-sessions -F '#H|#{session_name}'" 2>/dev/null |
-            while IFS='|' read -r H s; do
-                [ -n "$H" ] && printf '%s|%s|%s\n' "$h" "$H" "$s"
-            done
-    ) > "$tmp/$i" &
-    i=$((i + 1))
-done
-wait || true
-
-declare -A seen=()
-for f in "$tmp"/*; do
-    [ -f "$f" ] || continue
-    while IFS='|' read -r alias H s; do
-        [ -n "${H:-}" ] && [ -n "${s:-}" ] || continue
-        key="$H|$s"
-        [ -n "${seen[$key]:-}" ] && continue
-        seen[$key]=1
-        lines=$(printf '%s\n%s:%s' "$lines" "$alias" "$s")
-    done < "$f"
-done
-
-pick=$(printf '%s\n' "$lines" | sed '/^$/d' | fzf --prompt='attach> ')
+# producer: local (now) + one bg job per host (streams alias|#H|session as it
+# responds). the pipe stays open until the last bg ssh exits → fzf keeps
+# appending. ponytail: dedup key is #H|session; first responder wins. both
+# mlab aliases reach the same box, so the race is harmless — re-run flips it.
+# swap for explicit LAN-preference if you want deterministic low-latency attach.
+pick=$(
+    {
+        tmux list-sessions -F '#{session_name}' 2>/dev/null || true
+        for h in $hosts; do
+            timeout 4 ssh -o ConnectTimeout=2 -o BatchMode=yes "$h" \
+                "tmux list-sessions -F '#H|#{session_name}'" 2>/dev/null |
+                awk -v a="$h" 'NF { print a "|" $0 }' &
+        done
+    } | awk -F'|' '
+        NF == 1 { print; fflush(); next }
+        {
+            k = $2 "|" $3
+            if (k in seen) next
+            seen[k] = 1
+            print $1 ":" $3
+            fflush()
+        }
+    ' | fzf --prompt='attach> '
+)
 [ -z "${pick:-}" ] && exit 0
 
 case "$pick" in
