@@ -3,6 +3,11 @@ set -euo pipefail
 
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
+if [ "${1:-}" = "--remote" ]; then
+    shift
+    exec "$script_dir/create-remote-session.sh" "${1:-}"
+fi
+
 if [ -n "${1:-}" ]; then
     case "$1" in
         *://*|*@*:*|*.git)
