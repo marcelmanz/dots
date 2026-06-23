@@ -314,33 +314,21 @@ export SSH_AUTH_SOCK
 # ENV. VARIABLES
 # export PAGER="moar --no-statusbar"
 
-# pass
-SECRETS_CACHE=~/.cache/sh/secret-env
-if [ -f "$SECRETS_CACHE" ] && [ ! ~/.bashrc -nt "$SECRETS_CACHE" ] && [ $(($(date +%s) - $(stat -c %Y "$SECRETS_CACHE"))) -lt 3600 ]; then
-	# shellcheck disable=SC1090
-	. "$SECRETS_CACHE"
-else
-	mkdir -p ~/.cache/sh
-	{
-		echo "export OPENAI_API_KEY=$(pass show openai/api-key 2>/dev/null)"
-		echo "export SRC_ACCESS_TOKEN=$(pass show sg/token 2>/dev/null)"
-		echo "export SRC_ENDPOINT=$(pass show sg/endpoint 2>/dev/null)"
-		echo "export GITLAB_TOKEN=$(pass show gitlab/access-token 2>/dev/null)"
-		echo "export GITHUB_TOKEN=$(pass show github/token 2>/dev/null)"
-		echo "export OPEN_BUTTON_TOKEN=$(pass show open_button/token 2>/dev/null)"
-		echo "export MINI_FLUX_TOKEN=$(pass show miniflux/pika-token-1 2>/dev/null)"
-		echo "export SLSKD_SLSK_USERNAME=$(pass show slskd/slsk_username 2>/dev/null)"
-		echo "export SLSKD_SLSK_PASSWORD=$(pass show slskd/slsk_password 2>/dev/null)"
-		echo "export SLSKD_USERNAME=$(pass show slskd/username 2>/dev/null)"
-		echo "export SLSKD_PASSWORD=$(pass show slskd/password 2>/dev/null)"
-		echo "export SYNTHETIC_API_KEY=$(pass show synthetic.new/api-key 2>/dev/null)"
-		echo "export MINIFLUX_API_KEY=$(pass show rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
-		echo "export KAGI_SESSION_TOKEN=$(pass show kagi/api-token 2>/dev/null)"
-		# echo "export ANTHROPIC_API_KEY=$(pass show anthropic/api-key 2>/dev/null)"
-	} >"$SECRETS_CACHE"
-
-	# shellcheck disable=SC1090
-	. "$SECRETS_CACHE"
+if command -v pass >/dev/null 2>&1; then
+	export OPENAI_API_KEY="$(pass show openai/api-key 2>/dev/null)"
+	export SRC_ACCESS_TOKEN="$(pass show sg/token 2>/dev/null)"
+	export SRC_ENDPOINT="$(pass show sg/endpoint 2>/dev/null)"
+	export GITLAB_TOKEN="$(pass show gitlab/access-token 2>/dev/null)"
+	export GITHUB_TOKEN="$(pass show github/token 2>/dev/null)"
+	export OPEN_BUTTON_TOKEN="$(pass show open_button/token 2>/dev/null)"
+	export MINI_FLUX_TOKEN="$(pass show miniflux/pika-token-1 2>/dev/null)"
+	export SLSKD_SLSK_USERNAME="$(pass show slskd/slsk_username 2>/dev/null)"
+	export SLSKD_SLSK_PASSWORD="$(pass show slskd/slsk_password 2>/dev/null)"
+	export SLSKD_USERNAME="$(pass show slskd/username 2>/dev/null)"
+	export SLSKD_PASSWORD="$(pass show slskd/password 2>/dev/null)"
+	export SYNTHETIC_API_KEY="$(pass show synthetic.new/api-key 2>/dev/null)"
+	export MINIFLUX_API_KEY="$(pass show rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
+	export KAGI_SESSION_TOKEN="$(pass show kagi/api-token 2>/dev/null)"
 fi
 
 export _JAVA_AWT_WM_NONREPARENTING=1
