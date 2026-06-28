@@ -75,7 +75,7 @@ set -g -x HYPRSHOT_DIR $HOME/screenshots
 set -g -x GITLAB_TOKEN (pass show gitlab/access-token)
 set -g -x SRC_ACCESS_TOKEN (pass show sg/token)
 set -g -x SRC_ENDPOINT (pass show sg/endpoint)
-set -g -x CACHIX_ACTIVATE_TOKEN (pass show nix/cachix/auth-token )
+set -g -x CACHIX_ACTIVATE_TOKEN (pass show cachix.org/auth-token )
 set -g -x GPG_TTY (tty)
 set -g MANPAGER 'nvim +Man!'
 set -g PAGER 'less -FRX'
