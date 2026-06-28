@@ -18,7 +18,7 @@ profile home_office {
 
 profile home {
     output "HDMI-A-1" mode 3840x2160@60.00Hz position 0,0 scale  2
-    output "DP-2"     mode 3840x2160@60.00Hz position 3840,0 scale  2
+    output "DP-2"     mode 3840x2160@60.00Hz position 1920,0 scale  2
     output "eDP-1" disable
     exec ~/.config/foot/set-font 2
 }
