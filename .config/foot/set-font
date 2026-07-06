@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
-# Switch foot font profile and reload running foot instances.
-# Usage: set-font <profile>   (profile = filename in font.d/ without .ini)
+# Set foot + GTK font size for a given output scale so effective px stays constant.
+# Usage: set-font <scale>   (e.g. 2, 2.5, 1)
 
 set -eu
 
-profile="${1:-screen}"
-dir="${XDG_CONFIG_HOME:-$HOME/.config}/foot"
-target="font.d/${profile}.ini"
-
-if [ ! -e "${dir}/${target}" ]; then
-    echo "set-font: missing ${dir}/${target}" >&2
-    exit 1
-fi
-
-ln -sfn "${target}" "${dir}/font-active.ini"
+scale="${1:?usage: set-font <scale>}"
+cfg="${XDG_CONFIG_HOME:-$HOME/.config}"
+out="$cfg/foot/font-active.ini"
+# ponytail: target 20px effective everywhere; change TARGET to tune
+TARGET=20
+rm -f "$out"  # clear any stale symlink before writing a real file
+printf 'font=Myna:size=%s\n' "$(awk "BEGIN{printf \"%g\", $TARGET/$scale}")" > "$out"
 pkill -USR1 foot 2>/dev/null || true
+
+# GTK: integer point size, same effective-px target. Only rewrites the
+# gtk-font-name line; dark-light-toggle.sh owns the rest of settings.ini.
+gtk_size="$(awk "BEGIN{printf \"%d\", ($TARGET/$scale)+0.5}")"
+for f in "$cfg/gtk-3.0/settings.ini" "$cfg/gtk-4.0/settings.ini"; do
+    [ -f "$f" ] || continue
+    sed -i "s/^gtk-font-name=.*/gtk-font-name=Noto Sans, $gtk_size/" "$f"
+done

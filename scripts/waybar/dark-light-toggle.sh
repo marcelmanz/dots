@@ -25,6 +25,7 @@ if [[ "$current" == "dark" ]]; then
     icon="󰖙"
     color_scheme="prefer-dark"
     gtk_theme="Adwaita-dark"
+    gtk_icon_theme="Adwaita-dark"
     cursor_theme="retrosmart-xcursor-white"
     wallpaper="$HOME/img/dark-grey.png"
     hypr_active_border="rgba(33ccffee)"
@@ -34,6 +35,7 @@ else
     icon="󰖨"
     color_scheme="prefer-light"
     gtk_theme="Adwaita"
+    gtk_icon_theme="Adwaita"
     cursor_theme="retrosmart-xcursor-black-shadow"
     wallpaper="$HOME/img/light-spring.png"
     hypr_active_border="rgba(007f86ee)"
@@ -41,9 +43,55 @@ else
     hypr_locked_border="rgba(ff79c6ff)"
 fi
 
-gsettings set org.gnome.desktop.interface color-scheme "$color_scheme"
-gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
-gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme"
+# Update GTK config files directly
+cat > ~/.config/gtk-3.0/settings.ini << EOF
+[Settings]
+gtk-application-prefer-dark-theme=$([[ "$current" == "dark" ]] && echo "true" || echo "false")
+gtk-theme-name=$gtk_theme
+gtk-icon-theme-name=$gtk_icon_theme
+gtk-cursor-theme-name=$cursor_theme
+gtk-cursor-theme-size=24
+gtk-enable-animations=true
+gtk-font-name=Noto Sans,  10
+gtk-button-images=true
+gtk-menu-images=true
+gtk-decoration-layout=icon:minimize,maximize,close
+gtk-primary-button-warps-slider=true
+gtk-modules=colorreload-gtk-module
+EOF
+
+cat > ~/.config/gtk-4.0/settings.ini << EOF
+[Settings]
+gtk-application-prefer-dark-theme=$([[ "$current" == "dark" ]] && echo "true" || echo "false")
+gtk-theme-name=$gtk_theme
+gtk-icon-theme-name=$gtk_icon_theme
+gtk-cursor-theme-name=$cursor_theme
+gtk-cursor-theme-size=24
+gtk-enable-animations=true
+gtk-font-name=Noto Sans,  10
+gtk-button-images=true
+gtk-menu-images=true
+gtk-decoration-layout=icon:minimize,maximize,close
+gtk-primary-button-warps-slider=true
+EOF
+
+cat > ~/.gtkrc-2.0 << EOF
+gtk-theme-name="$gtk_theme"
+gtk-icon-theme-name="$gtk_icon_theme"
+gtk-cursor-theme-name="$cursor_theme"
+gtk-cursor-theme-size=24
+gtk-enable-animations=1
+gtk-toolbar-style=3
+gtk-menu-images=1
+gtk-button-images=1
+gtk-primary-button-warps-slider=1
+gtk-sound-theme-name=ocean
+gtk-font-name="Noto Sans,  10"
+EOF
+
+gsettings set org.gnome.desktop.interface color-scheme "$color_scheme" 2>/dev/null || true
+gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme" 2>/dev/null || true
+gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme" 2>/dev/null || true
 hyprctl setcursor "$cursor_theme" 24 >/dev/null 2>&1
 hyprctl keyword general:col.active_border "$hypr_active_border" >/dev/null 2>&1
 hyprctl keyword general:col.inactive_border "$hypr_inactive_border" >/dev/null 2>&1
