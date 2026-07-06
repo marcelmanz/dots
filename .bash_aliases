@@ -1,17 +1,10 @@
 # vim: ft=bash
 
-# alias l="lsr --icons=never"
-# alias ls="lsr"
-# alias ll="lsr -l --icons=never"
-# alias lla="lsr -la --icons=never"
-alias l="eza -l --no-time --no-filesize --no-permissions --no-user"
-alias ls="eza"
-# alias l="ls"
-alias ll="eza -l"
+alias l="ls"
+
 alias workspace="~/scripts/workspace.sh"
 alias lm="eza -l --no-permissions --no-user"
 alias cowlol="cowsay hello | lolcat"
-alias lla="eza -la"
 alias hfpull="~/scripts/hf-pull.sh"
 alias cp="cp -i"
 alias mv="mv -i"
