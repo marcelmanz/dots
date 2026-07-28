@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 # Set foot + GTK font size for a given output scale so effective px stays constant.
-# Usage: set-font <scale>   (e.g. 2, 2.5, 1)
+# Usage: set-font [scale]   (e.g. 2, 2.5, 1); no arg = focused monitor scale via hyprctl
 
 set -eu
 
-scale="${1:?usage: set-font <scale>}"
+# ponytail: no arg -> read focused monitor scale from hyprland; keeps kanshi profiles
+# from having to hardcode (and get wrong) the scale. Pass an arg to override.
+scale="${1:-$(hyprctl monitors -j 2>/dev/null | jq -r 'first(.[] | select(.focused)) .scale // 1' 2>/dev/null || echo 1)}"
+scale="${scale:-1}"
 cfg="${XDG_CONFIG_HOME:-$HOME/.config}"
 out="$cfg/foot/font-active.ini"
 # ponytail: target 20px effective everywhere; change TARGET to tune
 TARGET=20
-rm -f "$out"  # clear any stale symlink before writing a real file
-printf 'font=Myna:size=%s\n' "$(awk "BEGIN{printf \"%g\", $TARGET/$scale}")" > "$out"
+rm -f "$out" # clear any stale symlink before writing a real file
+printf 'font=Myna:size=%s\n' "$(awk "BEGIN{printf \"%g\", $TARGET/$scale}")" >"$out"
 pkill -USR1 foot 2>/dev/null || true
 
 # GTK: integer point size, same effective-px target. Only rewrites the

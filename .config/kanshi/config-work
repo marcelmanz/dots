@@ -3,7 +3,7 @@ profile full_res_home_office {
     output "HDMI-A-1" mode 3840x2160@60.00Hz position 2560,346
     # output "eDP-1"    mode 1920x1200@60.00   position 0,120  scale 1.25
     output "eDP-1" disable
-    exec ~/.config/foot/set-font 1
+    exec ~/.config/foot/set-font 1.75
 }
 
 profile work {
@@ -19,7 +19,7 @@ profile work {
     output "HDMI-A-1" mode 1920x1080@60.00Hz  position 3080,960    scale 1
     output "eDP-1"    mode 1920x1200@60.00    position 1544,1080   scale 1.5
     # output "eDP-1" disable
-    exec ~/.config/foot/set-font 1
+    exec ~/.config/foot/set-font
 }
 
 profile laptop_only {
@@ -29,5 +29,5 @@ profile laptop_only {
 
 profile undocked {
     output "eDP-1" enable
-    exec ~/.config/foot/set-font 1
+    exec ~/.config/foot/set-font
 }
