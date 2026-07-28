@@ -75,6 +75,7 @@ parser.add_argument(
         "chromium",
         "brave",
         "brave-origin",
+        "brave-origin-nightly",
         "vivaldi",
         "edge",
         "firefox",
@@ -106,22 +107,19 @@ def header_to_cookiejar(cookie_header):
 
 
 def load_browser_cookies(browser_choice):
-    brave_origin_beta_cookies = os.path.expanduser(
-        "~/.config/BraveSoftware/Brave-Origin-Beta/Default/Cookies"
-    )
-    brave_origin_beta_key = os.path.expanduser(
-        "~/.config/BraveSoftware/Brave-Origin-Beta/Local State"
-    )
+    def brave_profile(profile_dir):
+        cookies = os.path.expanduser(f"~/.config/BraveSoftware/{profile_dir}/Default/Cookies")
+        key = os.path.expanduser(f"~/.config/BraveSoftware/{profile_dir}/Local State")
+        return lambda domain_name="": browser_cookie3.Brave(
+            cookie_file=cookies, domain_name=domain_name, key_file=key
+        ).load()
 
     loaders = {
+        "brave-origin-nightly": brave_profile("Brave-Origin-Nightly"),
         "chrome": browser_cookie3.chrome,
         "chromium": browser_cookie3.chromium,
         "brave": browser_cookie3.brave,
-        "brave-origin": lambda domain_name="": browser_cookie3.Brave(
-            cookie_file=brave_origin_beta_cookies,
-            domain_name=domain_name,
-            key_file=brave_origin_beta_key,
-        ).load(),
+        "brave-origin": brave_profile("Brave-Origin-Beta"),
         "vivaldi": browser_cookie3.vivaldi,
         "edge": browser_cookie3.edge,
         "firefox": browser_cookie3.firefox,

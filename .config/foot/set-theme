@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Switch foot light color theme and reload running foot instances.
+# Usage: set-theme <theme>   (theme = filename in themes.d/ without .ini)
+
+set -eu
+
+theme="${1:-custom}"
+dir="${XDG_CONFIG_HOME:-$HOME/.config}/foot"
+target="themes.d/${theme}.ini"
+
+if [ ! -e "${dir}/${target}" ]; then
+    echo "set-theme: missing ${dir}/${target}" >&2
+    echo "available:" >&2
+    ls "${dir}/themes.d" 2>/dev/null | sed 's/\.ini$//;s/^/  /' >&2
+    exit 1
+fi
+
+ln -sfn "${target}" "${dir}/colors-active.ini"
+pkill -USR1 foot 2>/dev/null || true
