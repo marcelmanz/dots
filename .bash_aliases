@@ -81,7 +81,8 @@ alias yb="yarn build"
 alias yig="yarn install -g"
 alias yjd="yarn jest --silent=false --watch (git_dirs)"
 alias zrc="nvim ~/.zshrc"
-alias ns="sudo nixos-rebuild switch --flake ~/.config/nix#nixos"
+alias ns="sudo nixos-rebuild switch -L --flake ~/.config/nix#nixos"
+alias nsl='sudo nixos-rebuild switch -L --flake ~/.config/nix#nixos --builders ""'
 alias nsb='sudo nixos-rebuild boot --upgrade --flake ~/.config/nix#nixos && echo "rebuild written to /boot – reboot when convenient"'
 alias nixu="nix flake update --flake ~/.config/nix"
 alias eww_kill="pkill -f 'eww open'"

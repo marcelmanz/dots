@@ -1,15 +1,25 @@
 {
-  "lastChangelogVersion": "0.79.8",
+  "lastChangelogVersion": "0.80.10",
   "defaultProvider": "synthetic",
   "defaultModel": "syn:large:text",
   "defaultThinkingLevel": "high",
-  "theme": "light",
+  "theme": "light/dark",
+  "trust": {
+    "lspBinaries": {
+      "/home/marcel/clones/own/highlighter.nvim/node_modules/.bin/lua-language-server": {
+        "id": "/home/marcel/clones/own/highlighter.nvim/node_modules/.bin/lua-language-server",
+        "kind": "lsp-binary",
+        "trusted_at": "2026-07-24T17:57:55.000Z"
+      }
+    }
+  },
   "packages": [
     "npm:@ff-labs/pi-fff",
     "git:github.com/DietrichGebert/ponytail",
     "npm:@aliou/pi-guardrails",
     "npm:pi-mcp-adapter",
     "npm:@tintinweb/pi-subagents",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:@spences10/pi-lsp"
   ]
 }
