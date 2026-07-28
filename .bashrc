@@ -329,7 +329,46 @@ if command -v pass >/dev/null 2>&1; then
 	export SYNTHETIC_API_KEY="$(pass show synthetic.new/api-key 2>/dev/null)"
 	export MINIFLUX_API_KEY="$(pass show rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
 	export KAGI_SESSION_TOKEN="$(pass show kagi/api-token 2>/dev/null)"
+	export BITBUCKET_USER=mmanzanares@worldsensing.com
+	export BITBUCKET_TOKEN="$(pass show atlassian.com/token 2>/dev/null)"
 fi
+
+bbdiff() {
+	local pr="${1:?usage: bbdiff <pr_number> [workspace/repo]}"
+	local repo
+	if [[ -n "$2" ]]; then
+		repo="$2"
+	else
+		repo=$(git remote get-url origin 2>/dev/null |
+			sed -E 's|.*bitbucket\.org[:/]||;s|\.git$||')
+		[[ -z "$repo" ]] && {
+			echo "Not a bitbucket repo, pass workspace/repo as \$2"
+			return 1
+		}
+	fi
+	local base="https://api.bitbucket.org/2.0/repositories/$repo"
+	curl -sf -m 30 -u "$BITBUCKET_USER:$BITBUCKET_TOKEN" "$base/pullrequests/$pr" |
+		jq -r '"Title: \(.title)\nDescription: \(.description // "")\nBranch: \(.source.branch.name) → \(.destination.branch.name)\n"'
+	curl -sL -m 30 -u "$BITBUCKET_USER:$BITBUCKET_TOKEN" "$base/pullrequests/$pr/diff"
+}
+
+bbpr() {
+	local pr="${1:?usage: bbpr <pr_number> [workspace/repo]}"
+	local repo
+	if [[ -n "$2" ]]; then
+		repo="$2"
+	else
+		repo=$(git remote get-url origin 2>/dev/null |
+			sed -E 's|.*bitbucket\.org[:/]||;s|\.git$||')
+		[[ -z "$repo" ]] && {
+			echo "Not a bitbucket repo, pass workspace/repo as \$2"
+			return 1
+		}
+	fi
+	curl -s -u "$BITBUCKET_USER:$BITBUCKET_TOKEN" \
+		"https://api.bitbucket.org/2.0/repositories/$repo/pullrequests/$pr" |
+		jq '{title, state, author: .author.display_name, source: .source.branch.name, destination: .destination.branch.name, description}'
+}
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
