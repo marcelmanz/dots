@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.80.10",
+  "lastChangelogVersion": "0.81.1",
   "defaultProvider": "synthetic",
-  "defaultModel": "syn:small:text",
+  "defaultModel": "syn:large:text",
   "defaultThinkingLevel": "high",
   "theme": "light/dark",
   "trust": {
