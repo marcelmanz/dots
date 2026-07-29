@@ -30,6 +30,8 @@
   "hyprland/workspaces": {
     "disable-scroll": false,
     "all-outputs": false,
+    "ignore-workspaces": ["^0$"],
+    "special-visible-only": true,
     "format": "{id}:{icon}",
     "format-icons": {
       "1": "browse",

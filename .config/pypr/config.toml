@@ -17,6 +17,13 @@ plugins = [
 # class = "the window's class"  # check: hyprctl clients | grep class
 # size = "<width> <height>"  # size of the window relative to the screen size
 
+[scratchpads.cinny]
+animation = ""
+command = "cinny"
+class = "cinny"
+size = "70% 80%"
+lazy = true
+
 [scratchpads.term]
 animation = ""
 class = "bash"
