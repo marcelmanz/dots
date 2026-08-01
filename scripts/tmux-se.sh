@@ -34,7 +34,7 @@ else
 	SESSION_NAME=$DEFAULT_SESSION
 fi
 
-if command -v mosh &>/dev/null; then
+if [[ "${TARGET_HOST}" == "mlab-local" ]] && command -v mosh &>/dev/null; then
 	mosh "${TARGET_USER}@${TARGET_HOST}" -- tmux new-session -A -s "${SESSION_NAME}"
 else
 	echo "fallback to ssh"
