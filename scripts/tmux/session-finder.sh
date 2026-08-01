@@ -18,9 +18,11 @@ if ((${#sessions[@]} == 2)); then
 	done
 fi
 
-for session in "${sessions[@]}"; do
-	if [[ "$session" == "$current_session" ]]; then
-		continue
-	fi
+selected=$(for session in "${sessions[@]}"; do
+	[[ "$session" == "$current_session" ]] && continue
 	echo "$session"
-done | fzf --height=~50% --width=300 --prompt="Switch to tmux session: " | xargs tmux switch-client -t
+done | fzf --prompt="Switch to tmux session: ")
+
+if [[ -n "$selected" ]]; then
+	tmux switch-client -t "$selected"
+fi
