@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.82.1",
-  "defaultProvider": "synthetic",
-  "defaultModel": "syn:large:text",
+  "defaultProvider": "router",
+  "defaultModel": "text",
   "defaultThinkingLevel": "high",
   "theme": "light/dark",
   "trust": {
