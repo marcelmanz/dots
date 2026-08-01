@@ -23,4 +23,4 @@ for session in "${sessions[@]}"; do
 		continue
 	fi
 	echo "$session"
-done | tofi --width 350 --height 210 | xargs tmux switch-client -t
+done | fzf --height=~50% --width=300 --prompt="Switch to tmux session: " | xargs tmux switch-client -t
