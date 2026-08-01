@@ -1,0 +1,53 @@
+{
+  "defaultProfile": "text",
+  "classifierModel": "syn:small:text",
+  "maxSessionBudget": 1,
+  "profiles": {
+    "text": {
+      "high": {
+        "model": "syn:large:text",
+        "thinking": "auto"
+      },
+      "medium": {
+        "model": "hf:openai/gpt-oss-120b",
+        "thinking": "auto"
+      },
+      "low": {
+        "model": "syn:small:text",
+        "thinking": "off"
+      }
+    },
+    "vision": {
+      "high": {
+        "model": "syn:large:vision",
+        "thinking": "auto"
+      },
+      "medium": {
+        "model": "syn:small:vision",
+        "thinking": "auto"
+      },
+      "low": {
+        "model": "syn:small:vision",
+        "thinking": "off"
+      }
+    }
+  },
+  "rules": [
+    {
+      "matches": "deploy",
+      "tier": "high"
+    },
+    {
+      "matches": "refactor",
+      "tier": "high"
+    },
+    {
+      "matches": "test",
+      "tier": "low"
+    },
+    {
+      "matches": "format",
+      "tier": "low"
+    }
+  ]
+}

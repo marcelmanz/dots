@@ -18,8 +18,8 @@
     "git:github.com/DietrichGebert/ponytail",
     "npm:@aliou/pi-guardrails",
     "npm:pi-mcp-adapter",
-    "npm:@tintinweb/pi-subagents",
     "npm:pi-subagents",
-    "npm:@spences10/pi-lsp"
+    "npm:@spences10/pi-lsp",
+    "npm:@yeliu84/pi-model-router"
   ]
 }

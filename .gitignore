@@ -1,16 +1,21 @@
-# === SECURITY: Never commit secrets ===
+# === never commit secrets ===
 .pi/agent/auth.json
 .pi/agent/sessions/
 .pi/agent/*.token
 .pi/agent/*.secret
 
-# === Pi Agent: Only safe config files ===
 .pi/agent/*
 .pi/npm/*
+
+# safe pi agent files
+!.pi/agent/model-router.json
 !.pi/agent/models.json
 !.pi/agent/settings.json
+!.pi/agent/my-pi-settings.json
+!.pi/agent/mcp.json
+!.pi/agent/.gitignore
 
-# === Other exclusions ===
+# === other exclusions ===
 .cargo/
 old-scripts/
 .config/nushell/history.txt

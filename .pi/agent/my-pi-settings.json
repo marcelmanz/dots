@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"extensions": {
+		"enabled": {}
+	},
+	"trust": {
+		"lspBinaries": {
+			"/home/marcel/clones/own/highlighter.nvim/node_modules/.bin/lua-language-server": {
+				"id": "/home/marcel/clones/own/highlighter.nvim/node_modules/.bin/lua-language-server",
+				"kind": "lsp-binary",
+				"trusted_at": "2026-07-24T17:58:44.523Z"
+			}
+		}
+	},
+	"packages": {}
+}

@@ -1,0 +1,15 @@
+auth.json
+*.auth.json
+*.token
+*.secret
+*.key
+
+sessions/
+*.session
+
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+*.log
