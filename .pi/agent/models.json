@@ -15,11 +15,13 @@
         },
         {
           "id": "syn:large:vision",
-          "name": "syn:large:vision"
+          "name": "syn:large:vision",
+          "input": ["text", "image"]
         },
         {
           "id": "syn:small:vision",
-          "name": "syn:small:vision"
+          "name": "syn:small:vision",
+          "input": ["text", "image"]
         },
         {
           "id": "hf:zai-org/GLM-5.1",

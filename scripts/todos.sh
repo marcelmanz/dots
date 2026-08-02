@@ -78,7 +78,7 @@ if [[ ! -f $current_date_todo ]]; then
     echo
     if [[ -f $previous_date_todo ]]; then
       # link to yesterday's TODO
-      echo "[[/TODO:$previous_date]]"
+      echo "[[TODO:$previous_date]]"
       echo
     fi
     echo "- [ ] "

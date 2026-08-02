@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.82.1",
+  "lastChangelogVersion": "0.83.0",
   "defaultProvider": "router",
   "defaultModel": "text",
   "defaultThinkingLevel": "high",
@@ -20,6 +20,7 @@
     "npm:pi-mcp-adapter",
     "npm:pi-subagents",
     "npm:@spences10/pi-lsp",
-    "npm:@yeliu84/pi-model-router"
+    "npm:@yeliu84/pi-model-router",
+    "npm:pi-multimodal-proxy"
   ]
 }
