@@ -21,6 +21,7 @@
     "npm:pi-subagents",
     "npm:@spences10/pi-lsp",
     "npm:@yeliu84/pi-model-router",
-    "npm:pi-multimodal-proxy"
+    "npm:pi-multimodal-proxy",
+    "../../clones/forks/pi-multimodal-proxy"
   ]
 }
