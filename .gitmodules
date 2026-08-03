@@ -26,9 +26,11 @@
 [submodule ".tmux/plugins/tpm"]
 	path = .tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
+	ignore = dirty
 [submodule ".config/tmux/plugins/extrakto"]
 	path = .config/tmux/plugins/extrakto
 	url = https://github.com/laktak/extrakto
+	ignore = dirty
 [submodule ".tasks"]
 	path = .tasks
 	url = git@github.com:marcelarie/.tasks.git

@@ -1,4 +1,4 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR __fish_initialized:4300
-SETUVAR fish_user_paths:/home/marcel/scripts\x1e/home/mmanzanares/scripts
+SETUVAR fish_user_paths:/home/marcel/go/bin\x1e/home/marcel/scripts\x1e/home/mmanzanares/scripts
