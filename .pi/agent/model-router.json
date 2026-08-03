@@ -9,7 +9,7 @@
         "thinking": "high"
       },
       "medium": {
-        "model": "synthetic/hf:openai/gpt-oss-120b",
+        "model": "synthetic/syn:large:text",
         "thinking": "medium"
       },
       "low": {
