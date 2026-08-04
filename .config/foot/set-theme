@@ -4,7 +4,7 @@
 
 set -eu
 
-theme="${1:-custom}"
+theme="${1:-lunaperche}"
 dir="${XDG_CONFIG_HOME:-$HOME/.config}/foot"
 target="themes.d/${theme}.ini"
 
