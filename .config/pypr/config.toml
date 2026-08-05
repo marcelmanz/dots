@@ -21,14 +21,14 @@ plugins = [
 animation = ""
 command = "cinny"
 class = "cinny"
-size = "70% 80%"
+size = "99% 100%"
 lazy = true
 
 [scratchpads.term]
 animation = ""
 class = "bash"
 command = "foot -a bash -L bash"
-size = "75% 40%"
+size = "75% 75%"
 lazy = true
 
 # [scratchpads.whats]
