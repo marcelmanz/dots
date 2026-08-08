@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
-export BEMENU_OPTS="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6 --fn 'monospace 11' -H 28"
+MODE_FILE="$HOME/.cache/.theme_mode"
+if [[ -f "$MODE_FILE" ]] && [[ "$(cat "$MODE_FILE")" == "dark" ]]; then
+    theme="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6"
+else
+    theme="--fb #eeeeee --ff #1c1c1c --nb #eeeeee --nf #1c1c1c --tb #eeeeee --tf #005f87 --hb #d0d0d0 --hf #d75f00 --ab #eeeeee --af #1c1c1c"
+fi
+
+export BEMENU_OPTS="$theme --fn 'monospace 11' -H 28 -l 15 -n -M 0 0 0 0"
 
 selected=$(rbw ls | bemenu -p "rbw:")
 [[ -n "$selected" ]] || exit 0
