@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+export BEMENU_OPTS="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6 --fn 'monospace 11' -H 28"
+
+selected=$(rbw ls | bemenu -p "rbw:")
+[[ -n "$selected" ]] || exit 0
+
+password=$(rbw get "$selected")
+[[ -n "$password" ]] || exit 1
+
+echo -n "$password" | wl-copy --sensitive
+
+(
+    sleep 45
+    if [[ "$(wl-paste 2>/dev/null)" == "$password" ]]; then
+        wl-copy --clear
+    fi
+) &
+disown
