@@ -22,7 +22,7 @@ case ":$PATH:" in
 esac
 # pnpm end
 #
-GITHUB_TOKEN=$(pass show github/token)
+GITHUB_TOKEN=$(rbw get --folder github token)
 export GITHUB_TOKEN
 
 # eval "$(starship init zsh)"

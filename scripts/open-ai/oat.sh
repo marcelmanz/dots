@@ -5,8 +5,8 @@ yellow_color='\033[0;33m'
 no_color='\033[0m'
 
 if [[ -z $OPENAI_API_KEY ]]; then
-	if command -v pass &>/dev/null; then
-		OPENAI_API_KEY=$(pass show openai/api-key)
+	if command -v rbw &>/dev/null; then
+		OPENAI_API_KEY=$(rbw get --folder openai api-key)
 	fi
 fi
 

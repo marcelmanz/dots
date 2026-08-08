@@ -64,7 +64,7 @@ sleep_in() {
 }
 
 refresh_techno_playlist() {
-	password="$(pass show slskd/account | head -n1)"
+	password="$(rbw get --folder slskd account)"
 
 	sldl \
 		--input "https://www.youtube.com/watch?v=QAyrU6hhVRc&list=PLHa2a9cVibtnn69H5nJ-hMLGmm3t6lz1z&pp=sAgC" \
@@ -314,23 +314,23 @@ export SSH_AUTH_SOCK
 # ENV. VARIABLES
 # export PAGER="moar --no-statusbar"
 
-if command -v pass >/dev/null 2>&1; then
-	export OPENAI_API_KEY="$(pass show openai/api-key 2>/dev/null)"
-	export SRC_ACCESS_TOKEN="$(pass show sg/token 2>/dev/null)"
-	export SRC_ENDPOINT="$(pass show sg/endpoint 2>/dev/null)"
-	export GITLAB_TOKEN="$(pass show gitlab/access-token 2>/dev/null)"
-	export GITHUB_TOKEN="$(pass show github/token 2>/dev/null)"
-	export OPEN_BUTTON_TOKEN="$(pass show open_button/token 2>/dev/null)"
-	export MINI_FLUX_TOKEN="$(pass show miniflux/pika-token-1 2>/dev/null)"
-	export SLSKD_SLSK_USERNAME="$(pass show slskd/slsk_username 2>/dev/null)"
-	export SLSKD_SLSK_PASSWORD="$(pass show slskd/slsk_password 2>/dev/null)"
-	export SLSKD_USERNAME="$(pass show slskd/username 2>/dev/null)"
-	export SLSKD_PASSWORD="$(pass show slskd/password 2>/dev/null)"
-	export SYNTHETIC_API_KEY="$(pass show synthetic.new/api-key 2>/dev/null)"
-	export MINIFLUX_API_KEY="$(pass show rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
-	export KAGI_SESSION_TOKEN="$(pass show kagi/api-token 2>/dev/null)"
+if command -v rbw >/dev/null 2>&1; then
+	export OPENAI_API_KEY="$(rbw get --folder openai api-key 2>/dev/null)"
+	export SRC_ACCESS_TOKEN="$(rbw get --folder sg token 2>/dev/null)"
+	export SRC_ENDPOINT="$(rbw get --folder sg endpoint 2>/dev/null)"
+	export GITLAB_TOKEN="$(rbw get --folder gitlab access-token 2>/dev/null)"
+	export GITHUB_TOKEN="$(rbw get --folder github token 2>/dev/null)"
+	export OPEN_BUTTON_TOKEN="$(rbw get --folder open_button token 2>/dev/null)"
+	export MINI_FLUX_TOKEN="$(rbw get --folder miniflux pika-token-1 2>/dev/null)"
+	export SLSKD_SLSK_USERNAME="$(rbw get --folder slskd slsk_username 2>/dev/null)"
+	export SLSKD_SLSK_PASSWORD="$(rbw get --folder slskd slsk_password 2>/dev/null)"
+	export SLSKD_USERNAME="$(rbw get --folder slskd username 2>/dev/null)"
+	export SLSKD_PASSWORD="$(rbw get --folder slskd password 2>/dev/null)"
+	export SYNTHETIC_API_KEY="$(rbw get --folder synthetic.new api-key 2>/dev/null)"
+	export MINIFLUX_API_KEY="$(rbw get --field notes rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
+	export KAGI_SESSION_TOKEN="$(rbw get --folder kagi api-token 2>/dev/null)"
 	export BITBUCKET_USER=mmanzanares@worldsensing.com
-	export BITBUCKET_TOKEN="$(pass show atlassian.com/token 2>/dev/null)"
+	export BITBUCKET_TOKEN="$(rbw get --folder atlassian.com token 2>/dev/null)"
 fi
 
 bbdiff() {
