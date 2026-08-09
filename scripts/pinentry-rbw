@@ -1,0 +1,28 @@
+#!/bin/sh
+# pinentry-rbw: auto-fills the rbw master password from the gnome login keyring
+#
+# One-time setup:
+#   secret-tool store --label 'rbw master password' application rbw
+#   rbw config set pinentry /home/marcel/scripts/pinentry-rbw
+#
+REAL_PINENTRY=pinentry-qt
+pass=$(secret-tool lookup application rbw 2>/dev/null)
+
+[ -n "$pass" ] || exec "$REAL_PINENTRY" "$@"
+
+printf 'OK Pleased to meet you\n'
+while IFS= read -r line; do
+    case "$line" in
+    GETPIN)
+        enc=$(printf '%s' "$pass" | sed 's/%/%25/g')
+        printf 'D %s\nOK\n' "$enc"
+        ;;
+    BYE)
+        printf 'OK\n'
+        exit 0
+        ;;
+    *)
+        printf 'OK\n'
+        ;;
+    esac
+done

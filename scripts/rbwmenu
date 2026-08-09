@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+if pkill -x bemenu >/dev/null 2>&1; then
+    exit 0
+fi
+
+MODE_FILE="$HOME/.cache/.theme_mode"
+if [[ -f "$MODE_FILE" ]] && [[ "$(cat "$MODE_FILE")" == "dark" ]]; then
+    theme="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6"
+else
+    theme="--fb #eeeeee --ff #1c1c1c --nb #eeeeee --nf #1c1c1c --tb #eeeeee --tf #005f87 --hb #d0d0d0 --hf #d75f00 --ab #eeeeee --af #1c1c1c"
+fi
+
+export BEMENU_OPTS="$theme --fn 'monospace 11' -H 28 -l 15 -n -M 0 0 0 0"
+
+# Show name/folder/user so duplicate names are easly identified
+selected=$(
+	rbw ls --fields name,folder,user,id 2>/dev/null |
+		awk -F'\t' '
+			{ n[NR]=$1; f[NR]=$2; u[NR]=$3; i[NR]=$4
+			  if(length($1)>m1)m1=length($1)
+			  if(length($2)>m2)m2=length($2) }
+			END { for(k=1;k<=NR;k++) {
+				uf = length(u[k]) > 15 ? substr(u[k],1,12) "..." : u[k]
+				printf "%-*s  %-*s  %-15s\t%s\n", m1,n[k], m2,f[k], uf, i[k] } }' |
+		bemenu -p "rbw:"
+)
+[[ -n "$selected" ]] || exit 0
+
+password=$(rbw get "${selected##*$'\t'}")
+[[ -n "$password" ]] || exit 1
+
+echo -n "$password" | wl-copy --sensitive
+
+(
+    sleep 45
+    if [[ "$(wl-paste 2>/dev/null)" == "$password" ]]; then
+        wl-copy --clear
+    fi
+) &
+disown
