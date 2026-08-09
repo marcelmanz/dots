@@ -433,6 +433,8 @@ alias memfzf="~/scripts/practice.sh -c | fzf | ~/scripts/practice.sh"
 
 alias kport="~/scripts/kill-port.sh"
 
+alias gurk='gurk --passphrase $(rbw get im.molly.app)'
+
 # Worldsensing
 
 alias ws-create-branch="~/scripts/work/custom-create-branch-name.sh"
