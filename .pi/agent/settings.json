@@ -1,7 +1,7 @@
 {
   "lastChangelogVersion": "0.83.0",
-  "defaultProvider": "router",
-  "defaultModel": "text",
+  "defaultProvider": "synthetic",
+  "defaultModel": "hf:moonshotai/kimi-k3",
   "defaultThinkingLevel": "high",
   "theme": "light/dark",
   "trust": {
