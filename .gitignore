@@ -1,3 +1,4 @@
+.tasks/
 # === never commit secrets ===
 .pi/agent/auth.json
 .pi/agent/sessions/
