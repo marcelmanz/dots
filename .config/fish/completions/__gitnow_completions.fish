@@ -1,4 +1,7 @@
-source $__fish_data_dir/completions/git.fish
+# ponytail: fish 4.8.1 on nix ships no share/fish/completions/git.fish; guard the source
+# ponytail: without __fish_git_branches/__fish_git_tags, gitnow branch/tag candidates no-op
+test -f $__fish_data_dir/completions/git.fish
+and source $__fish_data_dir/completions/git.fish
 
 # Merge command
 

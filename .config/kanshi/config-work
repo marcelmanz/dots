@@ -1,9 +1,11 @@
-profile full_res_home_office {
-    output "DP-3"     mode 3840x2160@60.00Hz position 0,346
-    output "HDMI-A-1" mode 3840x2160@60.00Hz position 2560,346
+profile home_office {
+    output "DP-3"     mode 3840x2160@60.00Hz position 0,0 scale 1.5
+    output "HDMI-A-1" mode 3840x2160@60.00Hz position 2560,0 scale 1.5
+
     # output "eDP-1"    mode 1920x1200@60.00   position 0,120  scale 1.25
+
     output "eDP-1" disable
-    exec ~/.config/foot/set-font 1.75
+    exec ~/.config/foot/set-font
 }
 
 profile work {
