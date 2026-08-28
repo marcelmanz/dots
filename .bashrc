@@ -302,7 +302,7 @@ vpn() {
 
 # Start gpg-agent if not already running
 GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
-GPG_TTY=$(tty)
+GPG_TTY=$(tty 2>/dev/null)
 export GPG_AGENT_INFO GPG_TTY
 SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-$(gpgconf --list-dirs agent-ssh-socket)}
 export SSH_AUTH_SOCK
@@ -315,8 +315,9 @@ export SSH_AUTH_SOCK
 # export PAGER="moar --no-statusbar"
 
 if command -v rbw >/dev/null 2>&1; then
-	export MINI_FLUX_TOKEN="$(rbw get --folder miniflux pika-token-1 2>/dev/null)"
-	export SYNTHETIC_API_KEY="$(rbw get --folder synthetic.new api-key 2>/dev/null)"
+	MINI_FLUX_TOKEN="$(rbw get --folder miniflux pika-token-1 2>/dev/null)"
+	SYNTHETIC_API_KEY="$(rbw get --folder synthetic.new api-key 2>/dev/null)"
+	export MINI_FLUX_TOKEN SYNTHETIC_API_KEY
 fi
 
 export BITBUCKET_USER=mmanzanares@worldsensing.com
@@ -344,7 +345,7 @@ bbdiff() {
 bbpr() {
 	local pr="${1:?usage: bbpr <pr_number> [workspace/repo]}"
 	local repo
-	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbe get --folder atlassian.com token)}"
+	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbw get --folder atlassian.com token)}"
 	if [[ -n "$2" ]]; then
 		repo="$2"
 	else
