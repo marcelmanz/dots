@@ -315,27 +315,16 @@ export SSH_AUTH_SOCK
 # export PAGER="moar --no-statusbar"
 
 if command -v rbw >/dev/null 2>&1; then
-	export OPENAI_API_KEY="$(rbw get --folder openai api-key 2>/dev/null)"
-	export SRC_ACCESS_TOKEN="$(rbw get --folder sg token 2>/dev/null)"
-	export SRC_ENDPOINT="$(rbw get --folder sg endpoint 2>/dev/null)"
-	export GITLAB_TOKEN="$(rbw get --folder gitlab access-token 2>/dev/null)"
-	export GITHUB_TOKEN="$(rbw get --folder github token 2>/dev/null)"
-	export OPEN_BUTTON_TOKEN="$(rbw get --folder open_button token 2>/dev/null)"
 	export MINI_FLUX_TOKEN="$(rbw get --folder miniflux pika-token-1 2>/dev/null)"
-	export SLSKD_SLSK_USERNAME="$(rbw get --folder slskd slsk_username 2>/dev/null)"
-	export SLSKD_SLSK_PASSWORD="$(rbw get --folder slskd slsk_password 2>/dev/null)"
-	export SLSKD_USERNAME="$(rbw get --folder slskd username 2>/dev/null)"
-	export SLSKD_PASSWORD="$(rbw get --folder slskd password 2>/dev/null)"
 	export SYNTHETIC_API_KEY="$(rbw get --folder synthetic.new api-key 2>/dev/null)"
-	export MINIFLUX_API_KEY="$(rbw get --field notes rss.marcel.cool | grep "api:" | cut -d ' ' -f 2 2>/dev/null)"
-	export KAGI_SESSION_TOKEN="$(rbw get --folder kagi api-token 2>/dev/null)"
-	export BITBUCKET_USER=mmanzanares@worldsensing.com
-	export BITBUCKET_TOKEN="$(rbw get --folder atlassian.com token 2>/dev/null)"
 fi
+
+export BITBUCKET_USER=mmanzanares@worldsensing.com
 
 bbdiff() {
 	local pr="${1:?usage: bbdiff <pr_number> [workspace/repo]}"
 	local repo
+	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbw get --folder atlassian.com token)}"
 	if [[ -n "$2" ]]; then
 		repo="$2"
 	else
@@ -355,6 +344,7 @@ bbdiff() {
 bbpr() {
 	local pr="${1:?usage: bbpr <pr_number> [workspace/repo]}"
 	local repo
+	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbe get --folder atlassian.com token)}"
 	if [[ -n "$2" ]]; then
 		repo="$2"
 	else
