@@ -24,8 +24,8 @@ fi
 if [[ "$current" == "dark" ]]; then
     icon="󰖙"
     color_scheme="prefer-dark"
-    gtk_theme="Adwaita-dark"
-    gtk_icon_theme="Adwaita-dark"
+    gtk_theme="Breeze-Dark"
+    gtk_icon_theme="breeze-dark"
     cursor_theme="retrosmart-xcursor-white"
     wallpaper="$HOME/img/dark-grey.png"
     hypr_active_border="rgba(33ccffee)"
@@ -34,8 +34,8 @@ if [[ "$current" == "dark" ]]; then
 else
     icon="󰖨"
     color_scheme="prefer-light"
-    gtk_theme="Adwaita"
-    gtk_icon_theme="Adwaita"
+    gtk_theme="Breeze"
+    gtk_icon_theme="breeze"
     cursor_theme="retrosmart-xcursor-black-shadow"
     wallpaper="$HOME/img/light-spring.png"
     hypr_active_border="rgba(007f86ee)"
@@ -107,6 +107,18 @@ fi
 ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
+
+# Chromium's GTK "System" theme detection is unreliable on Linux, so force
+# Brave's own theme pref directly instead of trusting it. Only safe to edit
+# while Brave isn't running -- it overwrites this file on write/exit.
+BRAVE_PREFS="$HOME/.config/BraveSoftware/Brave-Origin-Nightly/Default/Preferences"
+if [[ -f "$BRAVE_PREFS" ]] && ! pgrep -f brave-origin-nightly >/dev/null; then
+    brave_color_scheme=$([[ "$current" == "dark" ]] && echo 2 || echo 1)
+    tmp=$(mktemp)
+    jq --argjson cs "$brave_color_scheme" \
+        '.browser.theme.color_scheme = $cs | .browser.theme.color_scheme2 = $cs' \
+        "$BRAVE_PREFS" > "$tmp" && mv "$tmp" "$BRAVE_PREFS"
+fi
 
 if [[ "$1" == "toggle" ]]; then
     # tmux reload FIRST: waybar (our parent) gets signaled below and may
