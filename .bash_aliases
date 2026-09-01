@@ -82,7 +82,7 @@ alias nixu="nix flake update --flake ~/.config/nix"
 alias eww_kill="pkill -f 'eww open'"
 alias eww_start="~/clones/own/dots/.config/eww/launch.sh"
 alias nixiu="nix flake update --flake ~/.config/nix --update-input "
-alias hms="home-manager switch --flake ~/.config/nix#work"
+alias hms="home-manager switch --flake ~/.config/nix#work -b backup"
 alias nus='cachix push marcelarie $(nix path-info /run/current-system)'
 alias nise="nix-search"
 alias tempshell="~/scripts/nix-templates.sh"
@@ -456,6 +456,7 @@ alias rootloc="~/scripts/tmux-se.sh root mlab-local root_mlab"
 alias devlab="~/scripts/tmux-se.sh dev mlab dev_mlab"
 alias devloc="~/scripts/tmux-se.sh dev mlab-local dev_mlab"
 
+alias check_x4="~/scripts/work/thread-x4/link-x4.sh"
 alias authx4="~/scripts/work/thread-x4/auth.py"
 alias vulnerability_scanner="nsh vulnix -- ~/result/"
 

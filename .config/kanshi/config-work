@@ -5,7 +5,7 @@ profile home_office {
     # output "eDP-1"    mode 1920x1200@60.00   position 0,120  scale 1.25
 
     output "eDP-1" disable
-    exec ~/.config/foot/set-font
+    exec ~/.config/foot/set-font 1.5
 }
 
 profile work {

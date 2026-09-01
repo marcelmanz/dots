@@ -7,6 +7,6 @@
   "notifications_url": null,
   "lock_timeout": 3600,
   "sync_interval": 3600,
-  "pinentry": "pinentry-tty",
+  "pinentry": "/home/mmanzanares/scripts/pinentry-rbw",
   "client_cert_path": null
 }
