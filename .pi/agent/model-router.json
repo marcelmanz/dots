@@ -9,7 +9,7 @@
         "thinking": "high"
       },
       "medium": {
-        "model": "synthetic/syn:large:text",
+        "model": "synthetic/hf:Qwen/Qwen3.8-27B",
         "thinking": "medium"
       },
       "low": {

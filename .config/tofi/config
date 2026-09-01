@@ -4,7 +4,7 @@ drun-launch = true
 terminal = /usr/bin/foot
 
 # anchor = top
-width = 30%
+width = 100%
 height = 450
 # horizontal = true
 font-size = 11

@@ -35,11 +35,13 @@
       }
     }
   },
-  "effortLevel": "medium",
-  "theme": "light",
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "theme": "auto",
   "editorMode": "vim",
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
   "autoCompactEnabled": false,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "model": "opus[1m]"
 }
