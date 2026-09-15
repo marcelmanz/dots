@@ -89,6 +89,7 @@ values — but worth knowing if you re-run verification yourself.
    - `keybinds.lua`
    - `devices/nixos.lua`
    - `devices/WS0277.lua`
+   - `.luarc.json` (LSP config, see below) if that's not auto-included
 2. **Test live** after linking: `hyprctl reload` (or a fresh Hyprland
    session) and walk through keybinds, workspace names/scratchpad,
    window rules, per-host overrides on both machines.
@@ -99,6 +100,19 @@ values — but worth knowing if you re-run verification yourself.
 4. Not required, but worth a look sometime: `monitors.conf`,
    `workspaces.conf`, `hyprpaper.conf` are still dead weight in the repo,
    independent of this migration.
+
+## LSP setup
+
+Added `.luarc.json` in this directory pointing `workspace.library` at
+`/run/current-system/sw/share/hypr/stubs` — the type stubs Hyprland itself
+ships for the `hl` global (`hl.meta.lua`), at a stable system-profile path
+rather than the versioned `/nix/store/...` one. lua-language-server picks
+up the nearest `.luarc.json` up the tree, so this is scoped to
+`.config/hypr/` only.
+
+This clears `undefined global variable: hl`. It will **not** clear
+`Cannot resolve module 'device'` — that's expected, since `device.lua` is
+only ever a runtime-created symlink and is intentionally not committed.
 
 ## Reference
 
