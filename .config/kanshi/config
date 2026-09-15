@@ -34,3 +34,9 @@ profile laptop_only {
     # output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
     exec ~/.config/foot/set-font 2.5
 }
+
+profile dj_setup {
+    output "HDMI-A-1" mode 3840x2160@60.00Hz position 0,0 scale 1.5
+    output "eDP-1" mode 3840x2160@60.01Hz position 2560,0 scale 2
+    exec ~/.config/foot/set-font
+}
