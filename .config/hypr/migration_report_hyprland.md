@@ -103,12 +103,21 @@ values — but worth knowing if you re-run verification yourself.
 
 ## LSP setup
 
-Added `.luarc.json` in this directory pointing `workspace.library` at
-`/run/current-system/sw/share/hypr/stubs` — the type stubs Hyprland itself
-ships for the `hl` global (`hl.meta.lua`), at a stable system-profile path
-rather than the versioned `/nix/store/...` one. lua-language-server picks
-up the nearest `.luarc.json` up the tree, so this is scoped to
-`.config/hypr/` only.
+Added `.luarc.json` in this directory pointing `workspace.library` at the
+type stubs Hyprland itself ships for the `hl` global (`hl.meta.lua`).
+Lists three candidate paths, since this repo has configs for more than
+one host and they're not all NixOS (`devices/WS0277.conf`'s manual
+`~/.nix-profile/bin` PATH prepend is a tell that it's Nix-on-non-NixOS,
+not a NixOS install):
+
+- `/run/current-system/sw/share/hypr/stubs` — NixOS system profile
+- `/usr/share/hypr/stubs` — standard distro packaging (Arch/Debian/Fedora)
+- `/usr/local/share/hypr/stubs` — manual/local installs
+
+lua-language-server silently skips entries that don't exist, so listing
+all three is free — no per-host detection needed. lua-language-server also
+picks up the nearest `.luarc.json` walking up the tree, so this is scoped
+to `.config/hypr/` only.
 
 This clears `undefined global variable: hl`. It will **not** clear
 `Cannot resolve module 'device'` — that's expected, since `device.lua` is
