@@ -26,7 +26,7 @@ Only the core Hyprland config chain was migrated:
 
 - `hypridle.conf`, `hyprlock.conf` — separate daemons/binaries with their
   own hyprlang parsers. Per Hyprland's own announcement, the small
-  Hypr* ecosystem tools keep hyprlang indefinitely; they're not part of
+  Hypr\* ecosystem tools keep hyprlang indefinitely; they're not part of
   the core Hyprland config removal.
 - `kanshi/config` — unrelated project (emersion/kanshi), never used
   hyprlang, not affected at all.
@@ -55,15 +55,15 @@ so nothing breaks if the new files aren't linked yet (see To-do below).
 The converter reported `0 flagged / 100% coverage` on every file, but
 `--verify-config` still caught real breakage. These needed manual fixes:
 
-| Issue | File(s) | Fix |
-|---|---|---|
-| `hl.workspace_rule` has no `name` field | `hyprland.lua` | renamed to `default_name` |
-| `hl.workspace_rule` has no `on-created-empty` field | `keybinds.lua` | renamed to `on_created_empty` (underscored) |
-| `hl.device()` rejects hyphenated keys `tap-to-click` / `tap-and-drag` | `hyprland.lua` | renamed to `tap_to_click` / `tap_and_drag` (nested `hl.config` sections get auto-underscored by the converter; standalone `hl.device()` calls don't) |
-| `device.conf` symlink target still had `.conf` extension | `hyprland.lua` | `exec-once` now creates `device.lua` -> `devices/$(hostname).lua`, matching what `require("device")` looks for |
-| `$mainMod = Alt` — new key parser is case-sensitive, rejects `"Alt"` | `devices/nixos.lua`, `devices/WS0277.lua` | changed to `"ALT"` (matches `keybinds.lua`, which already had it right) |
-| Two `bind`s to the same key (`mainMod+V`: `togglefloating` then `centerwindow`) silently overwrite each other as two `hl.bind()` calls — Lua doesn't stack binds on the same key like hyprlang did | `keybinds.lua` | merged into one `hl.bind` with a function dispatching both actions |
-| `devices/WS0277.conf` had a pre-existing typo, `windowrulev` (not a real directive, already broken before this migration) | `devices/WS0277.lua` | converted to a working `hl.window_rule` for the fullscreen border-color rule it was clearly meant to express |
+| Issue                                                                                                                                                                                              | File(s)                                   | Fix                                                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `hl.workspace_rule` has no `name` field                                                                                                                                                            | `hyprland.lua`                            | renamed to `default_name`                                                                                                                            |
+| `hl.workspace_rule` has no `on-created-empty` field                                                                                                                                                | `keybinds.lua`                            | renamed to `on_created_empty` (underscored)                                                                                                          |
+| `hl.device()` rejects hyphenated keys `tap-to-click` / `tap-and-drag`                                                                                                                              | `hyprland.lua`                            | renamed to `tap_to_click` / `tap_and_drag` (nested `hl.config` sections get auto-underscored by the converter; standalone `hl.device()` calls don't) |
+| `device.conf` symlink target still had `.conf` extension                                                                                                                                           | `hyprland.lua`                            | `exec-once` now creates `device.lua` -> `devices/$(hostname).lua`, matching what `require("device")` looks for                                       |
+| `$mainMod = Alt` — new key parser is case-sensitive, rejects `"Alt"`                                                                                                                               | `devices/nixos.lua`, `devices/WS0277.lua` | changed to `"ALT"` (matches `keybinds.lua`, which already had it right)                                                                              |
+| Two `bind`s to the same key (`mainMod+V`: `togglefloating` then `centerwindow`) silently overwrite each other as two `hl.bind()` calls — Lua doesn't stack binds on the same key like hyprlang did | `keybinds.lua`                            | merged into one `hl.bind` with a function dispatching both actions                                                                                   |
+| `devices/WS0277.conf` had a pre-existing typo, `windowrulev` (not a real directive, already broken before this migration)                                                                          | `devices/WS0277.lua`                      | converted to a working `hl.window_rule` for the fullscreen border-color rule it was clearly meant to express                                         |
 
 ## Verification performed
 
@@ -102,9 +102,15 @@ values — but worth knowing if you re-run verification yourself.
 
 ## Reference
 
-- https://hypr.land/news/26_lua/ — official announcement
-- https://wiki.hypr.land/Configuring/Start/ — Lua config docs entry point
-- https://wiki.hypr.land/Configuring/Basics/Binds/ — bind syntax, flags, submaps
-- https://github.com/hyprwm/Hyprland/blob/main/example/hyprland.lua — official example config
-- https://github.com/EIonTusk/hyprlang2lua — converter used
+- [link0][0] — official announcement
+- [link1][1] — Lua config docs entry point
+- [link2][2] — bind syntax, flags, submaps
+- [link3][3] — official example config
+- [link4][4] — converter used
 - `/nix/store/*/share/hypr/stubs/hl.meta.lua` — authoritative Lua API types, shipped with the installed Hyprland package
+
+[0]: https://hypr.land/news/26_lua/
+[1]: https://wiki.hypr.land/Configuring/Start/
+[2]: https://wiki.hypr.land/Configuring/Basics/Binds/
+[3]: https://github.com/hyprwm/Hyprland/blob/main/example/hyprland.lua
+[4]: https://github.com/EIonTusk/hyprlang2lua
