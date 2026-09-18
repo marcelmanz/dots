@@ -51,6 +51,8 @@ restart_transport() {
   sleep 1
   bluetoothctl disconnect "$MAC" 2>/dev/null || true
   sleep 1
+  bluetoothctl bearer "$MAC" bredr 2>/dev/null || true
+  sleep 1
   bluetoothctl connect "$MAC" 2>/dev/null || true
   sleep 1
   CARD=$(pactl list short cards | grep -i "bluez_card.$(mac_token "$MAC")" | awk '{print $2}' | head -n1)
