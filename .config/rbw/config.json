@@ -1,12 +1,1 @@
-{
-  "email": "vaultwarden@marcel.cool",
-  "sso_id": null,
-  "base_url": "https://vault.marcel.cool",
-  "identity_url": null,
-  "ui_url": null,
-  "notifications_url": null,
-  "lock_timeout": 3600,
-  "sync_interval": 3600,
-  "pinentry": "/home/mmanzanares/scripts/pinentry-rbw",
-  "client_cert_path": null
-}
+{"email":"vaultwarden@marcel.cool","sso_id":null,"base_url":"https://vault.marcel.cool","identity_url":null,"ui_url":null,"notifications_url":null,"lock_timeout":3600,"sync_interval":3600,"pinentry":"pinentry-qt","client_cert_path":null}

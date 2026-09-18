@@ -4,7 +4,7 @@ set -euo pipefail
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 case "${1:-}" in
-    --remote)
+    -r|--remote)
         shift
         exec "$script_dir/create-remote-session.sh" "${1:-}"
         ;;

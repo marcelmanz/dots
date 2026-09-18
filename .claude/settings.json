@@ -41,6 +41,5 @@
   "editorMode": "vim",
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
-  "autoCompactEnabled": false,
-  "skipAutoPermissionPrompt": true
+  "autoCompactEnabled": false
 }

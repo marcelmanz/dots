@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Run a command from the cwd of the foot window that launched it: foot spawns
+# key bindings with cwd=/, so a relative ${match} would not resolve.
+set -euo pipefail
+
+if [[ $PWD == / ]]; then
+  foot=$PPID
+  [[ $(< /proc/$foot/comm) == foot ]] || foot=$(ps -o ppid= -p "$foot" | tr -d ' ')
+  shell=$(pgrep -oP "$foot" || true)
+  if [[ -n $shell ]]; then cd -P "/proc/$shell/cwd"; fi
+fi
+
+exec "$@"

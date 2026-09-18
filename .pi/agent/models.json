@@ -5,14 +5,8 @@
       "api": "openai-completions",
       "baseUrl": "https://api.synthetic.new/openai/v1",
       "models": [
-        {
-          "id": "syn:large:text",
-          "name": "syn:large:text"
-        },
-        {
-          "id": "syn:small:text",
-          "name": "syn:small:text"
-        },
+        { "id": "syn:large:text", "name": "syn:large:text" },
+        { "id": "syn:small:text", "name": "syn:small:text" },
         {
           "id": "syn:large:vision",
           "name": "syn:large:vision",
@@ -23,79 +17,54 @@
           "name": "syn:small:vision",
           "input": ["text", "image"]
         },
-        {
-          "id": "hf:zai-org/GLM-5.1",
-          "name": "zai-org/GLM-5.1"
-        },
-        {
-          "id": "hf:zai-org/GLM-5.2",
-          "name": "zai-org/GLM-5.2"
-        },
-        {
-          "id": "hf:moonshotai/Kimi-K2.6",
-          "name": "moonshotai/Kimi-K2.6"
-        },
-        {
-          "id": "hf:Qwen/Qwen3.8-27B",
-          "name": "Qwen/Qwen3.8-27B"
-        },
-        {
-          "id": "hf:MiniMaxAI/MiniMax-M2.5",
-          "name": "MiniMaxAI/MiniMax-M2.5"
-        },
-        {
-          "id": "hf:zai-org/GLM-4.7-Flash",
-          "name": "zai-org/GLM-4.7-Flash"
-        },
+        { "id": "hf:zai-org/GLM-5.1", "name": "zai-org/GLM-5.1" },
+        { "id": "hf:zai-org/GLM-5.2", "name": "zai-org/GLM-5.2" },
+        { "id": "hf:moonshotai/Kimi-K2.6", "name": "moonshotai/Kimi-K2.6" },
+        { "id": "hf:Qwen/Qwen3.8-27B", "name": "Qwen/Qwen3.8-27B" },
+        { "id": "hf:MiniMaxAI/MiniMax-M2.5", "name": "MiniMaxAI/MiniMax-M2.5" },
+        { "id": "hf:zai-org/GLM-4.7-Flash", "name": "zai-org/GLM-4.7-Flash" },
         {
           "id": "hf:nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
           "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4"
         },
-        {
-          "id": "hf:zai-org/GLM-4.7",
-          "name": "zai-org/GLM-4.7"
-        },
-        {
-          "id": "hf:openai/gpt-oss-120b",
-          "name": "openai/gpt-oss-120b"
-        },
+        { "id": "hf:zai-org/GLM-4.7", "name": "zai-org/GLM-4.7" },
+        { "id": "hf:openai/gpt-oss-120b", "name": "openai/gpt-oss-120b" },
         {
           "id": "hf:Qwen/Qwen3-Coder-480B-A35B-Instruct",
           "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct"
         },
-        {
-          "id": "hf:Qwen/Qwen3.5-397B-A17B",
-          "name": "Qwen/Qwen3.5-397B-A17B"
-        },
-        {
-          "id": "hf:moonshotai/kimi-k3",
-          "name": "moonshotai/kimi-k3"
-        }
+        { "id": "hf:Qwen/Qwen3.5-397B-A17B", "name": "Qwen/Qwen3.5-397B-A17B" },
+        { "id": "hf:moonshotai/kimi-k3", "name": "moonshotai/kimi-k3" }
       ]
     },
-    "fireworks": {
-      "apiKey": "$FIREWORKS_API_KEY",
-      "api": "openai-completions",
-      "baseUrl": "https://api.fireworks.ai/inference/v1",
+    "worldsensing": {
+      "baseUrl": "https://litellm.wocs3.tech",
+      "api": "anthropic",
+      "apiKey": "$WS_LITE_LLM_API_KEY",
       "models": [
         {
-          "id": "hf:openai/gpt-oss-120b",
-          "name": "openai/gpt-oss-120b"
-        }
-      ]
-    },
-    "together": {
-      "apiKey": "$TOGETHER_API_KEY",
-      "api": "openai-completions",
-      "baseUrl": "https://api.together.xyz/v1",
-      "models": [
-        {
-          "id": "hf:Qwen/Qwen3-Coder-480B-A35B-Instruct",
-          "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+          "id": "wse-dev",
+          "name": "WS Dev",
+          "contextWindow": 98304,
+          "maxTokens": 8192
         },
         {
-          "id": "hf:Qwen/Qwen3.5-397B-A17B",
-          "name": "Qwen/Qwen3.5-397B-A17B"
+          "id": "wse-default",
+          "name": "WS Default",
+          "contextWindow": 262144,
+          "maxTokens": 8192
+        },
+        {
+          "id": "wse-thinking",
+          "name": "WS Thinking",
+          "contextWindow": 262144,
+          "maxTokens": 8192
+        },
+        {
+          "id": "wse-mini",
+          "name": "WS Mini",
+          "contextWindow": 262144,
+          "maxTokens": 8192
         }
       ]
     }
