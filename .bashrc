@@ -317,7 +317,9 @@ export SSH_AUTH_SOCK
 if command -v rbw >/dev/null 2>&1; then
 	MINI_FLUX_TOKEN="$(rbw get --folder miniflux pika-token-1 2>/dev/null)"
 	SYNTHETIC_API_KEY="$(rbw get --folder synthetic.new api-key 2>/dev/null)"
-	export MINI_FLUX_TOKEN SYNTHETIC_API_KEY
+	WS_LITE_LLM_API_KEY="$(rbw get --folder worldsensing ws-llm 2>/dev/null)"
+	SONAR_TOKEN="$(rbw get --folder worldsensing sonar-token 2>/dev/null)"
+	export MINI_FLUX_TOKEN SYNTHETIC_API_KEY WS_LITE_LLM_API_KEY SONAR_TOKEN
 fi
 
 export BITBUCKET_USER=mmanzanares@worldsensing.com

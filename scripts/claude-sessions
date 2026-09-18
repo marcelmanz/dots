@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# ponytail: list every claude session system-wide in fzf as aligned columns.
+# Source: ~/.claude/history.jsonl — global log of every prompt (one line per
+# prompt). Group by sessionId -> one row: id, project dir, first prompt as name.
+set -euo pipefail
+
+history="${CLAUDE_HISTORY:-$HOME/.claude/history.jsonl}"
+
+jq -sr '
+  group_by(.sessionId)
+  | map({
+      sid: .[0].sessionId,
+      dir: .[0].project,
+      name: (min_by(.timestamp).display),
+      mod:  (max_by(.timestamp).timestamp)
+    })
+  | sort_by(.mod) | reverse
+  | .[]
+  | [.sid, .dir, (.name
+      | gsub("[\n\r\t]"; " ")
+      | gsub("\\[Pasted text[^]]*\\]"; "…")
+      | gsub("  +"; " ")
+      | gsub("^ +| +$"; ""))]
+  | @tsv
+' "$history" \
+  | { printf 'SESSION ID\tDIR\tNAME\n'; cat; } \
+  | column -t -s $'\t' \
+  | fzf --header-lines=1

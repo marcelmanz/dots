@@ -4,7 +4,7 @@ set -euo pipefail
 script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 case "${1:-}" in
-    --remote)
+    -r|--remote)
         shift
         exec "$script_dir/create-remote-session.sh" "${1:-}"
         ;;
@@ -33,7 +33,7 @@ if [ -n "${selection:-}" ]; then
         sed 's/_\+/_/g; s/^_//; s/_$//')
     if ! tmux has-session -t "$session" 2>/dev/null; then
         tmux new-session -ds "$session" -c "$selection"
-        tmux send-keys -t "$session" nvim C-m
+        # tmux send-keys -t "$session" nvim C-m # no need for this for now
     fi
     if [ -n "${TMUX-}" ]; then
         tmux switch-client -t "$session"

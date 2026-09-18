@@ -25,7 +25,7 @@ find_card() {
 headset_profile() {
   pactl list cards |
     sed -n "/Name: $1\$/,/Active Profile/p" |
-    awk -F: '/^\t\theadset-head-unit.*available: yes/ {gsub(/^[ \t]+/, "", $1); print $1}' |
+    awk -F: '/^\t\t(headset|handsfree)-head-unit.*available: yes/ {gsub(/^[ \t]+/, "", $1); print $1}' |
     sort | head -n1
 }
 
@@ -42,10 +42,13 @@ PROFILE=$(headset_profile "$CARD")
 
 if [ -z "$PROFILE" ]; then
   echo "No HSP/HFP profile offered — reconnecting device..."
-  systemctl --user restart wireplumber 2>/dev/null || true
+  # XM4 quirk: HSP/HFP only shows up once the device is trusted and
+  # wireplumber rescans it after a fresh connect.
+  bluetoothctl trust "$MAC" >/dev/null 2>&1 || true
   bluetoothctl disconnect "$MAC" >/dev/null 2>&1 || true
   sleep 2
   bluetoothctl connect "$MAC" >/dev/null 2>&1 || true
+  systemctl --user restart wireplumber 2>/dev/null || true
 
   for _ in $(seq 10); do
     sleep 1
@@ -57,9 +60,23 @@ if [ -z "$PROFILE" ]; then
 fi
 
 if [ -z "$PROFILE" ]; then
+  echo "Still no HSP/HFP profile — restarting bluetooth service..."
+  pkexec systemctl restart bluetooth 2>/dev/null || true
+  sleep 3
+  bluetoothctl connect "$MAC" >/dev/null 2>&1 || true
+  for _ in $(seq 15); do
+    sleep 1
+    CARD=$(find_card)
+    [ -n "$CARD" ] || continue
+    PROFILE=$(headset_profile "$CARD")
+    [ -n "$PROFILE" ] && break
+  done
+fi
+
+if [ -z "$PROFILE" ]; then
   echo "Still no HSP/HFP profile. Check that wireplumber has bluez5 HFP enabled" >&2
   echo "(bluez5.roles must include hfp_hf/hsp_hs) and that the headset is not" >&2
-  echo "connected to another device." >&2
+  echo "connected to another device or in multipoint mode with a second device." >&2
   exit 1
 fi
 

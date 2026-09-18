@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Copy files to the clipboard as files, so pasting attaches them.
+set -euo pipefail
+
+uris=$(gio info -- "$@" | sed -n 's/^uri: //p')
+wl-copy -t text/uri-list <<< "$uris"

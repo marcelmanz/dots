@@ -59,8 +59,14 @@ restart_transport() {
 }
 
 set_a2dp() {
-  pactl set-card-profile "$CARD" a2dp-sink 2>/dev/null ||
-    pactl set-card-profile "$CARD" a2dp-sink-sbc_xq 2>/dev/null || true
+  # Loud failure: headsets wedged after AVDTP errors come back HFP-only,
+  # with no a2dp profile on the card. Only a power cycle restores it.
+  if ! pactl set-card-profile "$CARD" a2dp-sink 2>/dev/null &&
+     ! pactl set-card-profile "$CARD" a2dp-sink-sbc_xq 2>/dev/null; then
+    echo "No A2DP profile available - headset stuck in HFP-only mode." >&2
+    echo "Power-cycle the headset (off/on), then rerun this script." >&2
+    return 1
+  fi
   local sink
   sink=$(pactl list short sinks | grep -i "bluez_output.$(mac_token "$MAC")" | awk '{print $2}' | head -n1)
   if [ -n "$sink" ]; then
@@ -72,8 +78,11 @@ set_a2dp() {
 }
 
 set_hfp() {
-  pactl set-card-profile "$CARD" headset-head-unit 2>/dev/null ||
-    pactl set-card-profile "$CARD" headset-head-unit-cvsd 2>/dev/null || true
+  if ! pactl set-card-profile "$CARD" headset-head-unit 2>/dev/null &&
+     ! pactl set-card-profile "$CARD" headset-head-unit-cvsd 2>/dev/null; then
+    echo "No HSP/HFP profile available - run fix-micro.sh first." >&2
+    return 1
+  fi
   sleep 1
   local src
   src=$(pactl list short sources | grep -i "bluez_input.$(mac_token "$MAC")" | awk '{print $2}' | head -n1)
