@@ -24,6 +24,12 @@ profile work {
     exec ~/.config/foot/set-font
 }
 
+profile work_office {
+    output "DP-1" mode 2560x1440@59.95Hz position 0,0 scale 1
+    output "eDP-1" mode 1920x1200@60.00 position 0,1440 scale 1
+    exec ~/.config/foot/set-font 1.5
+}
+
 profile laptop_only {
     output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1
     exec ~/.config/foot/set-font 1.5
