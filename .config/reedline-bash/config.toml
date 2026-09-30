@@ -1,0 +1,16 @@
+# Minimal syntax highlighting: neutral for structure, muted accents for
+# strings/variables. Reuses the Kanagawa hex values from nushell/colors.nu.
+[colors]
+command = "default"
+builtin = "default_bold"
+string = "#E6C384"
+variable = "#7FB4CA"
+operator = "dark_gray"
+
+# Completion menu: same muted palette instead of reedline's green/yellow defaults.
+[menu.colors]
+text = "default"
+selected_text = "reverse"
+description = "dark_gray"
+match = "#E6C384"
+selected_match = "#E6C384_reverse"

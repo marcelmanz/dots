@@ -1,5 +1,16 @@
 # shellcheck disable=2148
 
+# reedline-bash needs a readline new enough to export rl_full_quoting_desired;
+# nixpkgs' bashInteractive has it, distro bashes generally don't yet.
+if [[ -z "$_NIX_BASH_REEXEC_DONE" ]] && [[ -x "$HOME/.nix-profile/bin/bash" ]]; then
+	_nix_bash=$(readlink -f "$HOME/.nix-profile/bin/bash")
+	if [[ "$(readlink -f "/proc/$$/exe")" != "$_nix_bash" ]]; then
+		export _NIX_BASH_REEXEC_DONE=1
+		exec "$_nix_bash"
+	fi
+	unset _nix_bash
+fi
+
 shopt -s expand_aliases
 
 export GIT_PROMPT=true
@@ -477,6 +488,14 @@ fi
 if command -v timer >/dev/null 2>&1; then
 	eval "$(timer completion bash)"
 fi
+
+for reedline_bash_lib in "$HOME/.nix-profile/lib/libreedline_bash.so" "/etc/profiles/per-user/$USER/lib/libreedline_bash.so"; do
+	if [[ -f "$reedline_bash_lib" ]]; then
+		enable -f "$reedline_bash_lib" reedline 2>/dev/null
+		break
+	fi
+done
+unset reedline_bash_lib
 
 # export BEMENU_OPTS="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6 --fn 'monospace 11'"
 

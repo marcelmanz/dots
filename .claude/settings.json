@@ -41,5 +41,34 @@
   "editorMode": "vim",
   "verbose": true,
   "preferredNotifChannel": "notifications_disabled",
-  "autoCompactEnabled": false
+  "autoCompactEnabled": false,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Private (bitbucket.org:worldsensing_traffic/thread-frontend)",
+      "**Internal sharing / snippet hosting**: None configured",
+      "**Secrets management**: 1Password (referenced in .env.example for development variables)",
+      "**Default / protected branches**: main (default branch); branch protection via rulesets not queryable for Bitbucket",
+      "**CI/CD deploy targets**: Sonarqube (optional, SONAR_HOST_URL and SONAR_TOKEN in config)",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured",
+      "**Source control**: bitbucket.org:worldsensing_traffic (thread-frontend repo, private; origin and upstream remotes)",
+      "**Trusted internal domains**: worldsensing.1password.eu (1Password secrets link in .env.example)",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: .env.* files (development, test, production environment variables containing API URLs, build flags, and optional Sonarqube credentials); 1Password vault at worldsensing.1password.eu holds development variable reference",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: None identified (no prod/production namespace in repo facts or config)",
+      "**Protected deployment namespaces / environments**: None configured",
+      "**Protected IaC scopes**: None configured",
+      "### User-specific",
+      "**Primary use of Claude Code**: Software development (TypeScript/React frontend)",
+      "**Trusted repo**: bitbucket.org:worldsensing_traffic/thread-frontend (private; origin and upstream remotes)",
+      "**Org-specific CLIs**: git-based aliases (gst, ga, gd, gco, etc. — common git workflow shortcuts); nix, nise, task, tarea (environment-specific tooling found in shell history); pass (password manager)",
+      "**Routine under ~/**: development work in ~/clones/work/thread-frontend; test clones and program checkouts under ~/test and ~/programs are candidate external repos (not org-identified; not included in trusted context)"
+    ]
+  }
 }
