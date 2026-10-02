@@ -14,7 +14,7 @@ TMP="__TMP_WS_$$"
 BATCH=""
 i=1
 for id in "${IDS[@]}"; do
-	BATCH+="dispatch renameworkspace $id ${TMP}_$i;"
+	BATCH+="dispatch hl.dsp.workspace.rename({workspace=$id,name=\"${TMP}_$i\"});"
 	((i++))
 done
 hyprctl --batch "$BATCH"
@@ -22,7 +22,7 @@ hyprctl --batch "$BATCH"
 BATCH=""
 i=1
 for id in "${IDS[@]}"; do
-	BATCH+="dispatch renameworkspace $id $i;"
+	BATCH+="dispatch hl.dsp.workspace.rename({workspace=$id,name=\"$i\"});"
 	((i++))
 done
 hyprctl --batch "$BATCH"

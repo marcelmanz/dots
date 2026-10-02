@@ -13,6 +13,10 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 -- and were wrong on scale-1/2.5 monitors. Wayland-native apps use the compositor scale natively.
 
 -- Create symlink to hostname-specific config (devices/nixos.lua, devices/work-laptop.lua, etc)
+-- package.path is built from the config's canonical dir (this repo), not ~/.config/hypr,
+-- so add the runtime dir where device.lua is linked before requiring it.
+local home = os.getenv("HOME")
+if home then package.path = home .. "/.config/hypr/?.lua;" .. package.path end
 require("device")
 
 -- unsure about this 
@@ -103,12 +107,7 @@ hl.animation({
 
 hl.device({
     name = "synps/2-synaptics-touchpad",
-    sensitivity = 0.5,
-    natural_scroll = false,
-    tap_to_click = true,
-    tap_and_drag = true,
-    clickfinger_behavior = false,
-    middle_button_emulation = true,
+    enabled = false,
 })
 
 hl.device({
@@ -454,7 +453,6 @@ hl.config({
 })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("ln -sf ~/.config/hypr/devices/$(hostname).lua ~/.config/hypr/device.lua")
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd("swayosd-server &")
     hl.exec_cmd("nm-applet --indicator &")

@@ -19,7 +19,7 @@ case "$selected" in
 	disown && systemctl suspend
 	;;
 "Logout")
-	hyprctl dispatch exit
+	hyprctl dispatch 'hl.dsp.exit()'
 	;;
 "Suspend")
 	systemctl suspend

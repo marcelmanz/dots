@@ -18,9 +18,9 @@ echo "$hyprland_clients" | jq -c '.[]' | while read -r obj; do
 
 	if [ "$workspace_id" = "$current_workspace" ] && [ "$fullscreen" -gt 0 ]; then
 		if [ "$fullscreen" -eq 2 ]; then
-			hyprctl dispatch fullscreen 2
+			hyprctl dispatch 'hl.dsp.window.fullscreen({mode="fullscreen",action="unset"})'
 		else
-			hyprctl dispatch fullscreen 1
+			hyprctl dispatch 'hl.dsp.window.fullscreen({action="unset"})'
 		fi
 	fi
 done

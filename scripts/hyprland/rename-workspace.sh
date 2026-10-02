@@ -22,7 +22,7 @@ fi
 FULL_WORKSPACE_NAME="$ACTIVE_WORKSPACE:$WORKSPACE_NAME"
 
 # Set the workspace name using hyprctl dispatch
-hyprctl dispatch renameworkspace "$ACTIVE_WORKSPACE" "$FULL_WORKSPACE_NAME"
+hyprctl dispatch "hl.dsp.workspace.rename({workspace=$ACTIVE_WORKSPACE,name=\"$FULL_WORKSPACE_NAME\"})"
 
 # Check if the command succeeded
 if [ $? -eq 0 ]; then
