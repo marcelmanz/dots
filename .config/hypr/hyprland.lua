@@ -185,6 +185,8 @@ hl.window_rule({
 
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("hyprctl switchxkblayout all next"))
 
+hl.bind("SUPER + F2", hl.dsp.exec_cmd("~/.config/hypr/toggle-touchpad.sh"))
+
 hl.window_rule({
     match = {
         class = "imv",
