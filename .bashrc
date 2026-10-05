@@ -11,6 +11,15 @@ if [[ -z "$_NIX_BASH_REEXEC_DONE" ]] && [[ -x "$HOME/.nix-profile/bin/bash" ]]; 
 	unset _nix_bash
 fi
 
+# source nix environment (multi-user)
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+# source home manager session variables
+if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+  . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+fi
+
 shopt -s expand_aliases
 
 export GIT_PROMPT=true

@@ -2,7 +2,8 @@
 
 local mainMod = "ALT" -- Sets "Windows" key as main modifier
 
-hl.env("PATH", "$HOME/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin:/usr/bin")
+-- Hyprland's env directive does a raw setenv, no shell expansion: $HOME/${VAR} stay literal.
+hl.env("PATH", "/home/mmanzanares/.nix-profile/bin:/nix/var/nix/profiles/default/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin")
 hl.env("HYPRLAND_EGL_NO_MODIFIERS", "1")
 
 -- windowrulev2 = bordercolor rgba(F6D86Aff) rgba(7F6318ff), tag:locked
