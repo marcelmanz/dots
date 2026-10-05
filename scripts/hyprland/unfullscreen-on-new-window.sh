@@ -11,7 +11,7 @@ socket="$XDG_RUNTIME_DIR/hypr/$sig/.socket2.sock"
 socat - UNIX-CONNECT:"$socket" | while read -r event; do
   case "$event" in
   openwindow\>\>*)
-    HYPRLAND_INSTANCE_SIGNATURE="$sig" hyprctl dispatch fullscreen 0
+    HYPRLAND_INSTANCE_SIGNATURE="$sig" hyprctl dispatch 'hl.dsp.window.fullscreen({action="unset"})'
     ;;
   esac
 done

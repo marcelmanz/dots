@@ -9,8 +9,8 @@ addr=$(hyprctl -j activewindow | jq -r '.address')
 
 wsid=$(hyprctl -j activeworkspace | jq -r '.id')
 
-hyprctl dispatch movetoworkspacesilent special:termhide,address:$addr
+hyprctl dispatch "hl.dsp.window.move({workspace=\"special:termhide\",window=\"address:$addr\",silent=true})"
 
-trap 'hyprctl dispatch movetoworkspacesilent "$wsid",address:$addr; hyprctl dispatch focuswindow address:$addr' EXIT
+trap 'hyprctl dispatch "hl.dsp.window.move({workspace=$wsid,window=\"address:$addr\",silent=true})"; hyprctl dispatch "hl.dsp.focus({window=\"address:$addr\"})"' EXIT
 
 neovide "$@"

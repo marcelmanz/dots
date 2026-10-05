@@ -13,6 +13,10 @@ hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 -- and were wrong on scale-1/2.5 monitors. Wayland-native apps use the compositor scale natively.
 
 -- Create symlink to hostname-specific config (devices/nixos.lua, devices/work-laptop.lua, etc)
+-- package.path is built from the config's canonical dir (this repo), not ~/.config/hypr,
+-- so add the runtime dir where device.lua is linked before requiring it.
+local home = os.getenv("HOME")
+if home then package.path = home .. "/.config/hypr/?.lua;" .. package.path end
 require("device")
 
 -- unsure about this 
@@ -103,12 +107,7 @@ hl.animation({
 
 hl.device({
     name = "synps/2-synaptics-touchpad",
-    sensitivity = 0.5,
-    natural_scroll = false,
-    tap_to_click = true,
-    tap_and_drag = true,
-    clickfinger_behavior = false,
-    middle_button_emulation = true,
+    enabled = false,
 })
 
 hl.device({
@@ -186,11 +185,23 @@ hl.window_rule({
 
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("hyprctl switchxkblayout all next"))
 
+hl.bind("SUPER + F2", hl.dsp.exec_cmd("~/.config/hypr/toggle-touchpad.sh"))
+
 hl.window_rule({
     match = {
         class = "imv",
     },
     float = true,
+})
+
+-- ponytail: blur is ignore_opacity=true, so it fills the framebuffer for opaque
+-- windows too. At 3840x2160@2.5 on Vega 8 that is a fullscreen GPU pass per frame
+-- under the browser. Browsers repaint constantly, so skip the effect for them.
+hl.window_rule({
+    match = {
+        class = "^(brave-origin-nightly|brave-browser|google-chrome|chromium|firefox|vivaldi-stable)$",
+    },
+    no_blur = true,
 })
 
 hl.window_rule({
@@ -454,7 +465,6 @@ hl.config({
 })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("ln -sf ~/.config/hypr/devices/$(hostname).lua ~/.config/hypr/device.lua")
     hl.exec_cmd("dbus-update-activation-environment --systemd --all")
     hl.exec_cmd("swayosd-server &")
     hl.exec_cmd("nm-applet --indicator &")
