@@ -72,7 +72,7 @@ if ((offset != 0)); then
 fi
 
 if [[ ! -f $current_date_todo ]]; then
-  touch "$current_date_todo"
+  template=$(mktemp)
   {
     echo "# TODO: $(date +'%Y-%m-%d')"
     echo
@@ -82,7 +82,16 @@ if [[ ! -f $current_date_todo ]]; then
       echo
     fi
     echo "- [ ] "
-  } >>"$current_date_todo"
+  } >"$template"
+
+  if [[ $cmd == "nvim" ]]; then
+    nvim -c "0read $template" -c "\$d" "$current_date_todo"
+  else
+    $cmd "$template"
+  fi
+  rm -f "$template"
+  cd - >/dev/null 2>&1
+  exit 0
 fi
 
 $cmd "$current_date_todo"
