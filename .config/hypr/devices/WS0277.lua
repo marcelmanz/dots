@@ -13,6 +13,7 @@ hl.window_rule({
     match = { fullscreen = 1 },
     border_color = "rgb(FFFFFF)",
 })
+
 hl.bind(mainMod .. " + TAB", hl.dsp.exec_cmd("~/scripts/hyprland/toggle-lock-window.sh"))
 
 hl.on("hyprland.start", function()

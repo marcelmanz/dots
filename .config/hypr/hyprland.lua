@@ -115,6 +115,24 @@ hl.device({
     sensitivity = -0.5,
 })
 
+-- UltraNav integrated touchpad: middle_button_emulation misreads touch/click as a
+-- stuck middle button, flooding repeated primary-selection pastes. Trackpoint nub
+-- ("-stick" sibling device) is unaffected, left on global defaults.
+hl.device({
+    name = "synaptics-inc.-composite-touchpad-/-trackpoint",
+    middle_button_emulation = false,
+})
+
+-- physical layout is SK, force US/English. Left Shift is dead (hardware,
+-- sends no event at all per evtest) -> Caps Lock doubles as Shift instead.
+-- xkb's caps:shift option locks instead of momentary-hold, so this is a
+-- custom keymap remapping the Caps Lock keycode's symbol straight to
+-- Shift_L (see .config/hypr/keymaps/ultranav-caps-shift.xkb).
+hl.device({
+    name = "lite-on-tech-ibm-usb-keyboard-with-ultranav",
+    kb_file = home .. "/.config/hypr/keymaps/ultranav-caps-shift.xkb",
+})
+
 require("keybinds")
 
 hl.window_rule({
@@ -486,3 +504,4 @@ hl.on("config.reloaded", function()
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")
 end)
 
+ 
