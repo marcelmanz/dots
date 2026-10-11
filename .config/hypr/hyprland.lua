@@ -391,6 +391,7 @@ hl.config({
     misc = {
         force_default_wallpaper = 0,
         disable_hyprland_logo = true,
+        on_focus_under_fullscreen = 1,
     },
     cursor = {
         inactive_timeout = 3,
@@ -504,11 +505,16 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("sh -c \"mkfifo $XDG_RUNTIME_DIR/wob-brightness.sock 2>/dev/null; tail -f $XDG_RUNTIME_DIR/wob-brightness.sock | wob -c ~/.config/wob/wob-brightness.ini\"")
 end)
 
-hl.on("config.reloaded", function()
+-- runs on initial start AND on `hyprctl reload`
+local function reloadable()
     hl.exec_cmd("pkill waybar; waybar &")
+    hl.exec_cmd("pkill hyprpaper; hyprpaper &")
     hl.exec_cmd("~/scripts/waybar/dark-light-toggle.sh")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")
-end)
+end
+
+hl.on("hyprland.start", reloadable)
+hl.on("config.reloaded", reloadable)
 
  

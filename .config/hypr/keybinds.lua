@@ -118,11 +118,22 @@ hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload && pypr reloa
 hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd("hyprctl kill"))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("pypr toggle term"))
 
+local function focusOrCycleWhenMaximized(direction, next)
+    return function()
+        local window = hl.get_active_window()
+        if window and window.fullscreen == 1 then
+            hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
+        else
+            hl.dispatch(hl.dsp.focus({ direction = direction }))
+        end
+    end
+end
+
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
-hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
-hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
+hl.bind(mainMod .. " + K", focusOrCycleWhenMaximized("up", false))
+hl.bind(mainMod .. " + J", focusOrCycleWhenMaximized("down", true))
 
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "l" }))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "r" }))
