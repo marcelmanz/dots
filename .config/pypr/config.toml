@@ -19,10 +19,10 @@ plugins = [
 
 [scratchpads.quick_notes]
 animation = ""
-command = "gtk-launch brave-jmoglckdpohmmjghnpdibomklmgknoeb-Default"
+command = "gtk-launch silver-bullet"
 class = "brave-jmoglckdpohmmjghnpdibomklmgknoeb-Default"
 match_by = "class"
-size = "99% 100%"
+size = "70% 80%"
 lazy = true
 process_tracking = false
 
