@@ -17,6 +17,15 @@ plugins = [
 # class = "the window's class"  # check: hyprctl clients | grep class
 # size = "<width> <height>"  # size of the window relative to the screen size
 
+[scratchpads.quick_notes]
+animation = ""
+command = "gtk-launch brave-jmoglckdpohmmjghnpdibomklmgknoeb-Default"
+class = "brave-jmoglckdpohmmjghnpdibomklmgknoeb-Default"
+match_by = "class"
+size = "99% 100%"
+lazy = true
+process_tracking = false
+
 [scratchpads.cinny]
 animation = ""
 command = "cinny"

@@ -35,6 +35,7 @@ alias pacs="sudo pacman -S"
 alias pacsy="sudo pacman -Syyu"
 alias govh="ssh marcel@135.125.234.60"
 alias gb="git branch"
+alias gbco='git checkout $(git branch | fzy | xargs)'
 alias gbc='~/scripts/git/prune-stale-branches.sh'
 alias vimirc='vi ~/clones/own/dots/vimmic-config.json'
 alias open_work_repo='~/scripts/open-work-repo-link.sh'
@@ -436,6 +437,7 @@ alias memfzf="~/scripts/practice.sh -c | fzf | ~/scripts/practice.sh"
 alias kport="~/scripts/kill-port.sh"
 
 alias gurk='gurk --passphrase $(rbw get im.molly.app)'
+alias abrs=' abr start --email mmanzanares@worldsensing.com'
 
 # Worldsensing
 

@@ -21,7 +21,7 @@ hl.workspace_rule({
     on_created_empty = "foot",
 })
 
-hl.bind(mainMod .. " + n", hl.dsp.workspace.toggle_special("magic"))
+-- hl.bind(mainMod .. " + n", hl.dsp.workspace.toggle_special("magic"))
 -- bind = $mainMod, e, exec, ~/.config/eww/toggle-bar.sh
 hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("pkill -USR1 waybar"))
 -- bind = $mainMod SHIFT, m, exec, ~/scripts/wl-mirror-menu.sh
@@ -30,8 +30,8 @@ hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("pkill -USR1 waybar"))
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("~/scripts/rbwmenu"))
 
 -- video-selector moved from M to T (M now = Matrix/Cinny). T ~ TV/video.
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/scripts/video-selector.sh"))
-hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("~/scripts/video-selector.sh --dirs"))
+-- hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("~/scripts/video-selector.sh"))
+-- hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/scripts/video-selector.sh --dirs"))
 -- bind = $mainMod SHIFT, # bind = $mainMod SHIFT, S, movetoworkspace, special:magic
 -- bind = $mainMod SHIFT, n, exec, [workspace special term; float; move 25% 25%; size 50% 50%] foot
 
@@ -47,17 +47,18 @@ hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("wofi-emoji"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("pypr zoom ++0.5"))
 -- WhatsApp via Cinny desktop — Tauri build has no URL deep-link scheme, so this
 -- just launches the app at its last room (not the WA room specifically).
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("pypr toggle quick_notes"))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("pypr toggle cinny"))
 hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("pypr shift_monitors +1"))
 hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("hyprctl reload && pypr zoom"))
 -- bind = $mainMod SHIFT, N, exec, foot --title "nnn-term" -e nnn
-hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t"))
-hl.window_rule({
-    match = {
-        title = "^(nnn-term)$",
-    },
-    float = true,
-})
+-- hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t"))
+-- hl.window_rule({
+--     match = {
+--         title = "^(nnn-term)$",
+--     },
+--     float = true,
+-- })
 
 -- bind = $mainMod SHIFT, W, exec, pypr toggle whats
 hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("pypr toggle volume"))

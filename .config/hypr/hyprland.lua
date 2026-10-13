@@ -212,6 +212,13 @@ hl.window_rule({
     float = true,
 })
 
+hl.window_rule({
+    match = {
+        class = "brave-jmoglckdpohmmjghnpdibomklmgknoeb-Default",
+    },
+    float = true,
+})
+
 -- ponytail: blur is ignore_opacity=true, so it fills the framebuffer for opaque
 -- windows too. At 3840x2160@2.5 on Vega 8 that is a fullscreen GPU pass per frame
 -- under the browser. Browsers repaint constantly, so skip the effect for them.
