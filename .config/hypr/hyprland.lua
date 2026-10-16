@@ -30,6 +30,7 @@ hl.env("TERMINAL", "foot")
 -- env = XCURSOR_THEME,Retrosmart
 hl.env("MOZ_ENABLE_WAYLAND", "1")
 hl.env("MOZ_DPI_ADJUST", "0.9")
+hl.env("GTK_USE_PORTAL", "1")
 hl.env("XCURSOR_THEME", "retrosmart-xcursor-white")
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_THEME", "retrosmart-xcursor-white")
