@@ -103,7 +103,11 @@ hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/scripts/tofi/power-selector.sh"))
 -- bind = , escape, submap, reset
 -- submap = reset
 
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
+hl.bind(mainMod .. " + F", function()
+    local workspace = hl.get_active_workspace()
+    local layout = workspace.tiled_layout == "monocle" and "dwindle" or "monocle"
+    hl.workspace_rule({ workspace = tostring(workspace.id), layout = layout })
+end)
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 -- bind = $mainMod, E, togglesplit, # dwindle
 -- bind = $mainMod, E, layoutmsg, orientationcycle # master
@@ -121,7 +125,9 @@ hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("pypr toggle term"))
 local function focusOrCycleWhenMaximized(direction, next)
     return function()
         local window = hl.get_active_window()
-        if window and window.fullscreen == 1 then
+        if hl.get_active_workspace().tiled_layout == "monocle" then
+            hl.dispatch(hl.dsp.layout(next and "cyclenext" or "cycleprev"))
+        elseif window and window.fullscreen == 1 then
             hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
         else
             hl.dispatch(hl.dsp.focus({ direction = direction }))
