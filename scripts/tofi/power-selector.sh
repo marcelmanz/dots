@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-if pgrep -x "tofi" >/dev/null; then
-	pkill tofi
+if pkill -x bemenu >/dev/null 2>&1; then
+	exit 0
 fi
 
 entries="Lock\nLock & Suspend\nLogout\nReboot\nShutdown\nSuspend"
 
-selected=$(echo -e "$entries" | tofi --width 250 --height 270 | awk '{print $0}')
+selected=$(echo -e "$entries" | ~/scripts/themed-bemenu -p "power:" | awk '{print $0}')
 
 [[ -z $selected ]] && exit
 

@@ -62,7 +62,7 @@ hl.workspace_rule({
 
 local terminal = "alacritty -e fish"
 local fileManager = "nemo"
-local menu = "tofi-drun"
+local menu = "pkill -x bemenu || j4-dmenu-desktop --term=foot --dmenu=\"~/scripts/themed-bemenu -p run:\""
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")

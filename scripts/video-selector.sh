@@ -34,7 +34,7 @@ SELECTED=$(
   if $USE_FZF; then
      echo "$RESULTS" | fzf --preview "ls -lh \"$HOME/{}\""
   else
-    echo "$RESULTS" | tofi --width 50% --prompt "$PROMPT"
+    echo "$RESULTS" | ~/scripts/themed-bemenu -p "$PROMPT"
   fi
 )
 

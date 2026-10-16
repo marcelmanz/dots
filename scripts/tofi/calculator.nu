@@ -14,7 +14,7 @@ if not ($tmp_path | path exists) {
 }
 
 # Input operation
-let operation = open $tmp_path | tofi --prompt-text " " --require-match false
+let operation = open $tmp_path | ~/scripts/themed-bemenu -p " "
 
 # Exit if no operation provided
 if ($operation == "") {
