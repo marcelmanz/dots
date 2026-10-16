@@ -2,3 +2,10 @@
 
 local mainMod = "ALT" -- Sets "Windows" key as main modifier
 
+-- Tuned with scripts/trackpoint-tune.py; assumes kernel trackpoint sensitivity 160 (nix hardware.trackpoint).
+hl.device({
+    name = "tpps/2-elan-trackpoint",
+    accel_profile = "custom 1 0 2.2 4.4",
+    sensitivity = 0,
+})
+
