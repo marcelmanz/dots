@@ -31,9 +31,9 @@ hl.env("TERMINAL", "foot")
 hl.env("MOZ_ENABLE_WAYLAND", "1")
 hl.env("MOZ_DPI_ADJUST", "0.9")
 hl.env("XCURSOR_THEME", "retrosmart-xcursor-white")
-hl.env("XCURSOR_SIZE", "16")
+hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_THEME", "retrosmart-xcursor-white")
-hl.env("HYPRCURSOR_SIZE", "16")
+hl.env("HYPRCURSOR_SIZE", "24")
 -- env = WLR_DRM_NO_MODIFIERS,1
 
 -- ponytail: force_zero_scaling renders XWayland at 1:1 (sharp) instead of compositor-upscaled (blurry on fractional 1.67).
@@ -63,8 +63,8 @@ local terminal = "alacritty -e fish"
 local fileManager = "nemo"
 local menu = "tofi-drun"
 
-hl.env("XCURSOR_SIZE", "16")
-hl.env("HYPRCURSOR_SIZE", "16")
+hl.env("XCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
 hl.animation({
