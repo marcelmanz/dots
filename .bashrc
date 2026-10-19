@@ -13,11 +13,11 @@ fi
 
 # source nix environment (multi-user)
 if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-  . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+	. '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
 fi
 # source home manager session variables
 if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-  . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+	. "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
 fi
 
 shopt -s expand_aliases
@@ -245,6 +245,7 @@ if [[ $- == *i* ]]; then
 	set -o vi
 
 	if command -v carapace >/dev/null 2>&1; then
+		export CARAPACE_BRIDGES='bash'
 		source <(carapace _carapace bash)
 	fi
 fi
@@ -317,8 +318,8 @@ vpn() {
 }
 
 # Use bash-completion, if available
-# [[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
-# 	. /usr/share/bash-completion/bash_completion
+[[ $PS1 && -f /usr/share/bash-completion/bash_completion ]] &&
+	. /usr/share/bash-completion/bash_completion
 
 # Start gpg-agent if not already running
 GPG_AGENT_INFO=$(gpgconf --list-dirs agent-socket)
