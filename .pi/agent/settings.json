@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "1.0.4",
   "defaultProvider": "synthetic",
   "defaultModel": "hf:moonshotai/kimi-k3",
   "defaultThinkingLevel": "high",
@@ -23,5 +23,8 @@
     "npm:@yeliu84/pi-model-router",
     "npm:pi-multimodal-proxy",
     "npm:pi-claude-bridge"
+  ],
+  "extensions": [
+    "-builtin:mcp"
   ]
 }

@@ -30,10 +30,11 @@ hl.env("TERMINAL", "foot")
 -- env = XCURSOR_THEME,Retrosmart
 hl.env("MOZ_ENABLE_WAYLAND", "1")
 hl.env("MOZ_DPI_ADJUST", "0.9")
+hl.env("GTK_USE_PORTAL", "1")
 hl.env("XCURSOR_THEME", "retrosmart-xcursor-white")
-hl.env("XCURSOR_SIZE", "16")
+hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_THEME", "retrosmart-xcursor-white")
-hl.env("HYPRCURSOR_SIZE", "16")
+hl.env("HYPRCURSOR_SIZE", "24")
 -- env = WLR_DRM_NO_MODIFIERS,1
 
 -- ponytail: force_zero_scaling renders XWayland at 1:1 (sharp) instead of compositor-upscaled (blurry on fractional 1.67).
@@ -61,10 +62,10 @@ hl.workspace_rule({
 
 local terminal = "alacritty -e fish"
 local fileManager = "nemo"
-local menu = "tofi-drun"
+local menu = "pkill -x bemenu || j4-dmenu-desktop --term=foot --dmenu=\"~/scripts/themed-bemenu -p run:\""
 
-hl.env("XCURSOR_SIZE", "16")
-hl.env("HYPRCURSOR_SIZE", "16")
+hl.env("XCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_SIZE", "24")
 
 hl.curve("myBezier", { type = "bezier", points = { { 0.05, 0.9 }, { 0.1, 1.05 } } })
 hl.animation({
@@ -391,6 +392,7 @@ hl.config({
     misc = {
         force_default_wallpaper = 0,
         disable_hyprland_logo = true,
+        on_focus_under_fullscreen = 1,
     },
     cursor = {
         inactive_timeout = 3,
@@ -490,7 +492,7 @@ hl.config({
 })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("dbus-update-activation-environment --systemd --all")
+    hl.exec_cmd("dbus-update-activation-environment --systemd --all && systemctl --user start nixos-fake-graphical-session.target")
     hl.exec_cmd("swayosd-server &")
     hl.exec_cmd("nm-applet --indicator &")
     hl.exec_cmd("blueman-applet &")
@@ -504,11 +506,16 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("sh -c \"mkfifo $XDG_RUNTIME_DIR/wob-brightness.sock 2>/dev/null; tail -f $XDG_RUNTIME_DIR/wob-brightness.sock | wob -c ~/.config/wob/wob-brightness.ini\"")
 end)
 
-hl.on("config.reloaded", function()
+-- runs on initial start AND on `hyprctl reload`
+local function reloadable()
     hl.exec_cmd("pkill waybar; waybar &")
+    hl.exec_cmd("pkill hyprpaper; hyprpaper &")
     hl.exec_cmd("~/scripts/waybar/dark-light-toggle.sh")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")
-end)
+end
+
+hl.on("hyprland.start", reloadable)
+hl.on("config.reloaded", reloadable)
 
  

@@ -39,7 +39,7 @@ else
 			webcam_list+="$(get_webcam_info "$device")"$'\n'
 		done
 
-		selected=$(echo -n "$webcam_list" | tofi --prompt-text "Select webcam: ")
+		selected=$(echo -n "$webcam_list" | ~/scripts/themed-bemenu -p "Select webcam:")
 
 		if [ -z "$selected" ]; then
 			echo "No webcam selected."

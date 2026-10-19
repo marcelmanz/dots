@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-# pkill tofi or
-if pgrep -x "tofi" >/dev/null; then
-	pkill tofi
+if pkill -x bemenu >/dev/null 2>&1; then
+	exit 0
 fi
 
 entries="Kill Session\nDetach Session\nCancel"
 
-selected=$(echo -e "$entries" | ~/.nix-profile/bin/tofi --prompt-text "tmux> " --width 250 --height 160 | awk '{print $1}')
+selected=$(echo -e "$entries" | ~/scripts/themed-bemenu -p "tmux:" | awk '{print $1}')
 first_word=$(echo $selected | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
 
 [[ -z $selected ]] && exit

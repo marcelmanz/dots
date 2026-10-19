@@ -28,7 +28,7 @@ for device in "${all_device_names[@]}"; do
 	fi
 done
 
-selected=$(printf "%s" "$devices_result" | tofi --prompt-text="Bluetooth devices: " | cut --fields=2- --delimiter=" ")
+selected=$(printf "%s" "$devices_result" | ~/scripts/themed-bemenu -p "Bluetooth devices:" | cut --fields=2- --delimiter=" ")
 
 [[ -z $selected ]] && exit 1
 

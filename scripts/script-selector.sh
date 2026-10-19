@@ -12,7 +12,7 @@ all_scripts=$(find -L "$base" -type f ! -name '.*')
 if [ "$use_tofi" = "--tofi" ]; then
 	selected=$(printf '%s\n' "$all_scripts" |
 		sed "s|^$base/||" |
-		tofi --fuzzy-match=true --prompt-text "Run script: ")
+		~/scripts/themed-bemenu -p "Run script:")
 else
 	selected=$(printf '%s\n' "$all_scripts" |
 		sed "s|^$base/||" |
@@ -26,7 +26,7 @@ fi
 
 args_input=""
 if [ "$use_tofi" = "--tofi" ]; then
-	args_input=$(printf '\n' | tofi --height 40 --prompt-text "Add args (optional): " --require-match=false)
+	args_input=$(printf '\n' | ~/scripts/themed-bemenu -p "Add args (optional):")
 else
 	read -r -p "args (optional)> " args_input
 fi
