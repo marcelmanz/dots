@@ -104,7 +104,6 @@ else
     pkill -SIGUSR2 foot 2>/dev/null
 fi
 
-ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
 
@@ -121,14 +120,10 @@ if [[ -f "$BRAVE_PREFS" ]] && ! pgrep -f brave-origin-nightly >/dev/null; then
 fi
 
 if [[ "$1" == "toggle" ]]; then
-    # tmux reload FIRST: waybar (our parent) gets signaled below and may
-    # disrupt this script before it reaches a later line.
     tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null
     tmux refresh-client -S 2>/dev/null
     printf '%s tmux reload exit=%s mode=%s\n' "$(date +%H:%M:%S)" "$?" "$current" >> "$HOME/.cache/tmux-theme-toggle.log"
 
-    pkill -SIGUSR2 waybar 2>/dev/null
-    pkill -RTMIN+12 waybar 2>/dev/null
     swaync-client --reload-css 2>/dev/null
 
     for sock in /run/user/$(id -u)/nvim.*.0 ; do

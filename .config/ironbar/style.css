@@ -1,5 +1,128 @@
-@define-color color_bg #2d2d2d;
+@import "font.css";
 
-box, menubar {
+@define-color color_bg #000000;
+@define-color color_surface #141414;
+@define-color color_control #242424;
+@define-color color_control_unfocused #1c1c1c;
+@define-color color_raised #2e2e2e;
+@define-color color_border #3a3a3a;
+@define-color color_fg #d0d0d0;
+@define-color color_strong #ffffff;
+@define-color color_muted #808080;
+@define-color color_disabled #555555;
+
+@define-color theme_bg_color #141414;
+@define-color theme_bg_color_breeze #141414;
+@define-color theme_base_color #000000;
+@define-color theme_base_color_breeze #000000;
+@define-color theme_fg_color #d0d0d0;
+@define-color theme_fg_color_breeze #d0d0d0;
+@define-color theme_text_color #d0d0d0;
+@define-color theme_text_color_breeze #d0d0d0;
+@define-color theme_selected_bg_color #2e2e2e;
+@define-color theme_selected_bg_color_breeze #2e2e2e;
+@define-color theme_selected_fg_color #ffffff;
+@define-color theme_selected_fg_color_breeze #ffffff;
+@define-color theme_unfocused_bg_color_breeze #141414;
+@define-color theme_unfocused_fg_color_breeze #808080;
+@define-color theme_unfocused_base_color_breeze #000000;
+@define-color theme_unfocused_selected_bg_color_breeze #2e2e2e;
+@define-color theme_unfocused_selected_bg_color_alt_breeze #2e2e2e;
+@define-color theme_button_decoration_focus_breeze #3a3a3a;
+@define-color borders #3a3a3a;
+@define-color borders_breeze #3a3a3a;
+@define-color insensitive_borders_breeze #3a3a3a;
+@define-color unfocused_borders_breeze #3a3a3a;
+@define-color insensitive_fg_color #555555;
+@define-color insensitive_fg_color_breeze #555555;
+@define-color insensitive_unfocused_fg_color_breeze #555555;
+@define-color insensitive_bg_color_breeze #000000;
+@define-color insensitive_base_color #000000;
+@define-color insensitive_base_color_breeze #000000;
+@define-color theme_button_background_normal_breeze @color_control;
+@define-color theme_button_background_backdrop_breeze @color_control_unfocused;
+@define-color theme_button_background_insensitive_breeze #000000;
+@define-color theme_button_background_backdrop_insensitive_breeze #000000;
+@define-color theme_button_foreground_normal_breeze #d0d0d0;
+@define-color theme_button_foreground_backdrop_breeze #808080;
+@define-color theme_button_foreground_insensitive_breeze #555555;
+@define-color theme_button_foreground_backdrop_insensitive_breeze #555555;
+@define-color theme_button_decoration_hover_breeze #808080;
+@define-color theme_view_active_decoration_color_breeze #808080;
+
+* {
+    border: none;
+    box-shadow: none;
+    min-height: 0;
+}
+
+.background, #bar {
     background-color: @color_bg;
+    color: @color_fg;
+}
+
+button {
+    background: none;
+    padding: 0 6px;
+    color: @color_fg;
+}
+
+button:hover {
+    background: none;
+    color: @color_strong;
+}
+
+.workspaces .item {
+    color: @color_muted;
+}
+
+.workspaces .item.focused {
+    color: @color_strong;
+}
+
+.tray .item image {
+    -gtk-icon-size: 28px;
+}
+
+.popup,
+popover,
+popover > contents {
+    background-color: @color_surface;
+    color: @color_fg;
+}
+
+popover modelbutton,
+popover label {
+    background: none;
+    color: @color_fg;
+}
+
+popover modelbutton:hover {
+    background-color: @color_raised;
+    color: @color_strong;
+}
+
+.sink-slider trough {
+    background-color: @color_raised;
+    border-radius: 2px;
+    min-height: 6px;
+}
+
+.sink-slider highlight {
+    background-color: @color_muted;
+    border-radius: 2px;
+    min-height: 6px;
+}
+
+.sink-slider slider {
+    background-color: @color_fg;
+    border-radius: 50%;
+    min-width: 14px;
+    min-height: 14px;
+}
+
+.sink-selector button,
+.device-selector button {
+    background-color: @color_control;
+    color: @color_fg;
 }

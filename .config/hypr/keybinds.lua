@@ -23,7 +23,7 @@ hl.workspace_rule({
 
 -- hl.bind(mainMod .. " + n", hl.dsp.workspace.toggle_special("magic"))
 -- bind = $mainMod, e, exec, ~/.config/eww/toggle-bar.sh
-hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("pkill -USR1 waybar"))
+hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("ironbar bar main toggle-visible"))
 -- bind = $mainMod SHIFT, m, exec, ~/scripts/wl-mirror-menu.sh
 -- bind = $mainMod SHIFT, P, exec, ~/scripts/pdf-selector.sh
 -- bind = $mainMod SHIFT, P, exec, passmenu -i
@@ -210,6 +210,7 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("$HOME/scripts/bluetooth-selector.sh"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/scripts/waybar/dark-light-toggle.sh toggle"))
 -- bind = $mainMod SHIFT, W, exec, $HOME/scripts/show_webcam.sh
 
 -- Lock on lid open
@@ -231,8 +232,8 @@ hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("hyprlock --immediate"), { lock
 -- Pulseaudio volume keybinds
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("$HOME/scripts/volume-control.sh up"), { repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("$HOME/scripts/volume-control.sh down"), { repeating = true })
-hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pamixer -t && ([ \"$(pamixer --get-mute)\" = \"true\" ] && echo 0 > $XDG_RUNTIME_DIR/wob-volume.sock || pamixer --get-volume > $XDG_RUNTIME_DIR/wob-volume.sock) && pkill -RTMIN+11 waybar"), { repeating = true })
-hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("pactl set-source-mute @DEFAULT_SOURCE@ toggle && pkill -RTMIN+11 waybar"), { repeating = true })
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("pamixer -t && ([ \"$(pamixer --get-mute)\" = \"true\" ] && echo 0 > $XDG_RUNTIME_DIR/wob-volume.sock || pamixer --get-volume > $XDG_RUNTIME_DIR/wob-volume.sock)"), { repeating = true })
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("pactl set-source-mute @DEFAULT_SOURCE@ toggle"), { repeating = true })
 
 hl.bind(mainMod .. " + TAB", hl.dsp.exec_cmd("~/scripts/hyprland/toggle-lock-window.sh"))
 

@@ -508,9 +508,8 @@ end)
 
 -- runs on initial start AND on `hyprctl reload`
 local function reloadable()
-    hl.exec_cmd("pkill waybar; waybar &")
+    hl.exec_cmd("pkill ironbar; ironbar &")
     hl.exec_cmd("pkill hyprpaper; hyprpaper &")
-    hl.exec_cmd("~/scripts/waybar/dark-light-toggle.sh")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")
 end

@@ -14,8 +14,6 @@ hl.window_rule({
     border_color = "rgb(FFFFFF)",
 })
 
-hl.bind(mainMod .. " + TAB", hl.dsp.exec_cmd("~/scripts/hyprland/toggle-lock-window.sh"))
-
 hl.on("hyprland.start", function()
     hl.exec_cmd("uwsm finalize WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE")
 end)
