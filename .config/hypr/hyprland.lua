@@ -336,7 +336,7 @@ hl.config({
     -- https://wiki.hyprland.org/Configuring/Variables/#general
     general = {
         gaps_in = 5,
-        gaps_out = 5,
+        gaps_out = { top = 5, right = 5, bottom = 35, left = 5 },
         border_size = 1,
         -- https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
         -- https://wiki.hypr.land/Configuring/Basics/Variables/

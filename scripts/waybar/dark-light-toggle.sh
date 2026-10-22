@@ -105,6 +105,7 @@ else
 fi
 
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
+ln -sf "$HOME/clones/own/dots/.config/ironbar/style-${current}.css" "$HOME/.config/ironbar/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
 
 # Chromium's GTK "System" theme detection is unreliable on Linux, so force
@@ -125,6 +126,8 @@ if [[ "$1" == "toggle" ]]; then
     printf '%s tmux reload exit=%s mode=%s\n' "$(date +%H:%M:%S)" "$?" "$current" >> "$HOME/.cache/tmux-theme-toggle.log"
 
     swaync-client --reload-css 2>/dev/null
+    pkill ironbar 2>/dev/null
+    setsid ironbar >/dev/null 2>&1 & disown
 
     for sock in /run/user/$(id -u)/nvim.*.0 ; do
         [ -S "$sock" ] && nvim --server "$sock" --remote-send "<Cmd>set background=${current}<CR>" 2>/dev/null &
