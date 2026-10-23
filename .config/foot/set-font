@@ -13,8 +13,11 @@ out="$cfg/foot/font-active.ini"
 # ponytail: target 20px effective everywhere; change TARGET to tune
 TARGET=20
 rm -f "$out" # clear any stale symlink before writing a real file
-printf 'font=Myna:size=%s\n' "$(awk "BEGIN{printf \"%g\", $TARGET/$scale}")" >"$out"
+size="$(awk "BEGIN{printf \"%g\", $TARGET/$scale}")"
+printf 'font=Myna:size=%s\n' "$size" >"$out"
+printf '* {\n    font-family: "Myna";\n    font-size: %spt;\n}\n' "$size" >"$cfg/ironbar/font.css"
 pkill -USR1 foot 2>/dev/null || true
+ironbar reload 2>/dev/null || true
 
 # GTK: integer point size, same effective-px target. Only rewrites the
 # gtk-font-name line; dark-light-toggle.sh owns the rest of settings.ini.

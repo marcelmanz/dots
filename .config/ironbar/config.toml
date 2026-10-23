@@ -1,10 +1,25 @@
+name = "main"
 anchor_to_edges = true
-position = "top"
-height = 25
+position = "bottom"
+height = 30
+exclusive_zone = false
 
 [[start]]
 type = "workspaces"
 all_monitors = false
+hidden = [
+    "special:scratchpad",
+    "special:S-cinny",
+    "special:S-term",
+    "special:S-quick_notes",
+    "special:S-volume",
+    "special:S-kitty",
+]
+
+[[center]]
+type = "focused"
+show_icon = false
+truncate = "end"
 
 
 [[end]]
@@ -18,16 +33,32 @@ volume_medium = "󰖀"
 volume_low = "󰕿"
 muted = "󰝟"
 
+# [[end]]
+# type = "network_manager"
+# icon_size = 24
+# types_whitelist = ["wifi"]
+
+[[end]]
+type = "battery"
+format = "{percentage}%"
+icon_size = 24
+
+[end.profiles.warning]
+percent = 30
+
+[end.profiles.critical]
+when = { percent = 15, charging = false }
+
 [[end]]
 type = "clock"
 
 [[end]]
 type = "notifications"
-show_count = true
+show_count = false
 
 [[end]]
 type = "tray"
-icon_size = 32
+icon_size = 22
 
 # [[end]]
 # type = "keyboard"

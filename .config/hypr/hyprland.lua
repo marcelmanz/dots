@@ -336,7 +336,7 @@ hl.config({
     -- https://wiki.hyprland.org/Configuring/Variables/#general
     general = {
         gaps_in = 5,
-        gaps_out = 5,
+        gaps_out = { top = 5, right = 5, bottom = 35, left = 5 },
         border_size = 1,
         -- https://wiki.hyprland.org/Configuring/Variables/#variable-types for info about colors
         -- https://wiki.hypr.land/Configuring/Basics/Variables/
@@ -508,8 +508,7 @@ end)
 
 -- runs on initial start AND on `hyprctl reload`
 local function reloadable()
-    hl.exec_cmd("pkill waybar; waybar &")
-    hl.exec_cmd("pkill hyprpaper; hyprpaper &")
+    hl.exec_cmd("pkill ironbar; ironbar &")
     hl.exec_cmd("~/scripts/waybar/dark-light-toggle.sh")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")

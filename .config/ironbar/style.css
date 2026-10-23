@@ -1,5 +1,0 @@
-@define-color color_bg #2d2d2d;
-
-box, menubar {
-    background-color: @color_bg;
-}

@@ -1,0 +1,6 @@
+[filechooser]
+cmd=nnn-wrapper.sh
+default_dir=$HOME
+env=TERMCMD=foot -T termfilechooser
+open_mode=suggested
+save_mode=last

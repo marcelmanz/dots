@@ -27,7 +27,7 @@ if [[ "$current" == "dark" ]]; then
     gtk_theme="Breeze-Dark"
     gtk_icon_theme="breeze-dark"
     cursor_theme="retrosmart-xcursor-white"
-    wallpaper="$HOME/img/dark-grey.png"
+    hyprpaper_conf="$HOME/clones/own/dots/.config/hypr/hyprpaper-dark.conf"
     hypr_active_border="rgba(33ccffee)"
     hypr_inactive_border="rgba(595959aa)"
     hypr_locked_border="rgba(d8da9dff)"
@@ -37,7 +37,7 @@ else
     gtk_theme="Breeze"
     gtk_icon_theme="breeze"
     cursor_theme="retrosmart-xcursor-black-shadow"
-    wallpaper="$HOME/img/light-spring.png"
+    hyprpaper_conf="$HOME/clones/own/dots/.config/hypr/hyprpaper.conf"
     hypr_active_border="rgba(007f86ee)"
     hypr_inactive_border="rgba(64666c55)"
     hypr_locked_border="rgba(ff79c6ff)"
@@ -104,8 +104,8 @@ else
     pkill -SIGUSR2 foot 2>/dev/null
 fi
 
-ln -sf "style-colors-${current}.css" "$HOME/.config/waybar/style-colors.css"
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
+ln -sf "$HOME/clones/own/dots/.config/ironbar/style-${current}.css" "$HOME/.config/ironbar/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
 
 # Chromium's GTK "System" theme detection is unreliable on Linux, so force
@@ -121,23 +121,21 @@ if [[ -f "$BRAVE_PREFS" ]] && ! pgrep -f brave-origin-nightly >/dev/null; then
 fi
 
 if [[ "$1" == "toggle" ]]; then
-    # tmux reload FIRST: waybar (our parent) gets signaled below and may
-    # disrupt this script before it reaches a later line.
     tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null
     tmux refresh-client -S 2>/dev/null
     printf '%s tmux reload exit=%s mode=%s\n' "$(date +%H:%M:%S)" "$?" "$current" >> "$HOME/.cache/tmux-theme-toggle.log"
 
-    pkill -SIGUSR2 waybar 2>/dev/null
-    pkill -RTMIN+12 waybar 2>/dev/null
     swaync-client --reload-css 2>/dev/null
+    pkill ironbar 2>/dev/null
+    setsid ironbar >/dev/null 2>&1 & disown
 
     for sock in /run/user/$(id -u)/nvim.*.0 ; do
         [ -S "$sock" ] && nvim --server "$sock" --remote-send "<Cmd>set background=${current}<CR>" 2>/dev/null &
     done
 fi
 
-pkill swaybg 2>/dev/null
+pkill hyprpaper 2>/dev/null
 sleep 0.2
-setsid swaybg --image "$wallpaper" --mode fill >/dev/null 2>&1 & disown
+setsid hyprpaper -c "$hyprpaper_conf" >/dev/null 2>&1 & disown
 
 echo "{\"text\": \"$icon\", \"tooltip\": \"Theme: $current\", \"class\": \"$current\"}"
