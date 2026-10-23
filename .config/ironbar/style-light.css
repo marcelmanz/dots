@@ -84,6 +84,18 @@ button:hover {
     -gtk-icon-size: 28px;
 }
 
+.tray {
+    padding-right: 8px;
+}
+
+.tray button {
+    padding: 0;
+}
+
+.tray picture, .tray image {
+    -gtk-icon-filter: brightness(0);
+}
+
 .popup,
 popover,
 popover > contents {
