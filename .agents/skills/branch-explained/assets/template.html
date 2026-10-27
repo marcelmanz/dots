@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="layout">
+<nav id="nav">
+  <div class="brand">{{TITLE}}</div>
+  <div class="sub">{{SUBTITLE}}</div>
+  <div id="navLinks"></div>
+</nav>
+<main>
+
+<!--
+  Section skeletons. Keep these ids and the widget containers; replace the
+  placeholder text. Add or remove topic sections between #arch and #code as the
+  branch needs. Section headings are numbered and become the nav labels.
+-->
+
+<section id="base">
+  <h1>0. Technical base</h1>
+  <p class="lead">{{LEAD: every concept needed to understand this branch, from scratch}}</p>
+  <div class="chips">
+    <!-- one <a href="#b-KEY">Label</a> per concept -->
+  </div>
+
+  <div class="concept" id="b-KEY">
+    <h3><span class="cn">01</span> {{Concept title}}</h3>
+    <div class="grid2">
+      <div>{{prose: what it is, why this code needs it, how it is used here, the trap}}</div>
+      <div>{{visual: inline SVG with class="dia", a .player, or a bespoke widget}}</div>
+    </div>
+  </div>
+</section>
+
+<section id="overview">
+  <h1>1. {{What the branch adds, as a title}}</h1>
+  <p class="lead">{{one paragraph}}</p>
+  <div class="card">{{contract table: the public surface the branch adds or changes}}</div>
+  <h3>The short version</h3>
+  <div class="grid3">
+    <div class="card"><b>{{point}}</b><br><span class="muted">{{reason}}</span></div>
+  </div>
+  <h3>Files touched by the branch</h3>
+  <table>{{path | role}}</table>
+</section>
+
+<section id="arch">
+  <h2>2. How it flows</h2>
+  <p>Click a box to see its role.</p>
+  <div class="grid2">
+    <svg class="arch" viewBox="0 0 560 400" data-info="archinfo">
+      <!-- <g class="box" data-k="key"><rect .../><text ...>Name</text></g> ; text in PAGE.arch.key -->
+    </svg>
+    <div class="card" id="archinfo"><b>Pick a box.</b></div>
+  </div>
+</section>
+
+<!-- 3..N: one section per mechanism, each with an interactive widget -->
+
+<section id="code">
+  <h2>{{N}}. Code explorer</h2>
+  <p>The final code. The gutter shows the commit that last touched each line (<code>git blame</code>). Lines with a <b style="color:var(--accent)">blue number</b> have an explanation. Click any line to open it in a tooltip (Esc or click outside to close).</p>
+  <div class="tabs" id="fileTabs"></div>
+  <div class="code-wrap"><div class="code" id="codeView"></div></div>
+</section>
+
+<section id="story">
+  <h2>{{N}}. Commit story</h2>
+  <p>All {{COUNT}} commits in order, grouped into phases. Click one for what changed, why, and the diff.</p>
+  <div class="phase-filter" id="phaseFilter"></div>
+  <div id="phaseBar" style="display:flex; height:10px; border-radius:5px; overflow:hidden; margin-bottom:14px"></div>
+  <div id="commitList"></div>
+</section>
+
+<section id="decisions">
+  <h2>{{N}}. Decisions and the alternatives</h2>
+  <table><tr><th>Decision</th><th>Alternative</th><th>Why this one</th></tr></table>
+</section>
+
+<section id="tests">
+  <h2>{{N}}. Tests: what they prove and what they don't</h2>
+</section>
+
+<section id="loose">
+  <h2>{{N}}. Loose ends spotted while reading</h2>
+  <p class="muted">Ticks are saved in this browser only.</p>
+  <ul class="check">
+    <li><label><input type="checkbox" data-k="l1"> <b>{{title}}.</b> {{detail with file:line}}</label></li>
+  </ul>
+</section>
+
+<section id="tryit">
+  <h2>{{N}}. Try it yourself</h2>
+  <div class="card"><pre>{{commands}}</pre>
+    <p class="muted" style="margin:0">Regenerate the commit data: <code>{{GEN_COMMAND}}</code></p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<svg width="0" height="0" style="position:absolute"><defs><marker id="barr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker></defs></svg>
+<div class="code-tip" id="codeTip" hidden></div>
+<script src="data.js"></script>
+<script src="content.js"></script>
+<script src="engine.js"></script>
+<script src="widgets.js"></script>
+</body>
+</html>
