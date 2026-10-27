@@ -24,6 +24,13 @@ truncate = "end"
 
 
 [[end]]
+type = "custom"
+name = "keyboard-layout"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/keyboard-layout.sh}}", on_click = "!hyprctl switchxkblayout all next" },
+]
+
+[[end]]
 type = "volume"
 format = "{icon} {percentage}%"
 max_volume = 100

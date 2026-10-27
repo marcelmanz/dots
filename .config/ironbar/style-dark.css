@@ -126,3 +126,7 @@ popover modelbutton:hover {
     background-color: @color_control;
     color: @color_fg;
 }
+
+#keyboard-layout.non-default label {
+    color: #ffd75f;
+}
