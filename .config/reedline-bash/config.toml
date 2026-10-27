@@ -3,7 +3,7 @@
 [colors]
 command = "default"
 builtin = "default_bold"
-string = "#E6C384"
+string = "yellow"
 variable = "#7FB4CA"
 operator = "dark_gray"
 
@@ -12,5 +12,5 @@ operator = "dark_gray"
 text = "default"
 selected_text = "reverse"
 description = "dark_gray"
-match = "#E6C384"
-selected_match = "#E6C384_reverse"
+match = "yellow"
+selected_match = "yellow_reverse"

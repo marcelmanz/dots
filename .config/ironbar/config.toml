@@ -7,6 +7,7 @@ exclusive_zone = false
 [[start]]
 type = "workspaces"
 all_monitors = false
+sort = "index"
 hidden = [
     "special:scratchpad",
     "special:S-cinny",
