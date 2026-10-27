@@ -27,6 +27,7 @@ truncate = "end"
 type = "volume"
 format = "{icon} {percentage}%"
 max_volume = 100
+on_click_left = "pypr toggle volume"
 
 [end.icons]
 volume_high = "󰕾"
