@@ -18,7 +18,6 @@
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true,
     "clangd-lsp@claude-plugins-official": true,
-    "ponytail@ponytail": true,
     "lua-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {

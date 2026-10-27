@@ -43,7 +43,8 @@ inheriting a wrong mental model is the thing this document exists to prevent.
    `curl -N`, mock mode, tests. Include the flags whose absence makes it look broken.
 9. **Files worth reading, in order** — a table of path and why, ordered as a reading path.
 
-Separate major sections with `---`.
+Separate sections with `##` headings only. Do not use horizontal rules (`---`) in the body;
+the frontmatter is the only `---` in the file.
 
 ## Style
 
@@ -52,6 +53,20 @@ Separate major sections with `---`.
   thing, the flag whose absence silently breaks it. These are the sentences that earn the
   document.
 - Tables for anything enumerable. Prose for anything causal.
+- Compact tables: one space either side of each pipe, no column padding to align the
+  separators. Padded tables add hundreds of blank characters for no gain.
+- Hard-wrap prose paragraphs at 80 characters. Leave code blocks, tables and headings
+  unwrapped.
+- Do not start a bullet with bold text. Open it with a plain label ending in a colon,
+  and put the body on the next line, indented two spaces:
+
+  - Keep the baseline:
+    Store `current` as the next `previous` even when the read fails.
+- Shortest document that keeps every trap, path, flag and command. Cut restated points,
+  preambles that repeat the heading, and any sentence that only signposts ("This is the
+  point of the change", "Here is what happens next"). One blank line between blocks, never two.
+- Put a fact in one place. If the primer explains a concept, the producing side refers back
+  to it instead of re-explaining.
 - Real code excerpts, kept short. Never paste a whole function when five lines carry it.
 - Backticks and code blocks are fine — this is a design doc.
 - No emojis.

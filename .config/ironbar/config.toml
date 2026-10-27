@@ -34,6 +34,13 @@ volume_medium = "󰖀"
 volume_low = "󰕿"
 muted = "󰝟"
 
+[[end]]
+type = "custom"
+class = "bluetooth"
+bar = [
+    { type = "button", label = "󰂯", on_click = "!foot -e bluetuith" },
+]
+
 # [[end]]
 # type = "network_manager"
 # icon_size = 24

@@ -184,6 +184,13 @@ hl.window_rule({
 
 hl.window_rule({
     match = {
+        class = "brave-nngceckbapebfimnlniiiahkandclblb-Default",
+    },
+    float = true,
+})
+
+hl.window_rule({
+    match = {
         title = "OpenGL Renderer",
     },
     float = true,

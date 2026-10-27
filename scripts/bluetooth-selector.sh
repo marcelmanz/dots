@@ -11,6 +11,10 @@ notify_user() {
 HEADPHONES="F8:4E:17:80:51:2E"
 SPEAKERS="FC:E8:06:5A:8D:B2"
 
+if ! bluetoothctl show | grep -q "Powered: yes"; then
+	bluetoothctl power on >/dev/null || exit 1
+fi
+
 mapfile -t devices < <(bluetoothctl devices | grep "^Device")
 mapfile -t connected_device_names < <(bluetoothctl devices Connected | cut --fields 3- --delimiter ' ')
 mapfile -t all_device_names < <(printf '%s\n' "${devices[@]}" | cut --fields 3- --delimiter ' ')
