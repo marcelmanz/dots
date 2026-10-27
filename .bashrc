@@ -507,6 +507,20 @@ for reedline_bash_lib in "$HOME/.nix-profile/lib/libreedline_bash.so" "/etc/prof
 done
 unset reedline_bash_lib
 
+wiki_search() {
+	local article
+
+	article=$(FZF_DEFAULT_COMMAND="true" fzf --prompt="Wiki Search> " \
+		--phony \
+		--bind "alt-j:down,alt-k:up" \
+		--bind "change:reload(curl -s -G -d action=opensearch -d limit=15 -d format=json --data-urlencode search={q} https://en.wikipedia.org/w/api.php | jq -r '.[1][]' || true)")
+
+	if [ -n "$article" ]; then
+		echo -e "\n\033[1;32m=== $article ===\033[0m\n"
+		wiki read "$article"
+	fi
+}
+
 # export BEMENU_OPTS="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6 --fn 'monospace 11'"
 
 unset LS_COLORS
