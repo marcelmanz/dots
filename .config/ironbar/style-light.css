@@ -1,4 +1,5 @@
 @import "font.css";
+@import "tray.css";
 
 @define-color color_bg #e0e4de;
 @define-color color_surface #d4d8d2;
@@ -90,10 +91,6 @@ button:hover {
 
 .tray button {
     padding: 0;
-}
-
-.tray picture, .tray image {
-    -gtk-icon-filter: brightness(0);
 }
 
 .popup,

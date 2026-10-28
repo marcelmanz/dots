@@ -33,10 +33,10 @@ volume_medium = "󰖀"
 volume_low = "󰕿"
 muted = "󰝟"
 
-# [[end]]
-# type = "network_manager"
-# icon_size = 24
-# types_whitelist = ["wifi"]
+[[end]]
+type = "network_manager"
+icon_size = 24
+types_whitelist = ["wifi"]
 
 [[end]]
 type = "battery"

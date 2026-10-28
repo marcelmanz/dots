@@ -30,9 +30,9 @@ profile home_single {
 }
 
 profile laptop_only {
-    output "eDP-1" mode 3840x2160@60.01Hz position 0,0 scale 1
+    output "eDP-1" mode 3840x2160@60.01Hz position 0,0 scale 2
     # output "eDP-1" mode 1920x1200@60.00 position 0,0 scale 1.25
-    exec ~/.config/foot/set-font
+    exec ~/.config/foot/set-font 2
 }
 
 profile dj_setup {
