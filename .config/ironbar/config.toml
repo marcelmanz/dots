@@ -7,6 +7,7 @@ exclusive_zone = false
 [[start]]
 type = "workspaces"
 all_monitors = false
+sort = "index"
 hidden = [
     "special:scratchpad",
     "special:S-cinny",
@@ -23,9 +24,17 @@ truncate = "end"
 
 
 [[end]]
+type = "custom"
+name = "keyboard-layout"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/keyboard-layout.sh}}", on_click = "!hyprctl switchxkblayout all next" },
+]
+
+[[end]]
 type = "volume"
 format = "{icon} {percentage}%"
 max_volume = 100
+on_click_left = "pypr toggle volume"
 
 [end.icons]
 volume_high = "󰕾"
@@ -37,6 +46,18 @@ muted = "󰝟"
 type = "network_manager"
 icon_size = 24
 types_whitelist = ["wifi"]
+
+[[end]]
+type = "custom"
+class = "bluetooth"
+bar = [
+    { type = "button", label = "󰂯", on_click = "!foot -e bluetuith" },
+]
+
+# [[end]]
+# type = "network_manager"
+# icon_size = 24
+# types_whitelist = ["wifi"]
 
 [[end]]
 type = "battery"

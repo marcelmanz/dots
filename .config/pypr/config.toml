@@ -51,10 +51,9 @@ lazy = true
 
 [scratchpads.volume]
 animation = ""
-command = "pavucontrol"
-class = "Pavucontrol"
-position = "5% 5%"
-size = "90% 90%"
+command = "foot -a pulsemixer pulsemixer"
+class = "pulsemixer"
+size = "50% 50%"
 unfocus = "hide"
 lazy = true
 

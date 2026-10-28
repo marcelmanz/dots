@@ -48,16 +48,19 @@ hl.workspace_rule({
 hl.workspace_rule({
     workspace = "1",
     default_name = "browse",
+    persistent = true,
 })
 
 hl.workspace_rule({
     workspace = "2",
     default_name = "code",
+    persistent = true,
 })
 
 hl.workspace_rule({
     workspace = "3",
     default_name = "learn",
+    persistent = true,
 })
 
 local terminal = "alacritty -e fish"
@@ -175,6 +178,13 @@ hl.window_rule({
 hl.window_rule({
     match = {
         title = "Smile",
+    },
+    float = true,
+})
+
+hl.window_rule({
+    match = {
+        class = "brave-nngceckbapebfimnlniiiahkandclblb-Default",
     },
     float = true,
 })

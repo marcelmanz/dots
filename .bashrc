@@ -507,6 +507,55 @@ for reedline_bash_lib in "$HOME/.nix-profile/lib/libreedline_bash.so" "/etc/prof
 done
 unset reedline_bash_lib
 
+_wiki_history_file() {
+	printf '%s' "${XDG_CACHE_HOME:-$HOME/.cache}/wiki_search/history"
+}
+
+_wiki_candidates() {
+	local query="$1"
+	local history_file
+	history_file=$(_wiki_history_file)
+
+	if [ -z "$query" ]; then
+		cat "$history_file" 2>/dev/null
+		return 0
+	fi
+
+	{
+		grep -iF -- "$query" "$history_file" 2>/dev/null
+		curl -s -G -d action=opensearch -d limit=15 -d format=json --data-urlencode "search=$query" https://en.wikipedia.org/w/api.php | jq -r '.[1][]'
+	} | awk '!seen[$0]++'
+}
+
+_wiki_history_add() {
+	local article="$1"
+	local history_file
+	history_file=$(_wiki_history_file)
+
+	mkdir -p "${history_file%/*}"
+	{
+		printf '%s\n' "$article"
+		grep -vxF -- "$article" "$history_file" 2>/dev/null
+	} | head -n 100 >"$history_file.tmp" && command mv -f "$history_file.tmp" "$history_file"
+}
+
+export -f _wiki_history_file _wiki_candidates
+
+wiki_search() {
+	local article
+
+	article=$(FZF_DEFAULT_COMMAND="_wiki_candidates" fzf --prompt="Wiki Search> " \
+		--phony \
+		--bind "alt-j:down,alt-k:up" \
+		--bind "change:reload(_wiki_candidates {q})")
+
+	if [ -n "$article" ]; then
+		_wiki_history_add "$article"
+		echo -e "\n\033[1;32m=== $article ===\033[0m\n"
+		wiki read "$article"
+	fi
+}
+
 # export BEMENU_OPTS="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6 --fn 'monospace 11'"
 
 unset LS_COLORS

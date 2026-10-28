@@ -14,6 +14,12 @@ hl.window_rule({
     border_color = "rgb(FFFFFF)",
 })
 
+hl.device({
+    name = "tpps/2-elan-trackpoint",
+    accel_profile = "custom 1 0.00 2.05 4.41 7.07 10.03 13.30",
+    sensitivity = 0,
+})
+
 hl.on("hyprland.start", function()
     hl.exec_cmd("uwsm finalize WAYLAND_DISPLAY HYPRLAND_INSTANCE_SIGNATURE")
 end)
