@@ -30,7 +30,11 @@ current_window=$(tmux display-message -p '#{session_name}:#{window_index}')
 pane_window=$(tmux display-message -p -t "$pane_id" '#{session_name}:#{window_index}')
 
 if [ "$current_window" = "$pane_window" ]; then
-	tmux break-pane -d -n "toggle-${id}" -s "$pane_id"
+	if [ "$(tmux display-message -p '#{window_zoomed_flag}')" = 1 ] && [ "$(tmux display-message -p '#{pane_id}')" != "$pane_id" ]; then
+		tmux resize-pane -Z
+	else
+		tmux break-pane -d -n "toggle-${id}" -s "$pane_id"
+	fi
 else
 	tmux join-pane $axis $before -f -p 50 -s "$pane_id"
 fi
