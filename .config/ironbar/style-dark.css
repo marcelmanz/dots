@@ -130,3 +130,7 @@ popover modelbutton:hover {
 #keyboard-layout.non-default label {
     color: #ffd75f;
 }
+
+#touchpad.enabled label {
+    color: #ffd75f;
+}

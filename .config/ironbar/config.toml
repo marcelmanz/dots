@@ -3,6 +3,7 @@ anchor_to_edges = true
 position = "bottom"
 height = 30
 exclusive_zone = false
+ironvar_defaults = { touchpad = "󰤳" }
 
 [[start]]
 type = "workspaces"
@@ -22,6 +23,13 @@ type = "focused"
 show_icon = false
 truncate = "end"
 
+
+[[end]]
+type = "custom"
+name = "touchpad"
+bar = [
+    { type = "button", label = "#touchpad", on_click = "!~/scripts/hyprland/toggle-touchpad.sh" },
+]
 
 [[end]]
 type = "custom"

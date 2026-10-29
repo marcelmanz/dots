@@ -4,6 +4,7 @@
 @define-color fg        #2c2e33;
 @define-color fg-mid    #64666c;
 @define-color accent    #2e5e00;
+@define-color main      #007f86;
 @define-color red       #700015;
 
 * {
@@ -33,9 +34,13 @@
     background: transparent;
 }
 
+.floating-notifications .notification-background {
+    padding: 16px 16px 10px 0;
+}
+
 .notification {
     background: @bg;
-    border: 1px solid @bg-mid;
+    border: 1px solid alpha(@main, 0.40);
     border-radius: 4px;
     margin: 0;
     padding: 0;

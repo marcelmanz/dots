@@ -115,6 +115,11 @@ hl.device({
 })
 
 hl.device({
+    name = "elan06c6:00-04f3:3193-touchpad",
+    enabled = false,
+})
+
+hl.device({
     name = "epic-mouse-v1",
     sensitivity = -0.5,
 })
@@ -214,7 +219,7 @@ hl.window_rule({
 
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("hyprctl switchxkblayout all next"))
 
-hl.bind("SUPER + F2", hl.dsp.exec_cmd("~/.config/hypr/toggle-touchpad.sh"))
+hl.bind("ALT + mouse:274", hl.dsp.exec_cmd("~/scripts/hyprland/toggle-touchpad.sh"))
 
 hl.window_rule({
     match = {
