@@ -509,7 +509,6 @@ hl.config({
 hl.on("hyprland.start", function()
     hl.exec_cmd("dbus-update-activation-environment --systemd --all && systemctl --user start nixos-fake-graphical-session.target")
     hl.exec_cmd("swayosd-server &")
-    hl.exec_cmd("nm-applet --indicator &")
     hl.exec_cmd("blueman-applet &")
     hl.exec_cmd("batsignal -b -w 20 -c 7 -d 5")
     hl.exec_cmd("ydotool &")

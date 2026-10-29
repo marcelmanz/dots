@@ -15,7 +15,7 @@ TARGET=20
 rm -f "$out" # clear any stale symlink before writing a real file
 size="$(awk "BEGIN{printf \"%g\", $TARGET/$scale}")"
 printf 'font=Myna:size=%s\n' "$size" >"$out"
-printf '* {\n    font-family: "Myna";\n    font-size: %spt;\n}\n' "$size" >"$cfg/ironbar/font.css"
+printf '* {\n    font-family: "Myna Nerd Font";\n    font-size: %spt;\n}\n' "$size" >"$cfg/ironbar/font.css"
 pkill -USR1 foot 2>/dev/null || true
 ironbar reload 2>/dev/null || true
 
