@@ -31,6 +31,7 @@ if [[ "$current" == "dark" ]]; then
     hypr_active_border="rgba(33ccffee)"
     hypr_inactive_border="rgba(595959aa)"
     hypr_locked_border="rgba(d8da9dff)"
+    btop_theme="adwaita-dark"
 else
     icon="󰖨"
     color_scheme="prefer-light"
@@ -41,6 +42,7 @@ else
     hypr_active_border="rgba(007f86ee)"
     hypr_inactive_border="rgba(64666c55)"
     hypr_locked_border="rgba(ff79c6ff)"
+    btop_theme="whiteout"
 fi
 
 # Update GTK config files directly
@@ -107,6 +109,7 @@ fi
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
 ln -sf "$HOME/clones/own/dots/.config/ironbar/style-${current}.css" "$HOME/.config/ironbar/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
+ln -sf "$(dirname "$(readlink -f "$(command -v btop)")")/../share/btop/themes/${btop_theme}.theme" "$HOME/.config/btop/themes/system.theme"
 
 # Chromium's GTK "System" theme detection is unreliable on Linux, so force
 # Brave's own theme pref directly instead of trusting it. Only safe to edit
@@ -128,6 +131,8 @@ if [[ "$1" == "toggle" ]]; then
     swaync-client --reload-css 2>/dev/null
     pkill ironbar 2>/dev/null
     setsid ironbar >/dev/null 2>&1 & disown
+
+    pkill -USR2 btop 2>/dev/null
 
     for sock in /run/user/$(id -u)/nvim.*.0 ; do
         [ -S "$sock" ] && nvim --server "$sock" --remote-send "<Cmd>set background=${current}<CR>" 2>/dev/null &

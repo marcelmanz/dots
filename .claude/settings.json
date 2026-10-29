@@ -69,6 +69,5 @@
       "**Org-specific CLIs**: git-based aliases (gst, ga, gd, gco, etc. — common git workflow shortcuts); nix, nise, task, tarea (environment-specific tooling found in shell history); pass (password manager)",
       "**Routine under ~/**: development work in ~/clones/work/thread-frontend; test clones and program checkouts under ~/test and ~/programs are candidate external repos (not org-identified; not included in trusted context)"
     ]
-  },
-  "model": "haiku"
+  }
 }

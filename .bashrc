@@ -96,28 +96,38 @@ refresh_techno_playlist() {
 }
 
 # nsh: run package in temporary nix shell
-# Usage: nsh [-u|--unstable] [-f|--flake <ref>] <pkg> [args...]
-# Options: -u/--unstable (use nixpkgs unstable), -f/--flake (custom flake ref)
+# Usage: nsh [-u|--unstable|-s|--stable] [-f|--flake <ref>] <pkg> [args...]
+# Options: -u/--unstable (default), -s/--stable (nixos-25.11), -f/--flake (custom flake ref)
 nsh() {
-	local flake="github:nixos/nixpkgs/nixos-25.11"
+	local flake="github:nixos/nixpkgs/nixos-unstable"
 	local unstable_flag=0
+	local stable_flag=0
 	local custom_flake=0
 
 	# Parse flags
 	while [[ "$1" == -* ]]; do
 		case "$1" in
 		-u | --unstable)
-			if [ $unstable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
-				echo "Error: cannot use -u/--unstable with -f/--flake" >&2
+			if [ $stable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
+				echo "Error: cannot use -u/--unstable with -s/--stable or -f/--flake" >&2
 				return 1
 			fi
 			flake="github:nixos/nixpkgs/nixos-unstable"
 			unstable_flag=1
 			shift
 			;;
-		-f | --flake)
+		-s | --stable)
 			if [ $unstable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
-				echo "Error: cannot use -f/--flake with -u/--unstable" >&2
+				echo "Error: cannot use -s/--stable with -u/--unstable or -f/--flake" >&2
+				return 1
+			fi
+			flake="github:nixos/nixpkgs/nixos-25.11"
+			stable_flag=1
+			shift
+			;;
+		-f | --flake)
+			if [ $unstable_flag -eq 1 ] || [ $stable_flag -eq 1 ] || [ $custom_flake -eq 1 ]; then
+				echo "Error: cannot use -f/--flake with -u/--unstable or -s/--stable" >&2
 				return 1
 			fi
 			flake="$2"
