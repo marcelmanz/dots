@@ -134,3 +134,11 @@ popover modelbutton:hover {
 #touchpad.enabled label {
     color: #ffd75f;
 }
+
+#vpn.connected label {
+    color: #ffd75f;
+}
+
+#cpu {
+    margin-right: 10px;
+}
