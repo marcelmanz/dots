@@ -39,6 +39,20 @@ bar = [
 ]
 
 [[end]]
+type = "sys_info"
+name = "cpu"
+format = ["CPU {cpu_percent}%"]
+interval.cpu = 2
+on_click_left = "foot -e s-tui"
+
+[[end]]
+type = "sys_info"
+name = "ram"
+format = ["RAM {memory_percent}%"]
+interval.memory = 5
+on_click_left = "foot -e btm --default_widget_type mem --expanded"
+
+[[end]]
 type = "volume"
 format = "{icon} {percentage}%"
 max_volume = 100
@@ -54,6 +68,13 @@ muted = "󰝟"
 type = "network_manager"
 icon_size = 24
 types_whitelist = ["wifi"]
+
+[[end]]
+type = "custom"
+name = "vpn"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/vpn.sh}}", on_click = "!~/scripts/hyprland/vpn.sh toggle" },
+]
 
 [[end]]
 type = "custom"

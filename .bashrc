@@ -552,7 +552,7 @@ wiki_search() {
 	if [ -n "$article" ]; then
 		_wiki_history_add "$article"
 		echo -e "\n\033[1;32m=== $article ===\033[0m\n"
-		wiki read "$article"
+		wiki read "$article" --markdown --no-pager | ink
 	fi
 }
 
