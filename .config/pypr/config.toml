@@ -30,7 +30,7 @@ process_tracking = false
 animation = ""
 command = "cinny"
 class = "cinny"
-size = "99% 100%"
+size = "80% 80%"
 lazy = true
 
 [scratchpads.term]
