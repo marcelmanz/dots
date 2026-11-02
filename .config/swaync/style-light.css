@@ -35,7 +35,11 @@
 }
 
 .floating-notifications .notification-background {
-    padding: 16px 16px 10px 0;
+    padding: 1px 16px 0 0;
+}
+
+.floating-notifications .notification-row:first-child .notification-background {
+    padding-top: 16px;
 }
 
 .notification {
