@@ -67,3 +67,11 @@
 [includeIf "gitdir:~/clones/work/"]
 	path = ~/.gitconfig-work
 
+[url "git@ssh.bitbucket.org:"]
+	insteadOf = git@bitbucket.org:
+[credential "https://github.com"]
+	helper = 
+	helper = !/nix/store/vzgfy04xwxhih4827878qr1575ba9kpx-gh-2.103.2/bin/.gh-wrapped auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/nix/store/vzgfy04xwxhih4827878qr1575ba9kpx-gh-2.103.2/bin/.gh-wrapped auth git-credential

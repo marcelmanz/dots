@@ -49,18 +49,22 @@ hl.workspace_rule({
     workspace = "1",
     default_name = "browse",
     persistent = true,
+    monitor = "desc:Dell Inc. DELL S2721QS CFN9M43",
 })
 
 hl.workspace_rule({
     workspace = "2",
     default_name = "code",
     persistent = true,
+    monitor = "desc:Dell Inc. DELL S2721QS CFN9M43",
+    default = true,
 })
 
 hl.workspace_rule({
     workspace = "3",
     default_name = "learn",
     persistent = true,
+    monitor = "desc:Dell Inc. DELL S2721QS CFN9M43",
 })
 
 local terminal = "alacritty -e fish"

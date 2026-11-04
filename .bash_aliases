@@ -34,7 +34,7 @@ alias pac="sudo pacman"
 alias pacs="sudo pacman -S"
 alias pacsy="sudo pacman -Syyu"
 alias govh="ssh marcel@135.125.234.60"
-alias gb="git branch"
+alias gb="~/scripts/git/branch-dates.sh"
 alias gbco='git checkout $(git branch | fzy | xargs)'
 alias gbc='~/scripts/git/prune-stale-branches.sh'
 alias vimirc='vi ~/clones/own/dots/vimmic-config.json'
@@ -425,7 +425,7 @@ alias speedtest-cli="speedtest-rs"
 alias chatd="chatd --ozone-platform=wayland"
 alias nchat="~/scripts/tmux/nchat-tmux.sh"
 alias clss="~/scripts/claude-sessions"
-alias clc="claude -c"
+alias clc="claude-commit"
 alias oc="opencode"
 alias make="make --output-sync=line"
 alias paff="~/scripts/passff.sh"
