@@ -91,9 +91,11 @@ gtk-sound-theme-name=ocean
 gtk-font-name="Noto Sans,  10"
 EOF
 
-gsettings set org.gnome.desktop.interface color-scheme "$color_scheme" 2>/dev/null || true
-gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme" 2>/dev/null || true
-gsettings set org.gnome.desktop.interface cursor-theme "$cursor_theme" 2>/dev/null || true
+# gsettings needs GNOME schemas that aren't installed here; dconf writes the
+# same keys directly (xdg-desktop-portal reads org.gnome.desktop.interface from dconf).
+dconf write /org/gnome/desktop/interface/color-scheme "'$color_scheme'"
+dconf write /org/gnome/desktop/interface/gtk-theme "'$gtk_theme'"
+dconf write /org/gnome/desktop/interface/cursor-theme "'$cursor_theme'"
 hyprctl setcursor "$cursor_theme" 24 >/dev/null 2>&1
 hyprctl keyword general:col.active_border "$hypr_active_border" >/dev/null 2>&1
 hyprctl keyword general:col.inactive_border "$hypr_inactive_border" >/dev/null 2>&1
@@ -111,17 +113,8 @@ ln -sf "$HOME/clones/own/dots/.config/ironbar/style-${current}.css" "$HOME/.conf
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
 ln -sf "$(dirname "$(readlink -f "$(command -v btop)")")/../share/btop/themes/${btop_theme}.theme" "$HOME/.config/btop/themes/system.theme"
 
-# Chromium's GTK "System" theme detection is unreliable on Linux, so force
-# Brave's own theme pref directly instead of trusting it. Only safe to edit
-# while Brave isn't running -- it overwrites this file on write/exit.
-BRAVE_PREFS="$HOME/.config/BraveSoftware/Brave-Origin-Nightly/Default/Preferences"
-if [[ -f "$BRAVE_PREFS" ]] && ! pgrep -f brave-origin-nightly >/dev/null; then
-    brave_color_scheme=$([[ "$current" == "dark" ]] && echo 2 || echo 1)
-    tmp=$(mktemp)
-    jq --argjson cs "$brave_color_scheme" \
-        '.browser.theme.color_scheme = $cs | .browser.theme.color_scheme2 = $cs' \
-        "$BRAVE_PREFS" > "$tmp" && mv "$tmp" "$BRAVE_PREFS"
-fi
+# (the Brave prefs hack that used to live here was dropped: Brave follows the
+# freedesktop color-scheme portal live since hyprland-portals.conf routes Settings to gnome)
 
 if [[ "$1" == "toggle" ]]; then
     tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null
