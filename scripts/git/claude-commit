@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Draft a commit message for the staged diff with a fast Claude model, then
+# open it in $EDITOR via `git commit -e`. Extra args go to `git commit`.
+set -euo pipefail
+
+model="${CLAUDE_COMMIT_MODEL:-haiku}"
+max_diff_bytes="${CLAUDE_COMMIT_MAX_DIFF:-60000}"
+
+git rev-parse --git-dir >/dev/null
+
+if git diff --cached --quiet; then
+	echo "Nothing staged." >&2
+	exit 1
+fi
+
+diff=$(git diff --cached --no-color --no-ext-diff | head -c "$max_diff_bytes")
+stat=$(git diff --cached --no-color --stat)
+log=$(git log -n 30 --no-color --format='%s%n%b%n---' 2>/dev/null || true)
+
+system_prompt='You write git commit messages. Output only the raw commit message: no code fences, no preamble, no quotes.
+Match the style of the recent commits (prefixes like feat:/fix:, scope, casing, tense, length). If history is empty or has no consistent style, use a short imperative summary.
+Subject line under 72 chars. Add a body only if the change is not obvious from the subject: one blank line, then a few concise lines or bullets explaining what and why. No filler.'
+
+msg_file=$(mktemp)
+trap 'rm -f "$msg_file"' EXIT
+
+printf '<recent_commits>\n%s\n</recent_commits>\n\n<stat>\n%s\n</stat>\n\n<diff>\n%s\n</diff>\n' \
+	"$log" "$stat" "$diff" |
+	claude -p \
+		--model "$model" \
+		--system-prompt "$system_prompt" \
+		--tools "" \
+		--strict-mcp-config \
+		--disable-slash-commands \
+		--no-session-persistence |
+	sed -e '/^```/d' >"$msg_file"
+
+if [[ ! -s "$msg_file" ]]; then
+	echo "Claude returned an empty message." >&2
+	exit 1
+fi
+
+git commit -e -F "$msg_file" "$@"

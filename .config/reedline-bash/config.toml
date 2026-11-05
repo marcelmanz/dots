@@ -14,3 +14,7 @@ selected_text = "reverse"
 description = "dark_gray"
 match = "yellow"
 selected_match = "yellow_reverse"
+
+[[keybinding]]
+key = "ctrl-r"
+event = { ExecuteHostCommand = "__atuin_history" }
