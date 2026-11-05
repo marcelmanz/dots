@@ -26,12 +26,20 @@
 	algorithm = histogram
 	; tool = difftastic
 	; external = difft
+	external = omnidiff
+	tool = omnidiff
 
 ; [difftool]
 ; 	prompt = false
 ;
 ; [difftool "difftastic"]
 ;    cmd = difft "$LOCAL" "$REMOTE"
+
+[difftool]
+	prompt = false
+
+[difftool "omnidiff"]
+	cmd = omnidiff "$LOCAL" "$REMOTE"
 
 ; [commit]
 ; 	template = ~/.gitmessage
