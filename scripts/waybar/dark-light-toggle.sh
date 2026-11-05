@@ -101,7 +101,7 @@ hyprctl keyword general:col.active_border "$hypr_active_border" >/dev/null 2>&1
 hyprctl keyword general:col.inactive_border "$hypr_inactive_border" >/dev/null 2>&1
 hyprctl keyword windowrule "border_color $hypr_locked_border, match:tag locked" >/dev/null 2>&1
 
-sed -i "s/^initial-color-theme=.*/initial-color-theme=${current}/" "$HOME/.config/foot/foot.ini"
+printf 'initial-color-theme=%s\n' "$current" >"$HOME/.config/foot/theme-active.ini"
 if [[ "$current" == "dark" ]]; then
     pkill -SIGUSR1 foot 2>/dev/null
 else
