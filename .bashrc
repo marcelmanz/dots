@@ -46,6 +46,20 @@ gpsup() {
 	git push --set-upstream origin "$branch"
 }
 
+rad() {
+	if [ "$1" != "init" ]; then
+		command rad "$@"
+		return
+	fi
+	shift
+	local visibility=--public
+	case " $* " in
+	*" --private "* | *" --public "*) visibility= ;;
+	esac
+	command rad init $visibility "$@" &&
+		echo "remember to run radit so mlab (git.marcel.cool) seeds this repo"
+}
+
 mmview() {
 	[ -z "$1" ] && {
 		echo "usage: mmview <file.md>"
