@@ -456,6 +456,7 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 decorations = "buttonless"
 dynamic_padding = false
 startup_mode = "Windowed"
+opacity = 0.8
 
 [window.dimensions]
 columns = 100

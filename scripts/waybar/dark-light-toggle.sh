@@ -132,8 +132,14 @@ if [[ "$1" == "toggle" ]]; then
     done
 fi
 
-pkill hyprpaper 2>/dev/null
-sleep 0.2
-setsid hyprpaper -c "$hyprpaper_conf" >/dev/null 2>&1 & disown
+if [[ "$1" == "toggle" ]] || ! pgrep -x hyprpaper >/dev/null; then
+    pkill hyprpaper 2>/dev/null
+    sleep 0.2
+    setsid hyprpaper -c "$hyprpaper_conf" >/dev/null 2>&1 & disown
+
+    pkill -f projectw.py 2>/dev/null
+    sleep 0.5
+    setsid projectw >/dev/null 2>&1 & disown
+fi
 
 echo "{\"text\": \"$icon\", \"tooltip\": \"Theme: $current\", \"class\": \"$current\"}"
