@@ -23,6 +23,19 @@ type = "focused"
 show_icon = false
 truncate = "end"
 
+[[end]]
+type = "custom"
+name = "termsonic"
+bar = [
+    { type = "button", label = "󰝚", on_click = "!pgrep -x termsonic || foot -a termsonic termsonic" },
+]
+
+[[end]]
+type = "music"
+player_type = "mpris"
+format = "{title} - {artist}"
+truncate = { mode = "end", max_length = 40 }
+on_click_middle = "playerctl play-pause"
 
 [[end]]
 type = "custom"

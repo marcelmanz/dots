@@ -21,3 +21,6 @@
 old-scripts/
 .config/nushell/history.txt
 
+# theme-toggle churn (symlinks/sed-edited by dark-light-toggle.sh)
+.config/eza/theme.yml
+.config/swaync/style.css
