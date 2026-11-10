@@ -372,7 +372,7 @@ export BITBUCKET_USER=mmanzanares@worldsensing.com
 bbdiff() {
 	local pr="${1:?usage: bbdiff <pr_number> [workspace/repo]}"
 	local repo
-	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbw get --folder atlassian.com token)}"
+	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbw get "atlassian.com token")}"
 	if [[ -n "$2" ]]; then
 		repo="$2"
 	else
@@ -392,7 +392,7 @@ bbdiff() {
 bbpr() {
 	local pr="${1:?usage: bbpr <pr_number> [workspace/repo]}"
 	local repo
-	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbw get --folder atlassian.com token)}"
+	local BITBUCKET_TOKEN="${BITBUCKET_TOKEN:-$(rbw get "atlassian.com token")}"
 	if [[ -n "$2" ]]; then
 		repo="$2"
 	else
