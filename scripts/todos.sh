@@ -59,6 +59,12 @@ current_date_todo="TODO:$current_date.md"
 previous_date=$(date -d "yesterday" +'%Y-%m-%d')
 previous_date_todo="TODO:$previous_date.md"
 
+for todo_file in TODO:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md; do
+  [[ -f $todo_file && $todo_file != "$current_date_todo" ]] || continue
+  awk '!/^[[:space:]]*$/ && !/^# TODO:/ && !/^\[\[.*\]\][[:space:]]*$/ && !/^-[[:space:]]*(\[ ?\])?[[:space:]]*$/ { found = 1; exit } END { exit found }' "$todo_file" &&
+    rm -- "$todo_file"
+done
+
 if ((offset != 0)); then
   mapfile -t todo_files < <(ls -1 TODO:[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md 2>/dev/null | sort -r)
   index=$((-offset))
