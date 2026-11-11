@@ -22,7 +22,7 @@ hidden = [
 [[center]]
 type = "focused"
 show_icon = false
-truncate = "end"
+truncate = { mode = "end", max_length = 40 }
 
 [[end]]
 type = "custom"
@@ -35,7 +35,7 @@ bar = [
 type = "music"
 player_type = "mpris"
 format = "{title} - {artist}"
-truncate = { mode = "end", max_length = 40 }
+truncate = { mode = "end", length = 40, max_length = 40 }
 on_click_middle = "playerctl play-pause"
 
 [[end]]

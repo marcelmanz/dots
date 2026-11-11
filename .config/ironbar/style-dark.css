@@ -127,6 +127,53 @@ popover modelbutton:hover {
     color: @color_fg;
 }
 
+.popup-music .progress trough,
+.popup-music .volume trough {
+    background-color: @color_raised;
+    border-radius: 2px;
+}
+
+.popup-music .progress trough {
+    min-height: 6px;
+}
+
+.popup-music .volume trough {
+    min-width: 6px;
+    min-height: 80px;
+}
+
+.popup-music .progress highlight,
+.popup-music .volume highlight {
+    background-color: @color_muted;
+    border-radius: 2px;
+}
+
+.popup-music .progress highlight {
+    min-height: 6px;
+}
+
+.popup-music .volume highlight {
+    min-width: 6px;
+}
+
+.popup-music .progress slider,
+.popup-music .volume slider {
+    background-color: @color_fg;
+    border-radius: 50%;
+    min-width: 14px;
+    min-height: 14px;
+}
+
+.popup-music button {
+    background: none;
+    color: @color_fg;
+}
+
+.popup-music button:hover {
+    background-color: @color_raised;
+    color: @color_strong;
+}
+
 #keyboard-layout.non-default label {
     color: #ffd75f;
 }
@@ -137,6 +184,10 @@ popover modelbutton:hover {
 
 #vpn.connected label {
     color: #ffd75f;
+}
+
+box.focused {
+    margin: 0 24px;
 }
 
 #cpu {
