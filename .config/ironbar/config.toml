@@ -16,6 +16,7 @@ hidden = [
     "special:S-quick_notes",
     "special:S-volume",
     "special:S-kitty",
+    "special:S-ostui",
 ]
 
 [[center]]
@@ -25,9 +26,9 @@ truncate = "end"
 
 [[end]]
 type = "custom"
-name = "termsonic"
+name = "ostui"
 bar = [
-    { type = "button", label = "󰝚", on_click = "!pgrep -x termsonic || foot -a termsonic termsonic" },
+    { type = "button", label = "󰝚", on_click = "!pypr toggle ostui" },
 ]
 
 [[end]]

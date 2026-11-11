@@ -23,7 +23,7 @@ hl.workspace_rule({
 
 -- hl.bind(mainMod .. " + n", hl.dsp.workspace.toggle_special("magic"))
 -- bind = $mainMod, e, exec, ~/.config/eww/toggle-bar.sh
-hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("ironbar bar main toggle-visible"))
+hl.bind(mainMod .. " + e", hl.dsp.exec_cmd("~/scripts/hyprland/toggle-bar.sh"))
 -- bind = $mainMod SHIFT, m, exec, ~/scripts/wl-mirror-menu.sh
 -- bind = $mainMod SHIFT, P, exec, ~/scripts/pdf-selector.sh
 -- bind = $mainMod SHIFT, P, exec, passmenu -i
@@ -49,6 +49,7 @@ hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("pypr zoom ++0.5"))
 -- just launches the app at its last room (not the WA room specifically).
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("pypr toggle quick_notes"))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("pypr toggle cinny"))
+hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("pypr toggle ostui"))
 hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("pypr shift_monitors +1"))
 hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("hyprctl reload && pypr zoom"))
 -- bind = $mainMod SHIFT, N, exec, foot --title "nnn-term" -e nnn
@@ -146,7 +147,7 @@ hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "r" }))
 hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "u" }))
 hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "d" }))
 
-hl.bind(mainMod .. " + E", hl.dsp.layout("orientationnext"))
+-- hl.bind(mainMod .. " + E", hl.dsp.layout("orientationnext"))
 
 hl.bind("ALT + R", hl.dsp.submap("resize"))
 -- will start a submap called "resize"

@@ -1,0 +1,8 @@
+[auth]
+username = "marcel"
+
+[server]
+host = "https://music.marcel.cool"
+
+[ui]
+vim-keys = true

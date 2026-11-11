@@ -57,6 +57,13 @@ size = "50% 50%"
 unfocus = "hide"
 lazy = true
 
+[scratchpads.ostui]
+animation = ""
+command = "foot -a ostui ostui-launch"
+class = "ostui"
+size = "75% 75%"
+lazy = true
+
 [scratchpads.kitty]
 animation = "fromTop"
 command = "kitty --class kitty-dropterm"

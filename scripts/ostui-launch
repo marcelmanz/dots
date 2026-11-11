@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exec ostui auth --password "$(rbw get music.marcel.cool marcel)"
