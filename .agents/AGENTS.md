@@ -18,6 +18,13 @@
 - Match the formatting and idiom of the surrounding code.
 - No emojis in code or docs.
 
+## Writing
+
+- In Markdown and other prose files, hard-wrap lines at 80 characters.
+- Keep paragraphs short, one or two sentences, with a blank line between
+  them. Don't pack several ideas into one long paragraph.
+- Don't break URLs or table rows to fit the limit.
+
 ## Git
 
 - Never commit. Leave changes staged or in the working tree and let me commit.

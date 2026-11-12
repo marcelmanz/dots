@@ -7,11 +7,36 @@ description: Generate PLAN.md, TODO.md and SOURCES.md for a feature in the user'
 
 Turn a feature description into a `PLAN.md` (design), a `TODO.md` (checklist), and a `SOURCES.md` (reference index of the files/lines the plan was based on), all matching the user's established style. Produce all three unless the user asks for a subset.
 
+## Line length and paragraphs
+
+Applies to all three files.
+
+- Hard-wrap lines at 80 characters.
+- Keep paragraphs short, one or two sentences, with a blank line between
+  them. Split a long block into several paragraphs, one idea each.
+- Wrapped list items continue on the next line indented to the item text.
+- Don't break URLs or table rows to fit the limit.
+
+Example:
+
+```
+Adapt the frontend to the backend contract from `thread-backend` branch
+`2026-11-04-mmanzanares-use-priority-list-as-source` (0.36.0).
+
+Whether an interface is on now depends on whether it is in the gateway priority
+list. Ethernet, mobile and Wi-Fi switches call `PUT
+/api/v1/network/priority/{interface}`.
+
+The Ethernet and mobile config endpoints only take configuration, and the
+priority form only reorders.
+```
+
 ## TODO.md style
 
 - Top-level `# TODO` heading.
 - Every item is a checkbox: `- [ ]` (unchecked) or `- [x]` (done).
-- Each item starts with a plain-English action lead, then the technical detail in the same line.
+- Each item starts with a plain-English action lead, then the technical detail,
+  wrapped at 80 characters.
 - No backticks around names, symbols, enums, or paths. Write them as plain words.
 - No arrows (no `->`, `→`, `=>`).
 - Nest sub-steps under their parent item, indented two spaces, also as checkboxes.

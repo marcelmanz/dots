@@ -32,6 +32,7 @@ if [[ "$current" == "dark" ]]; then
     hypr_inactive_border="rgba(595959aa)"
     hypr_locked_border="rgba(d8da9dff)"
     btop_theme="adwaita-dark"
+    alacritty_theme="alabaster"
 else
     icon="󰖨"
     color_scheme="prefer-light"
@@ -43,6 +44,7 @@ else
     hypr_inactive_border="rgba(64666c55)"
     hypr_locked_border="rgba(ff79c6ff)"
     btop_theme="whiteout"
+    alacritty_theme="modus-operandi"
 fi
 
 # Update GTK config files directly
@@ -108,6 +110,8 @@ else
     pkill -SIGUSR2 foot 2>/dev/null
 fi
 
+cp "$HOME/.config/alacritty/themes/${alacritty_theme}.toml" "$HOME/.cache/alacritty-theme.toml"
+
 ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
 ln -sf "$HOME/clones/own/dots/.config/ironbar/style-${current}.css" "$HOME/.config/ironbar/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
@@ -136,7 +140,9 @@ if [[ "$1" == "toggle" ]] || ! pgrep -x hyprpaper >/dev/null; then
     pkill hyprpaper 2>/dev/null
     sleep 0.2
     setsid hyprpaper -c "$hyprpaper_conf" >/dev/null 2>&1 & disown
+fi
 
+if [[ "$1" == "toggle" ]] || ! pgrep -f projectw.py >/dev/null; then
     pkill -f projectw.py 2>/dev/null
     sleep 0.5
     setsid projectw >/dev/null 2>&1 & disown

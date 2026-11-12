@@ -111,7 +111,7 @@ print_events = false
 render_timer = false
 
 [font]
-size = 11.0
+size = 12.0
 
 [font.normal]
 family = "Myna"
@@ -456,7 +456,6 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 decorations = "buttonless"
 dynamic_padding = false
 startup_mode = "Windowed"
-opacity = 0.8
 
 [window.dimensions]
 columns = 100
@@ -471,5 +470,5 @@ live_config_reload = true
 
 import = [
   "~/.config/alacritty/themes/base-minimal.toml",
-  "~/.config/alacritty/themes/alabaster.toml"
+  "~/.cache/alacritty-theme.toml"
 ]
