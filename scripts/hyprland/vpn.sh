@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 module_name="vpn"
-default_vpn="WS VPN EU"
+default_vpn="WS VPN (Backup)"
 
 active_vpn() {
 	nmcli -t -f NAME,TYPE connection show --active | awk -F: '$2 == "vpn" || $2 == "wireguard" { print $1; exit }'
