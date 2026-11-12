@@ -28,11 +28,12 @@ truncate = { mode = "end", max_length = 40 }
 type = "custom"
 name = "ostui"
 bar = [
-    { type = "button", label = "󰝚", on_click = "!pypr toggle ostui" },
+    { type = "button", label = "󰝚", on_click = "!~/scripts/hyprland/music-toggle.sh" },
 ]
 
 [[end]]
 type = "music"
+name = "music"
 player_type = "mpris"
 format = "{title} - {artist}"
 truncate = { mode = "end", length = 40, max_length = 40 }

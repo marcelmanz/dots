@@ -59,7 +59,7 @@ lazy = true
 
 [scratchpads.ostui]
 animation = ""
-command = "foot -a ostui ostui-launch"
+command = "foot -a ostui ~/scripts/ostui-launch"
 class = "ostui"
 size = "75% 75%"
 lazy = true
