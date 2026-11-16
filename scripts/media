@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+
+seek_step=5
+prog=${0##*/}
+
+usage() {
+	cat <<EOF
+Usage: $prog [COMMAND] [SECONDS]
+Control the active media player.
+With no COMMAND, start the interactive player.
+
+Commands:
+  toggle             toggle between play and pause
+  play               start playback
+  pause              pause playback
+  stop               stop playback
+  next               skip to the next track
+  prev               go back to the previous track
+  fwd [SECONDS]      seek forward (default $seek_step)
+  back [SECONDS]     seek backward (default $seek_step)
+  up                 raise the player volume
+  down               lower the player volume
+  status             print the current track and exit
+
+Options:
+  -h, --help         display this help and exit
+
+Interactive keys:
+  SPACE              toggle between play and pause
+  s                  stop playback
+  n, l               next track
+  p, h               previous track
+  RIGHT              seek forward $seek_step seconds
+  LEFT               seek backward $seek_step seconds
+  UP, k              raise the volume
+  DOWN, j            lower the volume
+  q, ESC             quit
+EOF
+}
+
+run() {
+	case "$1" in
+		toggle) playerctl play-pause ;;
+		play | pause | stop | next) playerctl "$1" ;;
+		prev) playerctl previous ;;
+		fwd) playerctl position "${2:-$seek_step}+" ;;
+		back) playerctl position "${2:-$seek_step}-" ;;
+		up | down) ~/scripts/hyprland/player-volume.sh "$1" ;;
+		status) playerctl metadata --format '{{status}}: {{artist}} - {{title}} [{{duration(position)}}/{{duration(mpris:length)}}]' ;;
+		-h | --help) usage ;;
+		*)
+			printf "%s: unknown command '%s'\n" "$prog" "$1" >&2
+			printf "Try '%s --help' for more information.\n" "$prog" >&2
+			return 1
+			;;
+	esac
+}
+
+bar() {
+	printf '%s%-*.*s%s' "$bar_style" "$cols" "$cols" "$1" "$sgr0"
+}
+
+field() {
+	printf '  %s%-8s%s %s%.*s%s' "$label_style" "$1" "$sgr0" "${3:-}" "$((cols - 13))" "$2" "$sgr0"
+}
+
+status_style() {
+	case "$1" in
+		Playing) tput setaf 2 ;;
+		Paused) tput setaf 3 ;;
+		*) tput setaf 1 ;;
+	esac
+}
+
+keys() {
+	local key label
+	printf ' '
+	while [ $# -gt 0 ]; do
+		key=$1 label=$2
+		shift 2
+		printf '%s%-3s%s %-11s' "$key_style" "$key" "$sgr0" "$label"
+	done
+}
+
+draw() {
+	local info status player title artist position length line frame
+	local -a screen
+	cols=$(tput cols)
+	rows=$(tput lines)
+	info=$(playerctl metadata --format $'{{status}}\t{{playerName}}\t{{title}}\t{{artist}}\t{{duration(position)}}\t{{duration(mpris:length)}}' 2>/dev/null)
+	IFS=$'\t' read -r status player title artist position length <<<"$info"
+	screen+=("$(bar "  $prog ${player:+  Player: $player}")" "")
+	if [ -z "$info" ]; then
+		screen+=("  No player found.")
+	else
+		screen+=(
+			"$(field Status: "$status" "$(status_style "$status")")"
+			"$(field Title: "$title")"
+			"$(field Artist: "$artist")"
+			"$(field Time: "$position / $length")"
+		)
+	fi
+	while [ "${#screen[@]}" -lt "$((rows - 2))" ]; do
+		screen+=("")
+	done
+	screen+=(
+		"$(keys SPC Play/Pause s Stop n Next p Prev q Quit)"
+		"$(keys '<-' Back '->' Forward Up Louder Dn Quieter)"
+	)
+	frame=$home
+	for line in "${screen[@]}"; do
+		frame+=$el$line$'\n'
+	done
+	printf '%s' "${frame%$'\n'}"
+}
+
+tui() {
+	local key rest
+	sgr0=$(tput sgr0) el=$(tput el) home=$(tput cup 0 0)
+	bar_style=$(tput bold; tput setaf 4; tput rev)
+	key_style=$(tput bold; tput setaf 6)
+	label_style=$(tput setaf 4)
+	trap 'tput cnorm; tput rmcup' EXIT
+	tput smcup
+	tput civis
+	clear
+	while true; do
+		draw
+		IFS= read -rsn1 -t 1 key || continue
+		if [ "$key" = $'\e' ]; then
+			IFS= read -rsn2 -t 0.01 rest
+			key+=$rest
+		fi
+		case "$key" in
+			' ') run toggle ;;
+			s) run stop ;;
+			n | l) run next ;;
+			p | h) run prev ;;
+			$'\e[C') run fwd ;;
+			$'\e[D') run back ;;
+			$'\e[A' | k) run up ;;
+			$'\e[B' | j) run down ;;
+			q | $'\e') break ;;
+		esac >/dev/null 2>&1
+	done
+}
+
+if [ $# -eq 0 ]; then
+	tui
+else
+	run "$@"
+fi
