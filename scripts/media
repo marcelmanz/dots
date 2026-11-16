@@ -16,6 +16,7 @@ Commands:
   stop               stop playback
   next               skip to the next track
   prev               go back to the previous track
+  restart            go back to the start of the track
   fwd [SECONDS]      seek forward (default $seek_step)
   back [SECONDS]     seek backward (default $seek_step)
   up                 raise the player volume
@@ -28,12 +29,13 @@ Options:
 Interactive keys:
   SPACE              toggle between play and pause
   s                  stop playback
-  n, l               next track
-  p, h               previous track
-  RIGHT              seek forward $seek_step seconds
-  LEFT               seek backward $seek_step seconds
-  UP, k              raise the volume
-  DOWN, j            lower the volume
+  n                  next track
+  N                  previous track
+  0                  go back to the start of the track
+  l, RIGHT           seek forward $seek_step seconds
+  h, LEFT            seek backward $seek_step seconds
+  k, UP              raise the volume
+  j, DOWN            lower the volume
   q, ESC             quit
 EOF
 }
@@ -43,6 +45,7 @@ run() {
 		toggle) playerctl play-pause ;;
 		play | pause | stop | next) playerctl "$1" ;;
 		prev) playerctl previous ;;
+		restart) playerctl position 0 ;;
 		fwd) playerctl position "${2:-$seek_step}+" ;;
 		back) playerctl position "${2:-$seek_step}-" ;;
 		up | down) ~/scripts/hyprland/player-volume.sh "$1" ;;
@@ -104,8 +107,8 @@ draw() {
 		screen+=("")
 	done
 	screen+=(
-		"$(keys SPC Play/Pause s Stop n Next p Prev q Quit)"
-		"$(keys '<-' Back '->' Forward Up Louder Dn Quieter)"
+		"$(keys SPC Play/Pause s Stop n Next N Prev q Quit)"
+		"$(keys h Back l Forward k Louder j Quieter 0 Restart)"
 	)
 	frame=$home
 	for line in "${screen[@]}"; do
@@ -134,10 +137,11 @@ tui() {
 		case "$key" in
 			' ') run toggle ;;
 			s) run stop ;;
-			n | l) run next ;;
-			p | h) run prev ;;
-			$'\e[C') run fwd ;;
-			$'\e[D') run back ;;
+			n) run next ;;
+			N) run prev ;;
+			0) run restart ;;
+			$'\e[C' | l) run fwd ;;
+			$'\e[D' | h) run back ;;
 			$'\e[A' | k) run up ;;
 			$'\e[B' | j) run down ;;
 			q | $'\e') break ;;
