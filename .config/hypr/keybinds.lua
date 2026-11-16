@@ -220,7 +220,7 @@ hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag())
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize())
 
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("$HOME/scripts/bluetooth-selector.sh"))
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/scripts/waybar/dark-light-toggle.sh toggle"))
+hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("~/scripts/hyprland/dark-light-toggle.sh toggle"))
 -- bind = $mainMod SHIFT, W, exec, $HOME/scripts/show_webcam.sh
 
 -- Lock on lid open
