@@ -43,7 +43,8 @@ EOF
 run() {
 	case "$1" in
 		toggle) playerctl play-pause ;;
-		play | pause | stop | next) playerctl "$1" ;;
+		play | pause | next) playerctl "$1" ;;
+		stop) playerctl pause ;;
 		prev) playerctl previous ;;
 		restart) playerctl position 0 ;;
 		fwd) playerctl position "${2:-$seek_step}+" ;;
