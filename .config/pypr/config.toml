@@ -36,7 +36,7 @@ lazy = true
 [scratchpads.term]
 animation = ""
 class = "bash"
-command = "foot -a bash -L bash"
+command = "alacritty --class bash -e bash"
 size = "75% 75%"
 lazy = true
 
@@ -51,7 +51,7 @@ lazy = true
 
 [scratchpads.volume]
 animation = ""
-command = "foot -a pulsemixer pulsemixer"
+command = "alacritty --class pulsemixer -e pulsemixer"
 class = "pulsemixer"
 size = "50% 50%"
 unfocus = "hide"
@@ -59,7 +59,7 @@ lazy = true
 
 [scratchpads.ostui]
 animation = ""
-command = "foot -a ostui ~/scripts/ostui-launch"
+command = "alacritty --class ostui -e ~/scripts/ostui-launch"
 class = "ostui"
 size = "75% 75%"
 lazy = true

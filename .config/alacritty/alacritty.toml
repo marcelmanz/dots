@@ -438,14 +438,25 @@ mouse = { enabled = true }
 
 [[hints.enabled]]
 regex = '(\./[^ ]+|\.\./[^ ]+|/[^ ]+|~/[^ ]+)'
-action = "Copy"
+action = "Paste"
 post_processing = false
 binding = { key = "P", mods = "Control|Shift" }
 
 [[hints.enabled]]
+regex = '(\./[^ ]+|\.\./[^ ]+|/[^ ]+|~/[^ ]+)'
+action = "Copy"
+post_processing = false
+binding = { key = "P", mods = "Control|Alt" }
+
+[[hints.enabled]]
+regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
+action = "Paste"
+binding = { key = "Y", mods = "Control|Shift" }
+
+[[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
 action = "Copy"
-binding = { key = "Y", mods = "Control|Shift" }
+binding = { key = "Y", mods = "Control|Alt" }
 
 [[hints.enabled]]
 regex = '(\./[^ ]+|\.\./[^ ]+|/[^ ]+|~/[^ ]+)'
@@ -457,6 +468,11 @@ binding = { key = "D", mods = "Control|Shift" }
 regex = '([a-fA-F0-9]{7,128})'
 action = "Paste"
 binding = { key = "H", mods = "Control|Shift" }
+
+[[hints.enabled]]
+regex = '([a-fA-F0-9]{7,128})'
+action = "Copy"
+binding = { key = "H", mods = "Control|Alt" }
 
 [mouse]
 hide_when_typing = true

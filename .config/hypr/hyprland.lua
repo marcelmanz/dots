@@ -26,7 +26,7 @@ hl.env("XDG_CURRENT_DESKTOP", "Hyprland")
 hl.env("EDITOR", "nvim")
 hl.env("VISUAL", "nvim")
 hl.env("SUDO_EDITOR", "nvim")
-hl.env("TERMINAL", "foot")
+hl.env("TERMINAL", "alacritty")
 -- env = XCURSOR_THEME,Retrosmart
 hl.env("MOZ_ENABLE_WAYLAND", "1")
 hl.env("MOZ_DPI_ADJUST", "0.9")
@@ -69,7 +69,7 @@ hl.workspace_rule({
 
 local terminal = "alacritty -e fish"
 local fileManager = "nemo"
-local menu = "pkill -x bemenu || j4-dmenu-desktop --term=foot --dmenu=\"~/scripts/themed-bemenu -p run:\""
+local menu = "pkill -x bemenu || j4-dmenu-desktop --term=alacritty --dmenu=\"~/scripts/themed-bemenu -p run:\""
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
@@ -350,7 +350,7 @@ hl.config({
     -- exec-once = clipse -listen # run listener on startup
     -- windowrule = float,class:(clipse) # ensure you have a floating window class set if you want this behavior
     -- windowrule = size 622 652,class:(clipse) # set the size of the window as necessary
-    -- bind = SUPER, C, exec, foot -a clipse -L clipse
+    -- bind = SUPER, C, exec, $terminal -a clipse -L clipse
     --############################
     --## ENVIRONMENT VARIABLES ###
     --############################
@@ -473,7 +473,7 @@ hl.config({
     -- bind = $mainMod SHIFT, W, exec, hyprctl dispatch togglespecialworkspace whats
     -- workspace = special:whats, on-created-empty:[move 12.5% 12.5%; size 75% 75%] flatpak run --socket=wayland com.rtosta.zapzap %u,class:zapzap zapzap
     -- bind = $mainMod SHIFT, W, exec, hyprctl dispatch togglespecialworkspace whats
-    -- workspace = special:nnn, on-created-empty:[float; move 12.5% 12.5%; size 75% 75%] foot -e nnn %u,class:nnn nnn
+    -- workspace = special:nnn, on-created-empty:[float; move 12.5% 12.5%; size 75% 75%] $terminal -e nnn %u,class:nnn nnn
     -- bind = $mainMod SHIFT, M, exec, hyprctl dispatch togglespecialworkspace nnn
     -- Keyboard layout switch
     -- workspace = special:webcam, on-created-empty:[float; move 12.5% 12.5%; size 50% 50%] /home/marcel/scripts/show_webcam.sh
@@ -483,7 +483,7 @@ hl.config({
     -- windowrule = float, workspace:special:webcam
     -- windowrule = pin, workspace:special:webcam
     -- Foot term
-    -- workspace = special:term, on-created-empty:[float; move 25% 25%; size 50% 50%] foot -a nu -L nu
+    -- workspace = special:term, on-created-empty:[float; move 25% 25%; size 50% 50%] $terminal -a nu -L nu
     -- bind = SUPER, S, exec, hyprctl dispatch togglespecialworkspace term
     -- Flameshot
     -- windowrule = size 3840 1200, flameshot

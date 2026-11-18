@@ -65,14 +65,14 @@ type = "sys_info"
 name = "cpu"
 format = ["CPU {cpu_percent}%"]
 interval.cpu = 2
-on_click_left = "foot -e s-tui"
+on_click_left = "alacritty -e s-tui"
 
 [[end]]
 type = "sys_info"
 name = "ram"
 format = ["RAM {memory_percent}%"]
 interval.memory = 5
-on_click_left = "foot -e btm --default_widget_type mem --expanded"
+on_click_left = "alacritty -e btm --default_widget_type mem --expanded"
 
 [[end]]
 type = "volume"
@@ -102,7 +102,7 @@ bar = [
 type = "custom"
 class = "bluetooth"
 bar = [
-    { type = "button", label = "󰂯", on_click = "!foot -e bluetuith" },
+    { type = "button", label = "󰂯", on_click = "!alacritty -e bluetuith" },
 ]
 
 # [[end]]
