@@ -16,10 +16,11 @@ local browser = "brave-origin-nightly"
 -- bind = $mainMod, Return, exec, ~/scripts/hyprland/toggle-fullscreen.sh 'alacritty -e fish'
 -- bind = $mainMod, Return, exec, ~/scripts/hyprland/toggle-fullscreen.sh 'foot -e nu'
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd("'foot'"))
-hl.workspace_rule({
-    workspace = "special:scratchpad",
-    on_created_empty = "foot",
-})
+hl.on("workspace.created", function(workspace)
+    if workspace.name == "special:scratchpad" and workspace.is_empty then
+        hl.exec_cmd("foot")
+    end
+end)
 
 -- hl.bind(mainMod .. " + n", hl.dsp.workspace.toggle_special("magic"))
 -- bind = $mainMod, e, exec, ~/.config/eww/toggle-bar.sh

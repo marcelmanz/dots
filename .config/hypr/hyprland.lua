@@ -423,6 +423,9 @@ hl.config({
     cursor = {
         inactive_timeout = 3,
     },
+    render = {
+        cm_auto_hdr = 0,
+    },
     --############
     --## INPUT ###
     --############
