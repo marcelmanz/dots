@@ -1,61 +1,39 @@
 # Alacritty keys
 
-Press Ctrl+Shift+H to show this page in a floating window. Quit with q.
+Ctrl+Shift+H shows this page. Quit with q.
 
 ## Hints
 
-A hint draws letter labels over every match on screen. Type a label to run the
-action for that match.
+Type the letter label shown over a match.
 
-Shift inserts the match at the prompt.
-Ctrl+Alt copies it to the clipboard.
+| Match | Insert at prompt | Copy       |
+| ----- | ---------------- | ---------- |
+| Path  | Ctrl+Shift+P     | Ctrl+Alt+P |
+| URL   | Ctrl+Shift+Y     | Ctrl+Alt+Y |
+| Hash  | Ctrl+Shift+G     | Ctrl+Alt+G |
 
-| Match | Insert       | Copy       |
-| ----- | ------------ | ---------- |
-| Path  | Ctrl+Shift+P | Ctrl+Alt+P |
-| URL   | Ctrl+Shift+Y | Ctrl+Alt+Y |
-| Hash  | Ctrl+Shift+G | Ctrl+Alt+G |
+| Keys         | Action                   |
+| ------------ | ------------------------ |
+| Ctrl+Shift+O | Open URL                 |
+| Ctrl+Shift+D | Drag path with `ripdrag` |
 
-Other hints:
+## Opacity
 
-| Keys         | Action                                            |
-| ------------ | ------------------------------------------------- |
-| Ctrl+Shift+O | Open a URL with `xdg-open`                        |
-| Ctrl+Shift+D | Run `~/scripts/foot-cwd ripdrag <path>` on a path |
+| Scope         | +5%           | -5%             | Toggle       |
+| ------------- | ------------- | --------------- | ------------ |
+| This terminal | Ctrl+Shift+Up | Ctrl+Shift+Down | Ctrl+Shift+T |
+| All terminals | Ctrl+Alt+Up   | Ctrl+Alt+Down   | Ctrl+Alt+T   |
+
+Toggle switches between opaque and the previous value. A theme switch resets
+it.
 
 ## General
 
-| Keys             | Action                             |
-| ---------------- | ---------------------------------- |
-| Ctrl+Shift+H     | This help                          |
-| Ctrl+Shift+C / V | Copy / paste                       |
-| Ctrl+Shift+Space | Vi mode (v select, y copy)         |
-| Ctrl+Shift+F / B | Search forward / backward          |
-| Ctrl+Shift+N     | New Alacritty window               |
-| Ctrl+= / - / 0   | Font size bigger / smaller / reset |
-| Middle click     | Paste selection                    |
-| Ctrl+Shift+Up / Down | Opacity +5% / -5%              |
-| Ctrl+Shift+T     | Toggle opacity (opaque / previous) |
-| Ctrl+Alt+Up / Down / T | Same three, for all terminals |
-
-## Matches
-
-- Path: starts with `./`, `../`, `/` or `~/`.
-- URL: `scheme://...`.
-- Hash: 7 to 128 hex characters.
-
-## Notes
-
-- Setting `hints.enabled` replaces Alacritty's default URL hint, so the open
-  hint is declared explicitly.
-- Foot inserts when the last label key is uppercase. Alacritty has one action
-  per hint, hence the two bindings.
-- Plain Ctrl+P and Ctrl+Y are left to the shell (history and yank). Alt is
-  Hyprland's `mainMod`, so Ctrl+Alt is used for copy.
-- The match is appended as the last argument of `command`. There is no
-  `${match}` templating.
-- Opacity is changed at runtime by `~/scripts/alacritty-opacity`. Ctrl+Shift
-  keys affect only the Alacritty process where the key is pressed, Ctrl+Alt
-  keys affect all of them. Switching theme resets it to the theme's value.
-- The help window is floated and centered by the `alacritty-help` window rule
-  in `hyprland.lua`.
+| Keys             | Action                    |
+| ---------------- | ------------------------- |
+| Ctrl+Shift+C / V | Copy / paste              |
+| Ctrl+Shift+Space | Vi mode                   |
+| Ctrl+Shift+F / B | Search forward / backward |
+| Ctrl+Shift+N     | New window                |
+| Ctrl+= / - / 0   | Font size + / - / reset   |
+| Middle click     | Paste selection           |
