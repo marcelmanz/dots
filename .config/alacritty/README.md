@@ -36,6 +36,7 @@ Other hints:
 | Middle click     | Paste selection                    |
 | Ctrl+Shift+Up / Down | Opacity +5% / -5%              |
 | Ctrl+Shift+T     | Toggle opacity (opaque / previous) |
+| Ctrl+Alt+Up / Down / T | Same three, for all terminals |
 
 ## Matches
 
@@ -53,7 +54,8 @@ Other hints:
   Hyprland's `mainMod`, so Ctrl+Alt is used for copy.
 - The match is appended as the last argument of `command`. There is no
   `${match}` templating.
-- Opacity is changed at runtime by `~/scripts/alacritty-opacity` on every
-  running Alacritty. Switching theme resets it to the theme's value.
+- Opacity is changed at runtime by `~/scripts/alacritty-opacity`. Ctrl+Shift
+  keys affect only the Alacritty process where the key is pressed, Ctrl+Alt
+  keys affect all of them. Switching theme resets it to the theme's value.
 - The help window is floated and centered by the `alacritty-help` window rule
   in `hyprland.lua`.
