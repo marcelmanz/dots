@@ -428,6 +428,26 @@ chars = "\u0002/"
 key = "F"
 mods = "Command"
 
+[[keyboard.bindings]]
+key = "H"
+mods = "Control|Shift"
+command = { program = "alacritty", args = ["--class", "alacritty-help", "--title", "Alacritty keys", "-e", "glow", "-p", "-w", "100", "/home/mmanzanares/.config/alacritty/README.md"] }
+
+[[keyboard.bindings]]
+key = "Up"
+mods = "Control|Shift"
+command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["up"] }
+
+[[keyboard.bindings]]
+key = "Down"
+mods = "Control|Shift"
+command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["down"] }
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Control|Shift"
+command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["toggle"] }
+
 [[hints.enabled]]
 command = "xdg-open"
 hyperlinks = true
@@ -467,12 +487,12 @@ binding = { key = "D", mods = "Control|Shift" }
 [[hints.enabled]]
 regex = '([a-fA-F0-9]{7,128})'
 action = "Paste"
-binding = { key = "H", mods = "Control|Shift" }
+binding = { key = "G", mods = "Control|Shift" }
 
 [[hints.enabled]]
 regex = '([a-fA-F0-9]{7,128})'
 action = "Copy"
-binding = { key = "H", mods = "Control|Alt" }
+binding = { key = "G", mods = "Control|Alt" }
 
 [mouse]
 hide_when_typing = true

@@ -221,6 +221,15 @@ hl.window_rule({
     center = true,
 })
 
+hl.window_rule({
+    match = {
+        class = "alacritty-help",
+    },
+    float = true,
+    center = true,
+    size = "900 700",
+})
+
 hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("hyprctl switchxkblayout all next"))
 
 hl.bind("ALT + mouse:274", hl.dsp.exec_cmd("~/scripts/hyprland/toggle-touchpad.sh"))
