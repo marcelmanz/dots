@@ -48,6 +48,13 @@ bar = [
 
 [[end]]
 type = "custom"
+name = "projectw"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/projectw.sh}}", on_click = "!~/scripts/hyprland/projectw.sh toggle" },
+]
+
+[[end]]
+type = "custom"
 name = "keyboard-layout"
 bar = [
     { type = "button", label = "{{watch:~/scripts/hyprland/keyboard-layout.sh}}", on_click = "!hyprctl switchxkblayout all next" },
