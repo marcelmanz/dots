@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v fzf &>/dev/null || ! command -v cowsay &>/dev/null; then
+	echo "cowfiles needs fzf and cowsay" >&2
+	exit 1
+fi
+
+cowsay_bin=$(readlink -f "$(command -v cowsay)")
+default_cow_dir="$(dirname "$cowsay_bin")/../share/cowsay/cows"
+IFS=: read -ra cow_dirs <<<"${COWPATH:-$default_cow_dir}"
+
+case "${1:-}" in
+-n | --native) cow_dirs=("$default_cow_dir") ;;
+esac
+
+shopt -s nullglob
+cow=$(
+	for dir in "${cow_dirs[@]}"; do
+		for file in "$dir"/*.cow; do
+			basename "$file" .cow
+		done
+	done | sort -u |
+		fzf --prompt='cow> ' \
+			--preview 'cowsay -f {} moo' \
+			--preview-window=right,65%
+)
+
+read -rep "cowsay -f $cow> " message
+cowsay -f "$cow" "$message"
