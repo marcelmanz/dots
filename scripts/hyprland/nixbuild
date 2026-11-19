@@ -3,6 +3,7 @@
 flake_dir="$HOME/.config/nix"
 hms_target="work"
 quickshell_config="$HOME/.config/quickshell/nixbuild"
+log_file="${XDG_STATE_HOME:-$HOME/.local/state}/nixbuild/last-build.log"
 
 progress_program='
 def pretty: sub("^/nix/store/[a-z0-9]{32}-"; "") | sub("\\.drv$"; "");
@@ -68,6 +69,16 @@ failure_program='
 if startswith("@nix ") then
 	.[5:] | fromjson? // empty
 	| if .action == "msg" and .level == 0 then .msg
+	elif .action == "result" and .type == 101 then .fields[0]
+	else empty end
+else . end
+'
+
+log_program='
+if startswith("@nix ") then
+	.[5:] | fromjson? // empty
+	| if .action == "msg" and .level <= 3 then .msg
+	elif .action == "start" and .level <= 3 and .text != "" then .text
 	elif .action == "result" and .type == 101 then .fields[0]
 	else empty end
 else . end
@@ -154,6 +165,9 @@ build() {
 	done
 	wait "$reader"
 
+	mkdir -p "$(dirname "$log_file")"
+	jq -Rr "$log_program" "$raw" | sed 's/\x1b\[[0-9;]*m//g' >"$log_file"
+
 	if [ "$cancelled" = 1 ]; then
 		emit_final cancelled $((SECONDS - started)) ""
 	elif [ "$status" = 0 ]; then
@@ -167,6 +181,19 @@ build() {
 
 diff() {
 	exec alacritty --class nixbuild-diff --working-directory "$flake_dir" -e omnidiff --review
+}
+
+edit() {
+	exec alacritty --class nixbuild-edit --working-directory "$flake_dir" \
+		-e bash -ic 'exec ${EDITOR:-nvim} .'
+}
+
+log() {
+	if [ ! -s "$log_file" ]; then
+		notify-send "nixbuild" "No build log yet"
+		return 1
+	fi
+	exec alacritty --class nixbuild-log -e less -R +G "$log_file"
 }
 
 toggle() {
@@ -186,11 +213,13 @@ info) info ;;
 check) check ;;
 build) build ;;
 diff) diff ;;
+log) log ;;
+edit) edit ;;
 toggle) toggle ;;
 start) start ;;
 parse) parse ;;
 *)
-	echo "usage: nixbuild info|check|build|diff|toggle|start|parse" >&2
+	echo "usage: nixbuild info|check|build|diff|log|edit|toggle|start|parse" >&2
 	exit 2
 	;;
 esac

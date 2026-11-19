@@ -257,7 +257,7 @@ hl.window_rule({
 
 hl.window_rule({
     match = {
-        class = "^(nixbuild-diff)$",
+        class = "^(nixbuild-(diff|log|edit))$",
     },
     float = true,
     center = true,

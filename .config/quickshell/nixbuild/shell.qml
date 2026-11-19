@@ -92,6 +92,16 @@ ShellRoot {
         diffProcess.running = true;
     }
 
+    function edit() {
+        hide();
+        editProcess.running = true;
+    }
+
+    function openLog() {
+        hide();
+        logProcess.running = true;
+    }
+
     function applyCheck(text) {
         const result = JSON.parse(text);
         if (!result.checked) {
@@ -158,7 +168,7 @@ ShellRoot {
     }
 
     function handleKey(event) {
-        if (event.key === Qt.Key_Escape) {
+        if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q) {
             hide();
             event.accepted = true;
         } else if (mode === "idle" && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
@@ -166,6 +176,12 @@ ShellRoot {
             event.accepted = true;
         } else if (mode === "idle" && event.key === Qt.Key_D && files.length > 0) {
             diff();
+            event.accepted = true;
+        } else if (mode === "failed" && event.key === Qt.Key_L) {
+            openLog();
+            event.accepted = true;
+        } else if ((mode === "idle" || mode === "failed") && event.key === Qt.Key_E) {
+            edit();
             event.accepted = true;
         }
     }
@@ -206,6 +222,18 @@ ShellRoot {
         id: diffProcess
         command: [root.script, "diff"]
         onExited: root.show()
+    }
+
+    Process {
+        id: editProcess
+        command: [root.script, "edit"]
+        onExited: root.show()
+    }
+
+    Process {
+        id: logProcess
+        command: [root.script, "log"]
+        onExited: root.shown = true
     }
 
     Process {
@@ -560,13 +588,27 @@ ShellRoot {
                         onClicked: root.cancel()
                     }
 
+                    Btn {
+                        visible: root.mode === "failed"
+                        text: "Open log"
+                        hint: "l"
+                        onClicked: root.openLog()
+                    }
+
+                    Btn {
+                        visible: root.mode === "idle" || root.mode === "failed"
+                        text: "Edit"
+                        hint: "e"
+                        onClicked: root.edit()
+                    }
+
                     Item {
                         Layout.fillWidth: true
                     }
 
                     Btn {
                         text: "Close"
-                        hint: "Esc"
+                        hint: "Esc q"
                         onClicked: root.hide()
                     }
                 }
