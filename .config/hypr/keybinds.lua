@@ -65,6 +65,7 @@ hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("hyprctl reload && pypr zoom"
 -- bind = $mainMod SHIFT, N, exec, $terminal --title "nnn-term" -e nnn
 -- hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t"))
 hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("~/scripts/hyprland/nixbuild toggle"))
+hl.bind(mainMod .. " + SHIFT + slash", hl.dsp.exec_cmd(terminal .. " --class alacritty-help --title 'Hyprland keys' -e glow -p -w 100 ~/clones/own/dots/.config/hypr/README.md"))
 -- hl.window_rule({
 --     match = {
 --         title = "^(nnn-term)$",
