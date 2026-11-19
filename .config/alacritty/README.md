@@ -9,12 +9,13 @@ Type the letter label shown over a match.
 | Match | Insert at prompt | Copy       |
 | ----- | ---------------- | ---------- |
 | Path  | Ctrl+Shift+P     | Ctrl+Alt+P |
-| URL   | Ctrl+Shift+U     | Ctrl+Alt+Y |
+| URL   | Ctrl+Alt+U       | Ctrl+Alt+Y |
 | Hash  | Ctrl+Shift+G     | Ctrl+Alt+G |
 
 | Keys         | Action                   |
 | ------------ | ------------------------ |
-| Ctrl+Shift+O | Open URL                 |
+| Ctrl+Shift+U | Open URL                 |
+| Ctrl+Shift+O | Open path                |
 | Ctrl+Shift+D | Drag path with `ripdrag` |
 
 ## Opacity

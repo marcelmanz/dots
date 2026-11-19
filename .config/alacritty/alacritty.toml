@@ -483,7 +483,7 @@ command = "xdg-open"
 hyperlinks = true
 post_processing = true
 regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>"\s{-}\^⟨⟩`\\]+'
-binding = { key = "O", mods = "Control|Shift" }
+binding = { key = "U", mods = "Control|Shift" }
 mouse = { enabled = true }
 
 [[hints.enabled]]
@@ -501,12 +501,18 @@ binding = { key = "P", mods = "Control|Alt" }
 [[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
 action = "Paste"
-binding = { key = "U", mods = "Control|Shift" }
+binding = { key = "U", mods = "Control|Alt" }
 
 [[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
 action = "Copy"
 binding = { key = "Y", mods = "Control|Alt" }
+
+[[hints.enabled]]
+regex = '(\./[^ ,;:)]+|\.\./[^ ,;:)]+|/[^ ,;:)]+|~/[^ ,;:)]+)'
+command = { program = "/home/mmanzanares/scripts/hint-path", args = ["xdg-open"] }
+post_processing = false
+binding = { key = "O", mods = "Control|Shift" }
 
 [[hints.enabled]]
 regex = '(\./[^ ]+|\.\./[^ ]+|/[^ ]+|~/[^ ]+)'

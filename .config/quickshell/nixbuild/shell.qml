@@ -30,6 +30,7 @@ ShellRoot {
     property string line: ""
     property int done: 0
     property int total: 0
+    property int percent: 0
     property bool cancellable: true
     property int elapsed: 0
     property string error: ""
@@ -63,6 +64,7 @@ ShellRoot {
         line = "";
         done = 0;
         total = 0;
+        percent = 0;
         cancellable = true;
         elapsed = 0;
         error = "";
@@ -76,6 +78,7 @@ ShellRoot {
     }
 
     function diff() {
+        hide();
         Quickshell.execDetached([script, "diff"]);
     }
 
@@ -93,6 +96,8 @@ ShellRoot {
             line = update.line;
             done = update.done;
             total = update.total;
+            if (total > 0)
+                percent = Math.max(percent, Math.min(100, Math.floor(100 * done / total)));
             cancellable = update.cancellable;
             return;
         }
@@ -343,13 +348,27 @@ ShellRoot {
                     Layout.fillWidth: true
                     spacing: 6
 
-                    Text {
+                    RowLayout {
                         Layout.fillWidth: true
-                        text: root.label
-                        color: root.foreground
-                        elide: Text.ElideMiddle
-                        font.family: "Myna Nerd Font"
-                        font.pixelSize: 13
+                        spacing: 8
+
+                        Text {
+                            Layout.fillWidth: true
+                            text: root.label
+                            color: root.foreground
+                            elide: Text.ElideMiddle
+                            font.family: "Myna Nerd Font"
+                            font.pixelSize: 13
+                        }
+
+                        Text {
+                            visible: root.total > 0
+                            text: root.percent + "%"
+                            color: root.blue
+                            font.family: "Myna Nerd Font"
+                            font.pixelSize: 14
+                            font.bold: true
+                        }
                     }
 
                     Rectangle {
@@ -365,7 +384,7 @@ ShellRoot {
                             height: parent.height
                             radius: 3
                             color: root.blue
-                            width: root.total > 0 ? track.width * Math.min(1, root.done / root.total) : 0
+                            width: track.width * root.percent / 100
 
                             Behavior on width {
                                 NumberAnimation {
