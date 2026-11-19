@@ -69,6 +69,9 @@ hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("pypr shift_monitors +1"))
 hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("hyprctl reload && pypr zoom"))
 -- bind = $mainMod SHIFT, N, exec, $terminal --title "nnn-term" -e nnn
 -- hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("~/scripts/hyprland/nixbuild toggle"))
+hl.bind(mainMod .. " + SHIFT + slash", hl.dsp.exec_cmd(terminal .. " --class alacritty-help --title 'Hyprland keys' -e glow -p -w 100 ~/clones/own/dots/.config/hypr/README.md"))
+hl.bind(altMod .. " + SHIFT + slash", hl.dsp.exec_cmd("~/scripts/hyprland/binds"))
 -- hl.window_rule({
 --     match = {
 --         title = "^(nnn-term)$",
@@ -88,7 +91,8 @@ hl.bind(mainMod .. " + SHIFT + O", hl.dsp.exec_cmd(browser .. " https://ai.marce
 -- bind = $mainMod SHIFT, G, exec, $browser https://gemini.google.com/u/1/app
 -- bind = $mainMod SHIFT, G, exec, $browser "ext+container:name=Work&url=https://gemini.google.com/u/1/app"
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd(browser .. " --container=\"Work\" \"https://gemini.google.com/u/1/app\""))
-hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd(browser .. " https://excalidraw.com"))
+-- hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd(browser .. " https://excalidraw.com"))
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd("ripdrag -R"))
 
 -- $browser kiosk-like but not compositor fullscreen
 -- windowrule = match:class $browser, float
@@ -174,6 +178,15 @@ hl.define_submap("resize", function()
     -- use reset to go back to the global submap
     hl.bind("escape", hl.dsp.submap("reset"))
     -- will reset the submap, meaning end the current one and return to the global one
+end)
+
+hl.bind("CTRL + b", hl.dsp.submap("tmuxprefix"), { non_consuming = true })
+hl.define_submap("tmuxprefix", function()
+    hl.bind("y", function()
+        hl.dispatch(hl.dsp.submap("reset"))
+        hl.exec_cmd("~/scripts/hyprland/alacritty-prefix-y")
+    end)
+    hl.bind("catchall", hl.dsp.submap("reset"), { non_consuming = true })
 end)
 
 hl.bind(altMod .. " + l", hl.dsp.window.resize({ x = 50, y = 0, relative = true }))

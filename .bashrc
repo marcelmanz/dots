@@ -367,6 +367,11 @@ if command -v rbw >/dev/null 2>&1; then
 	export MINI_FLUX_TOKEN SYNTHETIC_API_KEY WS_LITE_LLM_API_KEY SONAR_TOKEN
 fi
 
+if [[ $PWD == */triumph-dev-environment* || $PWD == */meta-worldsensing* ]] &&
+	command -v sops >/dev/null 2>&1 && [[ -f ~/clones/own/dots/secrets/keys-for-dev.sh ]]; then
+	source <(sops decrypt ~/clones/own/dots/secrets/keys-for-dev.sh 2>/dev/null)
+fi
+
 export BITBUCKET_USER=mmanzanares@worldsensing.com
 
 bbdiff() {

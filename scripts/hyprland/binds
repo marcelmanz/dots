@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ ${1:-} != print ]]; then
+  exec alacritty --class alacritty-help --title "Hyprland binds" -e sh -c "'$0' print | less -S"
+fi
+
+hyprctl binds -j | jq -r '
+  def mods:
+    [ (if (./64|floor)%2 == 1 then "Super" else empty end),
+      (if (./4|floor)%2 == 1 then "Ctrl" else empty end),
+      (if (./8|floor)%2 == 1 then "Alt" else empty end),
+      (if . %2 == 1 then "Shift" else empty end) ];
+  (["SUBMAP", "KEYS", "ACTION"] | @tsv),
+  (sort_by(.submap, .modmask, .key)[]
+    | [ (if .submap == "" then "-" else .submap end),
+        ((.modmask | mods) + [if .catch_all then "any" else .key end] | join("+")),
+        (if .has_description then .description
+         elif .dispatcher == "__lua" then "lua"
+         else "\(.dispatcher) \(.arg)" end) ]
+    | @tsv)
+' | column -t -s $'\t'

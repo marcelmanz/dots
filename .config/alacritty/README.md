@@ -9,12 +9,13 @@ Type the letter label shown over a match.
 | Match | Insert at prompt | Copy       |
 | ----- | ---------------- | ---------- |
 | Path  | Ctrl+Shift+P     | Ctrl+Alt+P |
-| URL   | Ctrl+Shift+Y     | Ctrl+Alt+Y |
+| URL   | Ctrl+Alt+U       | Ctrl+Alt+Y |
 | Hash  | Ctrl+Shift+G     | Ctrl+Alt+G |
 
 | Keys         | Action                   |
 | ------------ | ------------------------ |
-| Ctrl+Shift+O | Open URL                 |
+| Ctrl+Shift+U | Open URL                 |
+| Ctrl+Shift+O | Open path                |
 | Ctrl+Shift+D | Drag path with `ripdrag` |
 
 ## Opacity
@@ -33,6 +34,8 @@ it.
 | ---------------- | ------------------------- |
 | Ctrl+Shift+C / V | Copy / paste              |
 | Ctrl+Shift+Space | Vi mode                   |
+| Ctrl+Shift+Y     | tmux copy mode, else vi   |
+| Enter / y (vi)   | Copy selection            |
 | Ctrl+Shift+F / B | Search forward / backward |
 | Ctrl+Shift+N     | New window                |
 | Ctrl+= / - / 0   | Font size + / - / reset   |

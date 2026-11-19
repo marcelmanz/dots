@@ -434,6 +434,21 @@ mods = "Control|Shift"
 command = { program = "alacritty", args = ["--class", "alacritty-help", "--title", "Alacritty keys", "-e", "glow", "-p", "-w", "100", "/home/mmanzanares/.config/alacritty/README.md"] }
 
 [[keyboard.bindings]]
+key = "Y"
+mods = "Control|Shift"
+command = { program = "/home/mmanzanares/scripts/alacritty-vi-or-tmux-copy" }
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "Return"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
+action = "ClearSelection"
+key = "Return"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
 key = "Up"
 mods = "Control|Shift"
 command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["up"] }
@@ -467,8 +482,8 @@ command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["to
 command = "xdg-open"
 hyperlinks = true
 post_processing = true
-regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>"\\s{-}\\^⟨⟩`\\\\]+'
-binding = { key = "O", mods = "Control|Shift" }
+regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>"\s{-}\^⟨⟩`\\]+'
+binding = { key = "U", mods = "Control|Shift" }
 mouse = { enabled = true }
 
 [[hints.enabled]]
@@ -486,7 +501,7 @@ binding = { key = "P", mods = "Control|Alt" }
 [[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
 action = "Paste"
-binding = { key = "Y", mods = "Control|Shift" }
+binding = { key = "U", mods = "Control|Alt" }
 
 [[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
@@ -494,8 +509,14 @@ action = "Copy"
 binding = { key = "Y", mods = "Control|Alt" }
 
 [[hints.enabled]]
+regex = '(\./[^ ,;:)]+|\.\./[^ ,;:)]+|/[^ ,;:)]+|~/[^ ,;:)]+)'
+command = { program = "/home/mmanzanares/scripts/hint-path", args = ["xdg-open"] }
+post_processing = false
+binding = { key = "O", mods = "Control|Shift" }
+
+[[hints.enabled]]
 regex = '(\./[^ ]+|\.\./[^ ]+|/[^ ]+|~/[^ ]+)'
-command = { program = "/home/mmanzanares/scripts/foot-cwd", args = ["ripdrag"] }
+command = { program = "/home/mmanzanares/scripts/hint-path", args = ["ripdrag"] }
 post_processing = false
 binding = { key = "D", mods = "Control|Shift" }
 
