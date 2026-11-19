@@ -1,0 +1,169 @@
+#!/usr/bin/env bash
+
+flake_dir="$HOME/.config/nix"
+hms_target="work"
+quickshell_config="$HOME/.config/quickshell/nixbuild"
+
+progress_program='
+def pretty: sub("^/nix/store/[a-z0-9]{32}-"; "") | sub("\\.drv$"; "");
+def short: if length > 90 then .[0:90] else . end;
+def key($event): $event.id | tostring;
+
+def step($event):
+	if $event.action == "start" then
+		.kinds[key($event)] = $event.type
+		| if $event.type == 105 then
+			.builds[key($event)] = ($event.fields[0] | pretty) | .phase = "building"
+		elif $event.type == 108 then
+			.fetches[key($event)] = ($event.fields[0] | pretty) | .phase = "building"
+		else . end
+	elif $event.action == "stop" then
+		del(.builds[key($event)], .fetches[key($event)])
+	elif $event.action == "result" then
+		if $event.type == 105 and (.kinds[key($event)] | IN(103, 104)) then
+			.progress[key($event)] = $event.fields[0:2]
+		elif $event.type == 101 then
+			.line = ($event.fields[0] | short)
+		else . end
+	else . end;
+
+def summary:
+	(.progress | to_entries | map(.value)) as $counts
+	| (.builds | to_entries | map(.value)) as $builds
+	| (.fetches | to_entries | map(.value)) as $fetches
+	| {
+		phase,
+		line,
+		cancellable: (.phase != "activating"),
+		label: (
+			if ($builds | length) > 0 then
+				"building " + $builds[-1] + (if ($builds | length) > 1 then " +\(($builds | length) - 1)" else "" end)
+			elif ($fetches | length) > 0 then
+				"fetching " + $fetches[-1]
+			elif .phase == "activating" then .plain
+			elif .phase == "building" then "finishing"
+			else "evaluating configuration" end
+		),
+		done: ($counts | map(.[0]) | add // 0),
+		total: ($counts | map(.[1]) | add // 0)
+	};
+
+foreach inputs as $raw (
+	{kinds: {}, builds: {}, fetches: {}, progress: {}, phase: "evaluating", line: "", plain: "", last: null};
+	(if ($raw | startswith("@nix ")) then ($raw[5:] | fromjson? // null) else $raw end) as $event
+	| if $event == null then .
+	elif ($event | type) == "string" then
+		if ($event | test("\\S")) and ($event | test("news") | not) then
+			.phase = "activating" | .plain = ($event | short)
+		else . end
+	else step($event) end
+	| summary as $current
+	| .changed = ($current != .last)
+	| .last = $current;
+	select(.changed) | {state: "building"} + .last
+)
+'
+
+failure_program='
+if startswith("@nix ") then
+	.[5:] | fromjson? // empty
+	| if .action == "msg" and .level == 0 then .msg
+	elif .action == "result" and .type == 101 then .fields[0]
+	else empty end
+else . end
+'
+
+is_nixos() {
+	[ -e /etc/NIXOS ]
+}
+
+emit_final() {
+	jq -cn --arg state "$1" --argjson seconds "$2" --arg error "$3" \
+		'{state: $state, seconds: $seconds, error: $error}'
+}
+
+info() {
+	local kind="hms" target="home-manager · $hms_target"
+	if is_nixos; then
+		kind="ns"
+		target="nixos · nixos"
+	fi
+	git -C "$flake_dir" status --porcelain | jq -Rcn --arg kind "$kind" --arg target "$target" '
+		[inputs | {status: (.[0:2] | gsub(" "; "") | .[0:1]), path: .[3:]}] as $files
+		| {
+			kind: $kind,
+			target: $target,
+			files: $files,
+			untracked: ($files | map(select(.status == "?")) | length)
+		}'
+}
+
+build() {
+	local started=$SECONDS cancelled=0 raw fifo child reader status error
+
+	if is_nixos; then
+		notify-send -u normal "nixbuild" "NixOS rebuild (ns) is not implemented yet: TODO"
+		emit_final failed 0 "NixOS rebuild (ns) is not implemented yet"
+		return 1
+	fi
+
+	raw=$(mktemp)
+	fifo=$(mktemp -u)
+	mkfifo "$fifo"
+	trap 'rm -f "$raw" "$fifo"' EXIT
+	trap 'cancelled=1; kill -TERM -- "-$child" 2>/dev/null' TERM INT
+
+	setsid home-manager switch --flake "$flake_dir#$hms_target" -b backup \
+		--log-format internal-json -v >"$fifo" 2>&1 &
+	child=$!
+
+	tee "$raw" <"$fifo" | jq -cn --unbuffered -R "$progress_program" &
+	reader=$!
+
+	wait "$child"
+	status=$?
+	while kill -0 "$child" 2>/dev/null; do
+		wait "$child"
+		status=$?
+	done
+	wait "$reader"
+
+	if [ "$cancelled" = 1 ]; then
+		emit_final cancelled $((SECONDS - started)) ""
+	elif [ "$status" = 0 ]; then
+		emit_final done $((SECONDS - started)) ""
+	else
+		error=$(jq -Rr "$failure_program" "$raw" | sed 's/\x1b\[[0-9;]*m//g' | tail -n 6)
+		emit_final failed $((SECONDS - started)) "$error"
+		return 1
+	fi
+}
+
+diff() {
+	exec alacritty --class nixbuild-diff --working-directory "$flake_dir" -e omnidiff --review
+}
+
+toggle() {
+	qs ipc -p "$quickshell_config" call nixbuild toggle
+}
+
+start() {
+	qs -p "$quickshell_config" --no-duplicate -d
+}
+
+parse() {
+	jq -cn --unbuffered -R "$progress_program"
+}
+
+case "$1" in
+info) info ;;
+build) build ;;
+diff) diff ;;
+toggle) toggle ;;
+start) start ;;
+parse) parse ;;
+*)
+	echo "usage: nixbuild info|build|diff|toggle|start|parse" >&2
+	exit 2
+	;;
+esac
