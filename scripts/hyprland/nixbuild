@@ -98,6 +98,32 @@ info() {
 		}'
 }
 
+check() {
+	local err result active generation builds fetches error
+	if is_nixos; then
+		echo '{"checked":false}'
+		return
+	fi
+
+	err=$(mktemp)
+	if ! result=$(nix build --dry-run --json "$flake_dir#homeConfigurations.$hms_target.activationPackage" 2>"$err"); then
+		error=$(sed 's/\x1b\[[0-9;]*m//g' "$err" | grep -m1 'error:')
+		rm -f "$err"
+		jq -cn --arg error "$error" '{checked: true, error: $error}'
+		return
+	fi
+
+	generation=$(jq -r '.[0].outputs.out' <<<"$result")
+	active=$(readlink -f "$HOME/.local/state/nix/profiles/home-manager")
+	builds=$(sed -nE 's/^these ([0-9]+) derivations will be built.*/\1/p; s/^this derivation will be built.*/1/p' "$err")
+	fetches=$(sed -nE 's/^these ([0-9]+) paths will be fetched.*/\1/p; s/^this path will be fetched.*/1/p' "$err")
+	rm -f "$err"
+
+	jq -cn --argjson upToDate "$([ "$generation" = "$active" ] && echo true || echo false)" \
+		--argjson toBuild "${builds:-0}" --argjson toFetch "${fetches:-0}" \
+		'{checked: true, upToDate: $upToDate, toBuild: $toBuild, toFetch: $toFetch, error: ""}'
+}
+
 build() {
 	local started=$SECONDS cancelled=0 raw fifo child reader status error
 
@@ -157,13 +183,14 @@ parse() {
 
 case "$1" in
 info) info ;;
+check) check ;;
 build) build ;;
 diff) diff ;;
 toggle) toggle ;;
 start) start ;;
 parse) parse ;;
 *)
-	echo "usage: nixbuild info|build|diff|toggle|start|parse" >&2
+	echo "usage: nixbuild info|check|build|diff|toggle|start|parse" >&2
 	exit 2
 	;;
 esac

@@ -26,6 +26,12 @@ ShellRoot {
     property var files: []
     property int untracked: 0
 
+    property string checkState: "idle"
+    property bool upToDate: false
+    property int toBuild: 0
+    property int toFetch: 0
+    property string checkError: ""
+
     property string label: ""
     property string line: ""
     property int done: 0
@@ -42,6 +48,10 @@ ShellRoot {
         mode = "idle";
         if (!infoProcess.running)
             infoProcess.running = true;
+        if (!checkProcess.running) {
+            checkState = "checking";
+            checkProcess.running = true;
+        }
     }
 
     function hide() {
@@ -79,7 +89,24 @@ ShellRoot {
 
     function diff() {
         hide();
-        Quickshell.execDetached([script, "diff"]);
+        diffProcess.running = true;
+    }
+
+    function applyCheck(text) {
+        const result = JSON.parse(text);
+        if (!result.checked) {
+            checkState = "idle";
+            return;
+        }
+        checkError = result.error;
+        if (result.error !== "") {
+            checkState = "error";
+            return;
+        }
+        upToDate = result.upToDate;
+        toBuild = result.toBuild;
+        toFetch = result.toFetch;
+        checkState = "ready";
     }
 
     function applyInfo(text) {
@@ -165,6 +192,20 @@ ShellRoot {
         stdout: StdioCollector {
             onStreamFinished: root.applyInfo(text)
         }
+    }
+
+    Process {
+        id: checkProcess
+        command: [root.script, "check"]
+        stdout: StdioCollector {
+            onStreamFinished: root.applyCheck(text)
+        }
+    }
+
+    Process {
+        id: diffProcess
+        command: [root.script, "diff"]
+        onExited: root.show()
     }
 
     Process {
@@ -333,6 +374,22 @@ ShellRoot {
                     }
 
                     Text {
+                        visible: root.checkState !== "idle"
+                        Layout.fillWidth: true
+                        elide: Text.ElideRight
+                        font.family: "Myna Nerd Font"
+                        font.pixelSize: 12
+                        text: root.checkState === "checking" ? "checking for changes..."
+                            : root.checkState === "error" ? root.checkError
+                            : root.upToDate ? "Up to date, nothing to build"
+                            : root.toBuild + " to build, " + root.toFetch + " to fetch"
+                        color: root.checkState === "error" ? root.red
+                            : root.checkState === "ready" && root.upToDate ? root.green
+                            : root.checkState === "ready" ? root.blue
+                            : root.dim
+                    }
+
+                    Text {
                         visible: root.untracked > 0
                         Layout.fillWidth: true
                         wrapMode: Text.WordWrap
@@ -481,7 +538,7 @@ ShellRoot {
 
                     Btn {
                         visible: root.mode === "idle"
-                        text: "Build"
+                        text: root.checkState === "ready" && root.upToDate ? "Rebuild" : "Build"
                         hint: "Enter"
                         tint: "#24402f"
                         onClicked: root.build()
