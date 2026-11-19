@@ -434,6 +434,11 @@ mods = "Control|Shift"
 command = { program = "alacritty", args = ["--class", "alacritty-help", "--title", "Alacritty keys", "-e", "glow", "-p", "-w", "100", "/home/mmanzanares/.config/alacritty/README.md"] }
 
 [[keyboard.bindings]]
+key = "Y"
+mods = "Control|Shift"
+command = { program = "/home/mmanzanares/scripts/alacritty-vi-or-tmux-copy" }
+
+[[keyboard.bindings]]
 key = "Up"
 mods = "Control|Shift"
 command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["up"] }
@@ -486,7 +491,7 @@ binding = { key = "P", mods = "Control|Alt" }
 [[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'
 action = "Paste"
-binding = { key = "Y", mods = "Control|Shift" }
+binding = { key = "U", mods = "Control|Shift" }
 
 [[hints.enabled]]
 regex = '([A-Za-z][A-Za-z0-9+.-]*://[^\s]+)'

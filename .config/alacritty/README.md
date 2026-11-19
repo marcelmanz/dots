@@ -9,7 +9,7 @@ Type the letter label shown over a match.
 | Match | Insert at prompt | Copy       |
 | ----- | ---------------- | ---------- |
 | Path  | Ctrl+Shift+P     | Ctrl+Alt+P |
-| URL   | Ctrl+Shift+Y     | Ctrl+Alt+Y |
+| URL   | Ctrl+Shift+U     | Ctrl+Alt+Y |
 | Hash  | Ctrl+Shift+G     | Ctrl+Alt+G |
 
 | Keys         | Action                   |
@@ -33,6 +33,7 @@ it.
 | ---------------- | ------------------------- |
 | Ctrl+Shift+C / V | Copy / paste              |
 | Ctrl+Shift+Space | Vi mode                   |
+| Ctrl+Shift+Y     | tmux copy mode, else vi   |
 | Ctrl+Shift+F / B | Search forward / backward |
 | Ctrl+Shift+N     | New window                |
 | Ctrl+= / - / 0   | Font size + / - / reset   |

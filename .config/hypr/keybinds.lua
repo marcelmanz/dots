@@ -83,7 +83,8 @@ hl.bind(mainMod .. " + SHIFT + O", hl.dsp.exec_cmd(browser .. " https://ai.marce
 -- bind = $mainMod SHIFT, G, exec, $browser https://gemini.google.com/u/1/app
 -- bind = $mainMod SHIFT, G, exec, $browser "ext+container:name=Work&url=https://gemini.google.com/u/1/app"
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd(browser .. " --container=\"Work\" \"https://gemini.google.com/u/1/app\""))
-hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd(browser .. " https://excalidraw.com"))
+-- hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd(browser .. " https://excalidraw.com"))
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd("ripdrag -R"))
 
 -- $browser kiosk-like but not compositor fullscreen
 -- windowrule = match:class $browser, float
