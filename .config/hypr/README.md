@@ -1,6 +1,7 @@
 # Hyprland keys
 
-Mod+Shift+? shows this page. Quit with q.
+Mod+Shift+? shows this page. Super+Shift+? lists every active bind from
+`hyprctl binds`. Quit either with q.
 
 Mod is Alt. Super is the second modifier.
 

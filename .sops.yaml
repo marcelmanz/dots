@@ -1,9 +1,14 @@
 keys:
   - &nixos age16phd3r65ggmhv090r57es8ygt7j0y0tjezfndkuaptgmk50rxyms56ys87
-  - &work age1yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy     # Add work host's public key here
+  - &work age1qpdnzqwqlkss4sqqjyzc0tr5gqkxsv982ux7x0ccrza7tnj2redqq0kyee
 
 creation_rules:
   - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - age:
+          - *nixos
+          - *work
+  - path_regex: secrets/keys-for-dev\.sh$
     key_groups:
       - age:
           - *nixos
