@@ -23,7 +23,7 @@ fi
 shopt -s expand_aliases
 
 export GIT_PROMPT=true
-export KUBE_PROMPT=true
+export KUBE_PROMPT=false
 export NIX_PROMPT=true
 export VI_MODE_PROMPT=true
 export GPG_PROGRAM=/usr/bin/gpg

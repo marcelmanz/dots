@@ -195,6 +195,10 @@ popover modelbutton:hover {
     color: #b35900;
 }
 
+#projectw.enabled label {
+    color: #b35900;
+}
+
 box.focused {
     margin: 0 24px;
 }

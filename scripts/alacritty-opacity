@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+step=0.05
+minimum=0.10
+fallback_restore=0.80
+theme=$HOME/.cache/alacritty-theme.toml
+state_dir=$HOME/.cache/alacritty-opacity
+own_socket=${ALACRITTY_SOCKET:?run from an Alacritty key binding}
+own_instance=$(basename "$own_socket" .sock)
+
+mkdir -p "$state_dir"
+find "$state_dir" -type f -mtime +7 -delete
+
+sockets=("$own_socket")
+if [[ ${2:-} == all ]]; then
+  sockets=("${XDG_RUNTIME_DIR:-/run/user/$UID}"/Alacritty-*.sock)
+fi
+
+theme_opacity=$(awk -F' *= *' '/^opacity/ {print $2; exit}' "$theme" 2>/dev/null || true)
+theme_opacity=${theme_opacity:-1.0}
+
+current=$theme_opacity
+if [[ -f $state_dir/$own_instance && $state_dir/$own_instance -nt $theme ]]; then
+  current=$(< "$state_dir/$own_instance")
+fi
+
+apply() {
+  local socket instance
+  for socket in "${sockets[@]}"; do
+    [[ -S $socket ]] || continue
+    instance=$(basename "$socket" .sock)
+    printf '%s\n' "$1" > "$state_dir/$instance"
+    [[ -z ${2:-} ]] || printf '%s\n' "$2" > "$state_dir/$instance.restore"
+    alacritty msg --socket "$socket" config -w -1 "window.opacity=$1" || true
+  done
+}
+
+case ${1:-} in
+  up)
+    apply "$(awk -v o="$current" -v s="$step" 'BEGIN { o += s; if (o > 1) o = 1; printf "%.2f", o }')"
+    ;;
+  down)
+    apply "$(awk -v o="$current" -v s="$step" -v m="$minimum" 'BEGIN { o -= s; if (o < m) o = m; printf "%.2f", o }')"
+    ;;
+  toggle)
+    if awk -v o="$current" 'BEGIN { exit !(o < 1) }'; then
+      apply 1.00 "$current"
+    else
+      apply "$(cat "$state_dir/$own_instance.restore" 2>/dev/null || echo "$fallback_restore")"
+    fi
+    ;;
+  *)
+    echo "usage: ${0##*/} up|down|toggle [all]" >&2
+    exit 2
+    ;;
+esac

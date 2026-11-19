@@ -21,7 +21,7 @@ function RefreshUpdates() {
 }
 
 function Update() {
-	foot 'paru'
+	alacritty -e paru
 	RefreshUpdates
 }
 

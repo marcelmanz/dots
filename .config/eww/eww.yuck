@@ -132,7 +132,7 @@
 
 (defwidget ram []
   (icon-module :class "ram" :icon "  " :visible {EWW_RAM.used_mem_perc != ""}
-    (button :onclick "foot btop"
+    (button :onclick "alacritty -e btop"
       (label :text "${round(EWW_RAM.used_mem_perc, 0)}%"))))
 
 (defwidget notifications []
@@ -154,12 +154,12 @@
 
 (defwidget cpu []
   (icon-module :class "cpu" :icon " " 
-    (button :onclick "foot btop"
+    (button :onclick "alacritty -e btop"
       (label :text "${round(EWW_CPU.avg, 0)}%")))) 
 
 (defwidget disk []
   (icon-module :class "disk" :icon "" 
-    (button :onclick "foot btop"
+    (button :onclick "alacritty -e btop"
       (label :text "${round(EWW_DISK["/"].used_perc, 0)}%")))) 
 
 (defwidget trash []
@@ -189,7 +189,7 @@
 
 (defwidget network []
   (icon-module :class "network" :icon ""
-    (button :onclick "foot btop"
+    (button :onclick "alacritty -e btop"
       (label :text "${round(EWW_NET[active_interface].NET_UP / 1000000, 2)}/${round(EWW_NET[active_interface].NET_DOWN / 1000000, 2)}"))))
 
 (defwidget speaker []
