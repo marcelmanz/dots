@@ -23,4 +23,4 @@ if command -v tmux >/dev/null && tmux list-clients >/dev/null 2>&1; then
   done < <(tmux list-clients -F '#{client_pid} #{client_name}')
 fi
 
-exec hyprctl dispatch sendshortcut "CTRL SHIFT,space,activewindow"
+exec hyprctl dispatch 'hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "space", window = "activewindow" })'

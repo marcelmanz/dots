@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+forward_y() {
+  hyprctl dispatch 'hl.dsp.send_shortcut({ mods = "", key = "y", window = "activewindow" })' >/dev/null
+}
+
+has_tmux_client_under() {
+  local root_pid=$1 client_pid client_name pid
+  command -v tmux >/dev/null || return 1
+  while read -r client_pid client_name; do
+    pid=$client_pid
+    while [[ -n $pid && $pid -gt 1 ]]; do
+      [[ $pid == "$root_pid" ]] && return 0
+      pid=$(ps -o ppid= -p "$pid" | tr -d ' ')
+    done
+  done < <(tmux list-clients -F '#{client_pid} #{client_name}' 2>/dev/null)
+  return 1
+}
+
+active=$(hyprctl activewindow -j)
+class=$(jq -r '.class' <<<"$active")
+pid=$(jq -r '.pid' <<<"$active")
+
+if [[ $class == Alacritty* ]] && ! has_tmux_client_under "$pid"; then
+  hyprctl dispatch 'hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "space", window = "activewindow" })' >/dev/null
+else
+  forward_y
+fi

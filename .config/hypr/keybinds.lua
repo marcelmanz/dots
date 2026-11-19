@@ -172,6 +172,15 @@ hl.define_submap("resize", function()
     -- will reset the submap, meaning end the current one and return to the global one
 end)
 
+hl.bind("CTRL + b", hl.dsp.submap("tmuxprefix"), { non_consuming = true })
+hl.define_submap("tmuxprefix", function()
+    hl.bind("y", function()
+        hl.dispatch(hl.dsp.submap("reset"))
+        hl.exec_cmd("~/scripts/hyprland/alacritty-prefix-y")
+    end)
+    hl.bind("catchall", hl.dsp.submap("reset"), { non_consuming = true })
+end)
+
 hl.bind(altMod .. " + l", hl.dsp.window.resize({ x = 50, y = 0, relative = true }))
 hl.bind(altMod .. " + h", hl.dsp.window.resize({ x = -50, y = 0, relative = true }))
 hl.bind(altMod .. " + k", hl.dsp.window.resize({ x = 0, y = -50, relative = true }))
