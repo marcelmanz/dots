@@ -48,6 +48,13 @@ bar = [
 
 [[end]]
 type = "custom"
+name = "nixbuild"
+bar = [
+    { type = "button", label = "", on_click = "!~/scripts/hyprland/nixbuild toggle" },
+]
+
+[[end]]
+type = "custom"
 name = "projectw"
 bar = [
     { type = "button", label = "{{watch:~/scripts/hyprland/projectw.sh}}", on_click = "!~/scripts/hyprland/projectw.sh toggle" },

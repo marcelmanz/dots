@@ -15,10 +15,11 @@ there is no input, diagram the most recent thing being discussed.
 2. Pick the one idea the reader must leave with, such as why a change is
    needed, what breaks, or how a request flows. One idea per diagram.
 3. Write the source to a `.mmd` file in the scratchpad directory, not the repo.
-4. Render it:
+4. Render it with the skill script, which follows the system light/dark
+   preference and bakes in a background rect:
 
    ```
-   merman-cli render diagram.mmd --svg-pipeline resvg-safe -o diagram.svg
+   ~/.agents/skills/diagram/render.sh diagram.mmd diagram.svg
    ```
 
 5. Check the text survived:
@@ -35,7 +36,11 @@ there is no input, diagram the most recent thing being discussed.
 
 ## Rules
 
-- Always pass `--svg-pipeline resvg-safe`. The default pipeline puts labels in
+- Always render through `render.sh`. The SVG is transparent by default, and
+  the CSS background that `-b` writes is ignored by some viewers (imv), so the
+  script adds a real background rect and picks the dark or light theme from
+  the system setting.
+- The script always passes `--svg-pipeline resvg-safe`. The default pipeline puts labels in
   `foreignObject` HTML, which many viewers draw as empty boxes.
 - Do not render to PNG: it fails on a font size limit in this install. SVG only.
 - Use `flowchart` for flows and decisions, `sequenceDiagram` for who calls whom
@@ -44,7 +49,8 @@ there is no input, diagram the most recent thing being discussed.
   so the difference is the only thing that moves.
 - Use real names from the code for nodes. Keep labels short and break lines
   with `<br/>`.
-- Color only the outcome: red fill `#f8d7da` with stroke `#c0392b` for the bad
+- Color only the outcome, and set `color:#000` in the style so the text stays
+  readable on the dark theme: red fill `#f8d7da` with stroke `#c0392b` for the bad
   result, green fill `#d4edda` with stroke `#27ae60` for the good one.
 - Use a realistic example. Do not use a state the system cannot reach, and say
   so when the case is an edge case.

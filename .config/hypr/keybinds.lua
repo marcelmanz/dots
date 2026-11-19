@@ -64,6 +64,7 @@ hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("pypr shift_monitors +1"))
 hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("hyprctl reload && pypr zoom"))
 -- bind = $mainMod SHIFT, N, exec, $terminal --title "nnn-term" -e nnn
 -- hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("swaync-client -t"))
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.exec_cmd("~/scripts/hyprland/nixbuild toggle"))
 -- hl.window_rule({
 --     match = {
 --         title = "^(nnn-term)$",
