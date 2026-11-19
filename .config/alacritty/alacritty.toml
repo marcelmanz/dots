@@ -467,7 +467,7 @@ command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["to
 command = "xdg-open"
 hyperlinks = true
 post_processing = true
-regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>"\\s{-}\\^⟨⟩`\\\\]+'
+regex = '(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001F\u007F-\u009F<>"\s{-}\^⟨⟩`\\]+'
 binding = { key = "O", mods = "Control|Shift" }
 mouse = { enabled = true }
 
@@ -495,7 +495,7 @@ binding = { key = "Y", mods = "Control|Alt" }
 
 [[hints.enabled]]
 regex = '(\./[^ ]+|\.\./[^ ]+|/[^ ]+|~/[^ ]+)'
-command = { program = "/home/mmanzanares/scripts/foot-cwd", args = ["ripdrag"] }
+command = { program = "/home/mmanzanares/scripts/hint-path", args = ["ripdrag"] }
 post_processing = false
 binding = { key = "D", mods = "Control|Shift" }
 

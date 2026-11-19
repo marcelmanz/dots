@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Alacritty passes hint matches verbatim, so a leading ~/ is never expanded.
+set -euo pipefail
+path=${*: -1}
+exec "${@:1:$#-1}" "${path/#\~\//$HOME/}"
