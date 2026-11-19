@@ -34,6 +34,7 @@ it.
 | Ctrl+Shift+C / V | Copy / paste              |
 | Ctrl+Shift+Space | Vi mode                   |
 | Ctrl+Shift+Y     | tmux copy mode, else vi   |
+| Enter / y (vi)   | Copy selection            |
 | Ctrl+Shift+F / B | Search forward / backward |
 | Ctrl+Shift+N     | New window                |
 | Ctrl+= / - / 0   | Font size + / - / reset   |

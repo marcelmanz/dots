@@ -439,6 +439,16 @@ mods = "Control|Shift"
 command = { program = "/home/mmanzanares/scripts/alacritty-vi-or-tmux-copy" }
 
 [[keyboard.bindings]]
+action = "Copy"
+key = "Return"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
+action = "ClearSelection"
+key = "Return"
+mode = "Vi|~Search"
+
+[[keyboard.bindings]]
 key = "Up"
 mods = "Control|Shift"
 command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["up"] }
