@@ -431,12 +431,12 @@ mods = "Command"
 [[keyboard.bindings]]
 key = "H"
 mods = "Control|Shift"
-command = { program = "alacritty", args = ["--class", "alacritty-help", "--title", "Alacritty keys", "-e", "glow", "-p", "-w", "100", "/home/mmanzanares/.config/alacritty/README.md"] }
+command = { program = "sh", args = ["-c", "exec alacritty --class alacritty-help --title 'Alacritty keys' -e glow -p -w 100 \"$HOME/.config/alacritty/README.md\""] }
 
 [[keyboard.bindings]]
 key = "Y"
 mods = "Control|Shift"
-command = { program = "/home/mmanzanares/scripts/alacritty-vi-or-tmux-copy" }
+command = { program = "alacritty-vi-or-tmux-copy" }
 
 [[keyboard.bindings]]
 action = "Copy"
@@ -451,32 +451,32 @@ mode = "Vi|~Search"
 [[keyboard.bindings]]
 key = "Up"
 mods = "Control|Shift"
-command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["up"] }
+command = { program = "alacritty-opacity", args = ["up"] }
 
 [[keyboard.bindings]]
 key = "Down"
 mods = "Control|Shift"
-command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["down"] }
+command = { program = "alacritty-opacity", args = ["down"] }
 
 [[keyboard.bindings]]
 key = "T"
 mods = "Control|Shift"
-command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["toggle"] }
+command = { program = "alacritty-opacity", args = ["toggle"] }
 
 [[keyboard.bindings]]
 key = "Up"
 mods = "Control|Alt"
-command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["up", "all"] }
+command = { program = "alacritty-opacity", args = ["up", "all"] }
 
 [[keyboard.bindings]]
 key = "Down"
 mods = "Control|Alt"
-command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["down", "all"] }
+command = { program = "alacritty-opacity", args = ["down", "all"] }
 
 [[keyboard.bindings]]
 key = "T"
 mods = "Control|Alt"
-command = { program = "/home/mmanzanares/scripts/alacritty-opacity", args = ["toggle", "all"] }
+command = { program = "alacritty-opacity", args = ["toggle", "all"] }
 
 [[hints.enabled]]
 command = "xdg-open"
@@ -512,13 +512,13 @@ binding = { key = "Y", mods = "Control|Alt" }
 
 [[hints.enabled]]
 regex = '''[A-Za-z][A-Za-z0-9+.-]*://[^\u0000-\u001F\u007F-\u009F<>"\s{-}\^⟨⟩`\\]+|~?[\w.+@$-]*/[^\s'"`<>{}|,;:]+'''
-command = { program = "/home/mmanzanares/scripts/hint-path", args = ["xdg-open"] }
+command = { program = "hint-path", args = ["xdg-open"] }
 post_processing = true
 binding = { key = "O", mods = "Control|Shift" }
 
 [[hints.enabled]]
 regex = '''~?[\w.+@$-]*/[^\s'"`<>{}|,;:]+'''
-command = { program = "/home/mmanzanares/scripts/hint-path", args = ["ripdrag"] }
+command = { program = "hint-path", args = ["ripdrag"] }
 post_processing = true
 binding = { key = "D", mods = "Control|Shift" }
 
