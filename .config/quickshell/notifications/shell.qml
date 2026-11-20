@@ -29,13 +29,19 @@ ShellRoot {
     property bool centerOpen: false
     property bool dnd: false
     property bool dndToastShown: false
+    property string toastText: ""
+    property bool toastMuted: false
     property var popups: []
     property var arrivals: ({})
     property real now: Date.now()
 
     readonly property var history: server.trackedNotifications.values.slice().reverse()
 
-    onDndChanged: {
+    onDndChanged: showToast(dnd ? "\u{f009b}  Do not disturb on" : "\u{f009a}  Do not disturb off", !dnd)
+
+    function showToast(text, muted) {
+        toastText = text;
+        toastMuted = muted;
         dndToastShown = true;
         dndToastTimer.restart();
     }
@@ -169,6 +175,10 @@ ShellRoot {
             root.clear();
         }
 
+        function toast(text: string): void {
+            root.showToast(text, false);
+        }
+
         function icon(): string {
             return root.icon;
         }
@@ -190,22 +200,36 @@ ShellRoot {
     component Btn: Rectangle {
         id: btn
         property string text
+        property string keyHint
         property bool highlighted: false
         signal clicked
 
-        implicitWidth: caption.implicitWidth + 16
+        implicitWidth: captionRow.implicitWidth + 16
         implicitHeight: 24
         radius: 5
         color: highlighted || mouse.containsMouse ? root.raised : "transparent"
         border.color: root.border
 
-        Text {
-            id: caption
+        Row {
+            id: captionRow
             anchors.centerIn: parent
-            text: btn.text
-            color: btn.highlighted ? root.strong : root.foreground
-            font.family: "Myna Nerd Font"
-            font.pointSize: 10
+            spacing: 6
+
+            Text {
+                text: btn.text
+                color: btn.highlighted ? root.strong : root.foreground
+                font.family: "Myna Nerd Font"
+                font.pointSize: 10
+            }
+
+            Text {
+                visible: btn.keyHint !== ""
+                text: btn.keyHint
+                color: root.muted
+                font.family: "Myna Nerd Font"
+                font.pointSize: 9
+                anchors.verticalCenter: parent.verticalCenter
+            }
         }
 
         MouseArea {
@@ -391,8 +415,8 @@ ShellRoot {
                 Text {
                     id: dndToastLabel
                     anchors.centerIn: parent
-                    text: root.dnd ? "\u{f009b}  Do not disturb on" : "\u{f009a}  Do not disturb off"
-                    color: root.dnd ? root.strong : root.muted
+                    text: root.toastText
+                    color: root.toastMuted ? root.muted : root.strong
                     font.family: "Myna Nerd Font"
                     font.pointSize: 10
                 }
@@ -450,6 +474,12 @@ ShellRoot {
                 if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q) {
                     root.centerOpen = false;
                     event.accepted = true;
+                } else if (event.key === Qt.Key_D) {
+                    root.dnd = !root.dnd;
+                    event.accepted = true;
+                } else if (event.key === Qt.Key_C) {
+                    root.clear();
+                    event.accepted = true;
                 }
             }
 
@@ -481,13 +511,21 @@ ShellRoot {
 
                     Btn {
                         text: "\u{f009b} DND"
+                        keyHint: "d"
                         highlighted: root.dnd
                         onClicked: root.dnd = !root.dnd
                     }
 
                     Btn {
                         text: "Clear"
+                        keyHint: "c"
                         onClicked: root.clear()
+                    }
+
+                    Btn {
+                        text: "\u{f0156}"
+                        keyHint: "q"
+                        onClicked: root.centerOpen = false
                     }
                 }
 

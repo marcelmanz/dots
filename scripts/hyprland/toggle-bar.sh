@@ -20,4 +20,5 @@ else
 fi
 
 hyprctl eval "hl.config({ general = { gaps_out = { top = 5, right = 5, bottom = $bottom, left = 5 } } })" >/dev/null
-notify-send -t 1500 -a "Bar" -i "$HOME/clones/own/dots/.config/hypr/hyprland.svg" -h string:x-canonical-private-synchronous:bar "$status"
+qs ipc -p "$HOME/.config/quickshell/notifications" call notifications toast "$status" >/dev/null 2>&1 ||
+	notify-send -t 1500 -a "Bar" -i "$HOME/clones/own/dots/.config/hypr/hyprland.svg" -h string:x-canonical-private-synchronous:bar "$status"

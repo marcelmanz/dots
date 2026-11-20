@@ -53,7 +53,7 @@ hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exec_cmd("wofi-emoji"))
 hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("pypr zoom ++0.5"))
 -- WhatsApp via Cinny desktop — Tauri build has no URL deep-link scheme, so this
 -- just launches the app at its last room (not the WA room specifically).
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("pypr toggle quick_notes"))
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc -p ~/.config/quickshell/notifications call notifications toggle"))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("pypr toggle cinny"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("~/scripts/hyprland/music-toggle.sh"))
 hl.define_submap("music", function()
