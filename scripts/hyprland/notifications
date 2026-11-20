@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+quickshell_config="$HOME/.config/quickshell/notifications"
+idle_icon=$'\U000f0365'
+
+call() {
+	qs ipc -p "$quickshell_config" call notifications "$@"
+}
+
+start() {
+	qs -p "$quickshell_config" --no-duplicate -d
+}
+
+watch() {
+	local last="" current
+	while :; do
+		current=$(call icon 2>/dev/null) || current=$idle_icon
+		if [[ $current != "$last" ]]; then
+			printf '%s\n' "$current"
+			last=$current
+		fi
+		sleep 1
+	done
+}
+
+case "$1" in
+start) start ;;
+toggle) call toggle ;;
+dnd) call toggleDnd ;;
+clear) call clear ;;
+watch) watch ;;
+*)
+	echo "usage: notifications start|toggle|dnd|clear|watch" >&2
+	exit 2
+	;;
+esac

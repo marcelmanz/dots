@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+quickshell_config="$HOME/.config/quickshell/media"
+
+call() {
+	qs ipc -p "$quickshell_config" call media "$@"
+}
+
+start() {
+	qs -p "$quickshell_config" --no-duplicate -d
+}
+
+watch() {
+	local last="" current
+	while :; do
+		current=$(call label 2>/dev/null) || current=""
+		if [[ $current != "$last" ]]; then
+			printf '%s\n' "$current"
+			last=$current
+		fi
+		sleep 1
+	done
+}
+
+case "$1" in
+start) start ;;
+toggle) call toggle ;;
+open) call open ;;
+close) call close ;;
+play-pause) call playPause ;;
+watch) watch ;;
+*)
+	echo "usage: media start|toggle|open|close|play-pause|watch" >&2
+	exit 2
+	;;
+esac

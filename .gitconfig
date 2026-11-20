@@ -72,6 +72,11 @@
 [help]
 	autocorrect = prompt
 
+[includeIf "hasconfig:remote.*.url:git@github.com:*/**"]
+	path = ~/.gitconfig-github
+[includeIf "hasconfig:remote.*.url:https://github.com/**"]
+	path = ~/.gitconfig-github
+
 [includeIf "gitdir:~/clones/work/"]
 	path = ~/.gitconfig-work
 

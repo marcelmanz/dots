@@ -13,7 +13,7 @@ if git diff --cached --quiet; then
 	exit 1
 fi
 
-diff=$(git diff --cached --no-color --no-ext-diff | head -c "$max_diff_bytes")
+diff=$(git diff --cached --no-color --no-ext-diff | head -c "$max_diff_bytes" || true)
 stat=$(git diff --cached --no-color --stat)
 log=$(git log -n 30 --no-color --format='%s%n%b%n---' 2>/dev/null || true)
 

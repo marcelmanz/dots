@@ -112,7 +112,6 @@ fi
 
 cp "$HOME/.config/alacritty/themes/${alacritty_theme}.toml" "$HOME/.cache/alacritty-theme.toml"
 
-ln -sf "style-${current}.css" "$HOME/.config/swaync/style.css"
 ln -sf "$HOME/clones/own/dots/.config/ironbar/style-${current}.css" "$HOME/.config/ironbar/style.css"
 ln -sf "$HOME/.config/eza/theme-${current}.yml" "$HOME/.config/eza/theme.yml"
 ln -sf "$(dirname "$(readlink -f "$(command -v btop)")")/../share/btop/themes/${btop_theme}.theme" "$HOME/.config/btop/themes/system.theme"
@@ -125,7 +124,6 @@ if [[ "$1" == "toggle" ]]; then
     tmux refresh-client -S 2>/dev/null
     printf '%s tmux reload exit=%s mode=%s\n' "$(date +%H:%M:%S)" "$?" "$current" >> "$HOME/.cache/tmux-theme-toggle.log"
 
-    swaync-client --reload-css 2>/dev/null
     pkill ironbar 2>/dev/null
     setsid ironbar >/dev/null 2>&1 & disown
 
