@@ -206,3 +206,10 @@ box.focused {
 #cpu {
     margin-right: 10px;
 }
+
+.volume,
+.battery,
+.clock,
+.notifications {
+    margin-left: 16px;
+}

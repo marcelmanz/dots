@@ -5,53 +5,53 @@ height = 30
 exclusive_zone = false
 ironvar_defaults = { touchpad = "󰤳" }
 
-[[center]]
-type = "focused"
-show_icon = false
-truncate = { mode = "end", max_length = 40 }
-
-[[end]]
+[[start]]
 type = "custom"
 name = "ostui"
 bar = [
     { type = "button", label = "󰝚", on_click = "!~/scripts/hyprland/music-toggle.sh" },
 ]
 
-[[end]]
-type = "music"
+[[start]]
+type = "custom"
 name = "music"
-player_type = "mpris"
-format = "{title} - {artist}"
-truncate = { mode = "end", length = 40, max_length = 40 }
-on_click_middle = "playerctl play-pause"
+on_click_middle = "~/scripts/hyprland/media play-pause"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/media watch}}", on_click = "!~/scripts/hyprland/media toggle" },
+]
 
-[[end]]
+[[start]]
 type = "custom"
 name = "touchpad"
 bar = [
     { type = "button", label = "#touchpad", on_click = "!~/scripts/hyprland/toggle-touchpad.sh" },
 ]
 
-[[end]]
+[[start]]
 type = "custom"
 name = "nixbuild"
 bar = [
     { type = "button", label = "", on_click = "!~/scripts/hyprland/nixbuild toggle" },
 ]
 
-[[end]]
+[[start]]
 type = "custom"
 name = "projectw"
 bar = [
     { type = "button", label = "{{watch:~/scripts/hyprland/projectw.sh}}", on_click = "!~/scripts/hyprland/projectw.sh toggle" },
 ]
 
-[[end]]
+[[start]]
 type = "custom"
 name = "keyboard-layout"
 bar = [
     { type = "button", label = "{{watch:~/scripts/hyprland/keyboard-layout.sh}}", on_click = "!hyprctl switchxkblayout all next" },
 ]
+
+[[center]]
+type = "focused"
+show_icon = false
+truncate = { mode = "end", max_length = 40 }
 
 [[end]]
 type = "sys_info"
@@ -118,8 +118,12 @@ when = { percent = 15, charging = false }
 type = "clock"
 
 [[end]]
-type = "notifications"
-show_count = false
+type = "custom"
+class = "notifications"
+on_click_right = "~/scripts/hyprland/notifications dnd"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/notifications watch}}", on_click = "!~/scripts/hyprland/notifications toggle" },
+]
 
 [[end]]
 type = "tray"
