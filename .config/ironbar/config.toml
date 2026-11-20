@@ -15,9 +15,9 @@ bar = [
 [[start]]
 type = "custom"
 name = "music"
-on_click_middle = "~/scripts/hyprland/media play-pause"
+on_click_middle = "~/scripts/hyprland/media-module play-pause"
 bar = [
-    { type = "button", label = "{{watch:~/scripts/hyprland/media watch}}", on_click = "!~/scripts/hyprland/media toggle" },
+    { type = "button", label = "{{watch:~/scripts/hyprland/media-module watch}}", on_click = "!~/scripts/hyprland/media-module toggle" },
 ]
 
 [[start]]

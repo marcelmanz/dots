@@ -6,10 +6,10 @@ ostui_shown() {
 
 if [ "$1" = "hide" ] || { [ -z "$1" ] && ostui_shown; }; then
 	pypr hide ostui
-	~/scripts/hyprland/media close
+	~/scripts/hyprland/media-module close
 	hyprctl dispatch 'hl.dsp.submap("reset")' >/dev/null
 else
 	pypr show ostui
-	~/scripts/hyprland/media open
+	~/scripts/hyprland/media-module open
 	hyprctl dispatch 'hl.dsp.submap("music")' >/dev/null
 fi

@@ -30,7 +30,7 @@ close) call close ;;
 play-pause) call playPause ;;
 watch) watch ;;
 *)
-	echo "usage: media start|toggle|open|close|play-pause|watch" >&2
+	echo "usage: media-module start|toggle|open|close|play-pause|watch" >&2
 	exit 2
 	;;
 esac
