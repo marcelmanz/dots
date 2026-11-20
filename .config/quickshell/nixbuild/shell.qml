@@ -22,6 +22,7 @@ ShellRoot {
     readonly property color blue: "#6aa9e0"
 
     property bool shown: false
+    property bool docked: false
     property string mode: "idle"
     property string host: ""
     property bool infoQueued: false
@@ -60,7 +61,16 @@ ShellRoot {
 
     function hide() {
         shown = false;
+        docked = false;
         hideTimer.stop();
+    }
+
+    function dock() {
+        docked = true;
+    }
+
+    function undock() {
+        docked = false;
     }
 
     function cycleHost() {
@@ -79,8 +89,10 @@ ShellRoot {
     }
 
     function toggle() {
-        if (shown)
-            hide();
+        if (shown && docked)
+            undock();
+        else if (shown)
+            dock();
         else
             show();
     }
@@ -122,6 +134,8 @@ ShellRoot {
     }
 
     function applyCheck(text) {
+        if (text.trim() === "")
+            return;
         const result = JSON.parse(text);
         if (result.host !== host)
             return;
@@ -171,6 +185,8 @@ ShellRoot {
         elapsed = seconds;
         error = message;
         shown = true;
+        if (state === "failed")
+            docked = false;
         if (state !== "failed")
             hideTimer.restart();
     }
@@ -193,6 +209,9 @@ ShellRoot {
     function handleKey(event) {
         if (event.key === Qt.Key_Escape || event.key === Qt.Key_Q) {
             hide();
+            event.accepted = true;
+        } else if (event.key === Qt.Key_H) {
+            dock();
             event.accepted = true;
         } else if (mode === "idle" && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
             build();
@@ -225,6 +244,10 @@ ShellRoot {
 
         function hide(): void {
             root.hide();
+        }
+
+        function dock(): void {
+            root.dock();
         }
     }
 
@@ -338,17 +361,61 @@ ShellRoot {
         }
         margins {
             top: 12
-            right: 12
+            right: root.docked ? 0 : 12
         }
-        implicitWidth: 440
-        implicitHeight: card.implicitHeight
+        implicitWidth: root.docked ? tab.implicitWidth : 440
+        implicitHeight: root.docked ? tab.implicitHeight : card.implicitHeight
 
         WlrLayershell.layer: WlrLayer.Overlay
         WlrLayershell.namespace: "nixbuild"
-        WlrLayershell.keyboardFocus: root.mode === "idle" || root.mode === "failed" ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+        WlrLayershell.keyboardFocus: !root.docked && (root.mode === "idle" || root.mode === "failed") ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+
+        Rectangle {
+            id: tab
+            visible: root.docked
+            width: parent.width
+            implicitWidth: 52
+            implicitHeight: 32
+            topLeftRadius: 8
+            bottomLeftRadius: 8
+            color: tabMouse.containsMouse ? Qt.lighter(root.background, 1.4) : root.background
+            border.color: root.border
+
+            Rectangle {
+                width: 3
+                height: parent.height - 12
+                anchors.left: parent.left
+                anchors.leftMargin: 5
+                anchors.verticalCenter: parent.verticalCenter
+                radius: 1
+                color: root.mode === "building" ? root.blue
+                    : root.mode === "done" ? root.green
+                    : root.mode === "failed" ? root.red
+                    : root.mode === "cancelled" ? root.yellow
+                    : root.dim
+            }
+
+            Text {
+                anchors.centerIn: parent
+                anchors.horizontalCenterOffset: 3
+                text: root.mode === "building" ? (root.total > 0 ? root.percent + "%" : "...") : "nix"
+                color: root.foreground
+                font.family: "Myna Nerd Font"
+                font.pixelSize: 12
+                font.bold: true
+            }
+
+            MouseArea {
+                id: tabMouse
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: root.undock()
+            }
+        }
 
         Rectangle {
             id: card
+            visible: !root.docked
             width: parent.width
             implicitHeight: column.implicitHeight + 28
             radius: 10
@@ -388,6 +455,14 @@ ShellRoot {
                         color: root.dim
                         font.family: "Myna Nerd Font"
                         font.pixelSize: 12
+                    }
+
+                    Btn {
+                        visible: root.mode === "idle" && root.hosts.length > 1
+                        text: "Host"
+                        hint: "S-Tab"
+                        implicitHeight: 24
+                        onClicked: root.cycleHost()
                     }
                 }
 
@@ -608,13 +683,6 @@ ShellRoot {
                         hint: "Enter"
                         tint: "#24402f"
                         onClicked: root.build()
-                    }
-
-                    Btn {
-                        visible: root.mode === "idle" && root.hosts.length > 1
-                        text: "Host"
-                        hint: "S-Tab"
-                        onClicked: root.cycleHost()
                     }
 
                     Btn {
