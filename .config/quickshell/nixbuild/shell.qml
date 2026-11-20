@@ -10,6 +10,7 @@ ShellRoot {
     readonly property string script: Quickshell.env("HOME") + "/scripts/hyprland/nixbuild"
     readonly property int maxFiles: 8
     readonly property int autoHideMs: 8000
+    readonly property var hosts: ["", "mlab"]
 
     readonly property color background: "#1c1c1c"
     readonly property color border: "#3a3a3a"
@@ -22,6 +23,9 @@ ShellRoot {
 
     property bool shown: false
     property string mode: "idle"
+    property string host: ""
+    property bool infoQueued: false
+    property bool checkQueued: false
     property string target: ""
     property var files: []
     property int untracked: 0
@@ -57,6 +61,21 @@ ShellRoot {
     function hide() {
         shown = false;
         hideTimer.stop();
+    }
+
+    function cycleHost() {
+        host = hosts[(hosts.indexOf(host) + 1) % hosts.length];
+        if (infoProcess.running)
+            infoQueued = true;
+        else
+            infoProcess.running = true;
+        checkState = "checking";
+        if (checkProcess.running) {
+            checkQueued = true;
+            checkProcess.running = false;
+        } else {
+            checkProcess.running = true;
+        }
     }
 
     function toggle() {
@@ -104,6 +123,8 @@ ShellRoot {
 
     function applyCheck(text) {
         const result = JSON.parse(text);
+        if (result.host !== host)
+            return;
         if (!result.checked) {
             checkState = "idle";
             return;
@@ -121,6 +142,8 @@ ShellRoot {
 
     function applyInfo(text) {
         const info = JSON.parse(text);
+        if (info.host !== host)
+            return;
         target = info.target;
         files = info.files;
         untracked = info.untracked;
@@ -174,6 +197,9 @@ ShellRoot {
         } else if (mode === "idle" && (event.key === Qt.Key_Return || event.key === Qt.Key_Enter)) {
             build();
             event.accepted = true;
+        } else if (mode === "idle" && event.key === Qt.Key_Backtab && hosts.length > 1) {
+            cycleHost();
+            event.accepted = true;
         } else if (mode === "idle" && event.key === Qt.Key_D && files.length > 0) {
             diff();
             event.accepted = true;
@@ -204,17 +230,29 @@ ShellRoot {
 
     Process {
         id: infoProcess
-        command: [root.script, "info"]
+        command: [root.script, "info", root.host]
         stdout: StdioCollector {
             onStreamFinished: root.applyInfo(text)
+        }
+        onExited: {
+            if (root.infoQueued) {
+                root.infoQueued = false;
+                running = true;
+            }
         }
     }
 
     Process {
         id: checkProcess
-        command: [root.script, "check"]
+        command: [root.script, "check", root.host]
         stdout: StdioCollector {
             onStreamFinished: root.applyCheck(text)
+        }
+        onExited: {
+            if (root.checkQueued) {
+                root.checkQueued = false;
+                running = true;
+            }
         }
     }
 
@@ -238,7 +276,7 @@ ShellRoot {
 
     Process {
         id: buildProcess
-        command: [root.script, "build"]
+        command: [root.script, "build", root.host]
         stdout: SplitParser {
             onRead: data => root.applyBuildLine(data)
         }
@@ -570,6 +608,13 @@ ShellRoot {
                         hint: "Enter"
                         tint: "#24402f"
                         onClicked: root.build()
+                    }
+
+                    Btn {
+                        visible: root.mode === "idle" && root.hosts.length > 1
+                        text: "Host"
+                        hint: "S-Tab"
+                        onClicked: root.cycleHost()
                     }
 
                     Btn {

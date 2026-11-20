@@ -2,6 +2,7 @@
 
 flake_dir="$HOME/.config/nix"
 hms_target="work"
+nixos_target="nixos"
 quickshell_config="$HOME/.config/quickshell/nixbuild"
 log_file="${XDG_STATE_HOME:-$HOME/.local/state}/nixbuild/last-build.log"
 
@@ -88,20 +89,35 @@ is_nixos() {
 	[ -e /etc/NIXOS ]
 }
 
+resolve_ssh_target() {
+	local candidate
+	for candidate in "root@$1-local" "root@$1"; do
+		if ssh -q -o ConnectTimeout=5 -o BatchMode=yes "$candidate" exit 2>/dev/null; then
+			echo "$candidate"
+			return
+		fi
+	done
+	return 1
+}
+
 emit_final() {
 	jq -cn --arg state "$1" --argjson seconds "$2" --arg error "$3" \
 		'{state: $state, seconds: $seconds, error: $error}'
 }
 
 info() {
-	local kind="hms" target="home-manager · $hms_target"
-	if is_nixos; then
+	local host=$1 kind="hms" target="home-manager · $hms_target"
+	if [ -n "$host" ]; then
+		kind="deploy"
+		target="deploy · $host"
+	elif is_nixos; then
 		kind="ns"
-		target="nixos · nixos"
+		target="nixos · $nixos_target"
 	fi
-	git -C "$flake_dir" status --porcelain | jq -Rcn --arg kind "$kind" --arg target "$target" '
+	git -C "$flake_dir" status --porcelain | jq -Rcn --arg host "$host" --arg kind "$kind" --arg target "$target" '
 		[inputs | {status: (.[0:2] | gsub(" "; "") | .[0:1]), path: .[3:]}] as $files
 		| {
+			host: $host,
 			kind: $kind,
 			target: $target,
 			files: $files,
@@ -110,38 +126,59 @@ info() {
 }
 
 check() {
-	local err result active generation builds fetches error
-	if is_nixos; then
-		echo '{"checked":false}'
-		return
+	local host=$1 err result active generation builds fetches error ssh_target
+	local attr="homeConfigurations.$hms_target.activationPackage"
+	local profile="$HOME/.local/state/nix/profiles/home-manager"
+	if [ -n "$host" ]; then
+		attr="nixosConfigurations.$host.config.system.build.toplevel"
+	elif is_nixos; then
+		attr="nixosConfigurations.$nixos_target.config.system.build.toplevel"
+		profile=/run/current-system
 	fi
 
 	err=$(mktemp)
-	if ! result=$(nix build --dry-run --json "$flake_dir#homeConfigurations.$hms_target.activationPackage" 2>"$err"); then
+	if ! result=$(nix build --dry-run --json "$flake_dir#$attr" 2>"$err"); then
 		error=$(sed 's/\x1b\[[0-9;]*m//g' "$err" | grep -m1 'error:')
 		rm -f "$err"
-		jq -cn --arg error "$error" '{checked: true, error: $error}'
+		jq -cn --arg host "$host" --arg error "$error" '{host: $host, checked: true, error: $error}'
 		return
 	fi
 
 	generation=$(jq -r '.[0].outputs.out' <<<"$result")
-	active=$(readlink -f "$HOME/.local/state/nix/profiles/home-manager")
+	if [ -n "$host" ]; then
+		if ! ssh_target=$(resolve_ssh_target "$host"); then
+			rm -f "$err"
+			jq -cn --arg host "$host" '{host: $host, checked: true, error: "\($host) is not reachable over ssh"}'
+			return
+		fi
+		active=$(ssh -o BatchMode=yes "$ssh_target" readlink -f /run/current-system)
+	else
+		active=$(readlink -f "$profile")
+	fi
 	builds=$(sed -nE 's/^these ([0-9]+) derivations will be built.*/\1/p; s/^this derivation will be built.*/1/p' "$err")
 	fetches=$(sed -nE 's/^these ([0-9]+) paths will be fetched.*/\1/p; s/^this path will be fetched.*/1/p' "$err")
 	rm -f "$err"
 
-	jq -cn --argjson upToDate "$([ "$generation" = "$active" ] && echo true || echo false)" \
+	jq -cn --arg host "$host" --argjson upToDate "$([ "$generation" = "$active" ] && echo true || echo false)" \
 		--argjson toBuild "${builds:-0}" --argjson toFetch "${fetches:-0}" \
-		'{checked: true, upToDate: $upToDate, toBuild: $toBuild, toFetch: $toFetch, error: ""}'
+		'{host: $host, checked: true, upToDate: $upToDate, toBuild: $toBuild, toFetch: $toFetch, error: ""}'
 }
 
 build() {
-	local started=$SECONDS cancelled=0 raw fifo child reader status error
+	local host=$1 started=$SECONDS cancelled=0 raw fifo child reader status error ssh_target
+	local -a rebuild=(home-manager switch --flake "$flake_dir#$hms_target" -b backup)
 
-	if is_nixos; then
-		notify-send -u normal "nixbuild" "NixOS rebuild (ns) is not implemented yet: TODO"
-		emit_final failed 0 "NixOS rebuild (ns) is not implemented yet"
-		return 1
+	if [ -n "$host" ]; then
+		if ! ssh_target=$(resolve_ssh_target "$host"); then
+			emit_final failed 0 "$host is not reachable over ssh"
+			return 1
+		fi
+		rebuild=(nixos-rebuild switch --flake "$flake_dir#$host" --target-host "$ssh_target")
+		command -v nixos-rebuild >/dev/null || rebuild=(nix run nixpkgs#nixos-rebuild -- "${rebuild[@]:1}")
+	elif is_nixos; then
+		export SUDO_ASKPASS="${SUDO_ASKPASS:-$SSH_ASKPASS}"
+		export NIX_SUDOOPTS="-A"
+		rebuild=(nixos-rebuild switch --sudo --flake "$flake_dir#$nixos_target")
 	fi
 
 	raw=$(mktemp)
@@ -150,8 +187,7 @@ build() {
 	trap 'rm -f "$raw" "$fifo"' EXIT
 	trap 'cancelled=1; kill -TERM -- "-$child" 2>/dev/null' TERM INT
 
-	setsid home-manager switch --flake "$flake_dir#$hms_target" -b backup \
-		--log-format internal-json -v >"$fifo" 2>&1 &
+	setsid "${rebuild[@]}" --log-format internal-json -v >"$fifo" 2>&1 &
 	child=$!
 
 	tee "$raw" <"$fifo" | jq -cn --unbuffered -R "$progress_program" &
@@ -197,7 +233,8 @@ log() {
 }
 
 toggle() {
-	qs ipc -p "$quickshell_config" call nixbuild toggle
+	qs ipc -p "$quickshell_config" call nixbuild toggle &>/dev/null && return
+	start && qs ipc -p "$quickshell_config" call nixbuild toggle
 }
 
 start() {
@@ -209,9 +246,9 @@ parse() {
 }
 
 case "$1" in
-info) info ;;
-check) check ;;
-build) build ;;
+info) info "$2" ;;
+check) check "$2" ;;
+build) build "$2" ;;
 diff) diff ;;
 log) log ;;
 edit) edit ;;
@@ -219,7 +256,7 @@ toggle) toggle ;;
 start) start ;;
 parse) parse ;;
 *)
-	echo "usage: nixbuild info|check|build|diff|log|edit|toggle|start|parse" >&2
+	echo "usage: nixbuild info|check|build [host] | diff|log|edit|toggle|start|parse" >&2
 	exit 2
 	;;
 esac
