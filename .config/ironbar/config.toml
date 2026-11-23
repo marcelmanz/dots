@@ -49,6 +49,13 @@ bar = [
 ]
 
 [[center]]
+type = "custom"
+name = "workspace"
+bar = [
+    { type = "button", label = "{{watch:~/scripts/hyprland/workspace-name.sh}}", on_click = "!qs ipc -p ~/.config/quickshell/workspaces call workspaces flash" },
+]
+
+[[center]]
 type = "focused"
 show_icon = false
 truncate = { mode = "end", max_length = 40 }

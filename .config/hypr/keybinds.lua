@@ -55,28 +55,31 @@ hl.bind(mainMod .. " + Z", hl.dsp.exec_cmd("pypr zoom ++0.5"))
 -- just launches the app at its last room (not the WA room specifically).
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("qs ipc -p ~/.config/quickshell/notifications call notifications toggle"))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("qs ipc -p ~/.config/quickshell/workspaces call workspaces manage"))
--- Entered by the quickshell workspaces island while it is auto-shown; any unbound key passes through and ends it.
+-- Armed by the quickshell workspaces island while it is auto-shown; a submap would block every other bind, so these stay global and any non-arrow key disarms them.
+local workspacesPeekArmed = false
+local workspacesPeekBinds = {}
+function workspacesPeek(armed)
+    workspacesPeekArmed = armed
+    for _, bind in ipairs(workspacesPeekBinds) do
+        bind:set_enabled(armed)
+    end
+end
 local function workspacesPeekEnter(key)
     return function()
-        hl.dispatch(hl.dsp.submap("reset"))
+        workspacesPeek(false)
         hl.exec_cmd("qs ipc -p ~/.config/quickshell/workspaces call workspaces enter " .. key)
     end
 end
-hl.define_submap("workspaces-peek", function()
-    hl.bind("left", workspacesPeekEnter("left"))
-    hl.bind("right", workspacesPeekEnter("right"))
-    hl.bind("SHIFT + left", workspacesPeekEnter("shift-left"))
-    hl.bind("SHIFT + right", workspacesPeekEnter("shift-right"))
-    hl.bind("x", workspacesPeekEnter("x"))
-    hl.bind("delete", workspacesPeekEnter("delete"))
-    hl.bind(mainMod .. " + G", workspacesPeekEnter(""))
-    for i = 1, 10 do
-        hl.bind(mainMod .. " + " .. (i % 10), function()
-            hl.dispatch(hl.dsp.submap("reset"))
-            hl.dispatch(hl.dsp.focus({ workspace = i }))
-        end)
+workspacesPeekBinds = {
+    hl.bind("left", workspacesPeekEnter("left")),
+    hl.bind("right", workspacesPeekEnter("right")),
+}
+workspacesPeek(false)
+local arrowKeycodes = { [113] = true, [114] = true }
+hl.on("input.keyboard.key", function(keycode, _, state)
+    if workspacesPeekArmed and state == 1 and not arrowKeycodes[keycode] then
+        workspacesPeek(false)
     end
-    hl.bind("catchall", hl.dsp.submap("reset"), { non_consuming = true })
 end)
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("pypr toggle cinny"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("~/scripts/hyprland/music-toggle.sh"))

@@ -483,6 +483,18 @@ key = "T"
 mods = "Control|Alt"
 command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "toggle", "all"] }
 
+[[keyboard.bindings]]
+action = "ScrollHalfPageUp"
+key = "U"
+mods = "Super"
+mode = "~Alt"
+
+[[keyboard.bindings]]
+action = "ScrollHalfPageDown"
+key = "D"
+mods = "Super"
+mode = "~Alt"
+
 [[hints.enabled]]
 command = "xdg-open"
 hyperlinks = true

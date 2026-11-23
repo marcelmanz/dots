@@ -33,6 +33,7 @@ it.
 | Keys             | Action                    |
 | ---------------- | ------------------------- |
 | Ctrl+Shift+C / V | Copy / paste              |
+| Super+U / D      | Scroll half page up / down |
 | Ctrl+Shift+Space | Vi mode                   |
 | Ctrl+Shift+Y     | tmux copy mode, else vi   |
 | Ctrl+Shift+M     | Move into a tmux session  |
