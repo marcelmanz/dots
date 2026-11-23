@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+title=${1:?usage: alacritty-help TITLE COMMAND...}
+shift
+
+if pkill -f "alacritty --class alacritty-help --title $title( |$)"; then
+  exit 0
+fi
+
+exec alacritty --class alacritty-help --title "$title" -e "$@"

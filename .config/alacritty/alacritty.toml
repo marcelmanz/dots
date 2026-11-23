@@ -431,7 +431,7 @@ mods = "Command"
 [[keyboard.bindings]]
 key = "H"
 mods = "Control|Shift"
-command = { program = "sh", args = ["-c", "exec alacritty --class alacritty-help --title 'Alacritty keys' -e glow -p -w 100 \"$HOME/.config/alacritty/README.md\""] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-help" "Alacritty keys" glow -p -w 100 "$HOME/.config/alacritty/README.md"'] }
 
 [[keyboard.bindings]]
 key = "Y"

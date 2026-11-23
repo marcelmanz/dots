@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [[ ${1:-} != print ]]; then
-  exec alacritty --class alacritty-help --title "Hyprland binds" -e sh -c "'$0' print | less -S"
+  exec "$HOME/scripts/alacritty-help" "Hyprland binds" sh -c "'$0' print | less -S"
 fi
 
 hyprctl binds -j | jq -r '
