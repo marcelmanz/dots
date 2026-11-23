@@ -42,7 +42,22 @@ mkdir -p "$request_dir"
 if [[ $fg_pgid == "$shell_pid" ]]; then
   tmux new-session -d -s "$session" -c "$cwd"
   printf '%s\n' "$session" > "$request"
-  kill -INT "$shell_pid"
+  hyprctl dispatch "hl.dsp.send_shortcut({ mods = \"CTRL\", key = \"c\", window = \"pid:$alacritty_pid\" })" >/dev/null
+  exit 0
+fi
+
+claude_registry=$HOME/.claude/sessions/$fg_pgid.json
+if [[ $name == claude && -f $claude_registry ]]; then
+  claude_session_id=$(jq -r .sessionId "$claude_registry")
+  claude_title=$(grep -h '"type":"ai-title"' "$HOME"/.claude/projects/*/"$claude_session_id".jsonl 2>/dev/null | tail -1 | jq -r .aiTitle || true)
+  claude_slug=$(tr '[:upper:]' '[:lower:]' <<< "$claude_title" | tr -cs 'a-z0-9' '-' | cut -c1-40 | sed 's/^-*//; s/-*$//')
+  if [[ -n $claude_slug ]] && ! tmux has-session -t "=claude_$claude_slug" 2>/dev/null; then
+    session=claude_$claude_slug
+  fi
+  tmux new-session -d -s "$session" -c "$cwd" \
+    "tail --pid=$fg_pgid -f /dev/null; claude --resume $claude_session_id; exec \"\$SHELL\""
+  printf '%s\n' "$session" > "$request"
+  kill -TERM "$fg_pgid"
   exit 0
 fi
 
@@ -58,6 +73,12 @@ fi
 
 if (( $(pgrep -c -g "$fg_pgid") > 1 )); then
   notify "Can't move $name: it has child processes"
+  exit 1
+fi
+
+if ls -l "/proc/$fg_pgid/fd" 2>/dev/null | grep -q 'anon_inode:\[eventpoll\]' &&
+  stty -F "$(readlink "/proc/$fg_pgid/fd/0")" -a | grep -q -- '-icanon'; then
+  notify "Can't move $name: full-screen app that wouldn't get your keys after the move"
   exit 1
 fi
 
