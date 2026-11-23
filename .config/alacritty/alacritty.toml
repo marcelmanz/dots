@@ -436,7 +436,12 @@ command = { program = "sh", args = ["-c", "exec alacritty --class alacritty-help
 [[keyboard.bindings]]
 key = "Y"
 mods = "Control|Shift"
-command = { program = "alacritty-vi-or-tmux-copy" }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-vi-or-tmux-copy"'] }
+
+[[keyboard.bindings]]
+key = "M"
+mods = "Control|Shift"
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-to-tmux"'] }
 
 [[keyboard.bindings]]
 action = "Copy"
@@ -451,32 +456,32 @@ mode = "Vi|~Search"
 [[keyboard.bindings]]
 key = "Up"
 mods = "Control|Shift"
-command = { program = "alacritty-opacity", args = ["up"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "up"] }
 
 [[keyboard.bindings]]
 key = "Down"
 mods = "Control|Shift"
-command = { program = "alacritty-opacity", args = ["down"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "down"] }
 
 [[keyboard.bindings]]
 key = "T"
 mods = "Control|Shift"
-command = { program = "alacritty-opacity", args = ["toggle"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "toggle"] }
 
 [[keyboard.bindings]]
 key = "Up"
 mods = "Control|Alt"
-command = { program = "alacritty-opacity", args = ["up", "all"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "up", "all"] }
 
 [[keyboard.bindings]]
 key = "Down"
 mods = "Control|Alt"
-command = { program = "alacritty-opacity", args = ["down", "all"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "down", "all"] }
 
 [[keyboard.bindings]]
 key = "T"
 mods = "Control|Alt"
-command = { program = "alacritty-opacity", args = ["toggle", "all"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/alacritty-opacity" "$@"', "alacritty-opacity", "toggle", "all"] }
 
 [[hints.enabled]]
 command = "xdg-open"

@@ -290,7 +290,17 @@ __post_first_prompt_init() {
 	PROMPT_COMMAND="${PROMPT_COMMAND//;;/;}"
 }
 
+__alacritty_tmux_attach() {
+	local request=${XDG_RUNTIME_DIR:-/run/user/$UID}/alacritty-tmux/$$ session pid
+	[[ -f $request ]] || return 0
+	read -r session pid <"$request"
+	rm -f "$request"
+	[[ -z $pid ]] || disown "$pid" 2>/dev/null
+	tmux attach-session -t "=$session"
+}
+
 if [[ $- == *i* ]] && [[ -t 0 ]]; then
+	precmd_functions+=(__alacritty_tmux_attach)
 	if [[ -n "$TMUX" ]]; then
 		__post_first_prompt_init
 	else
