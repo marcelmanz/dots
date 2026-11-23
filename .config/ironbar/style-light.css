@@ -199,6 +199,11 @@ popover modelbutton:hover {
     color: #b35900;
 }
 
+#workspace label {
+    color: @color_strong;
+    font-weight: bold;
+}
+
 box.focused {
     margin: 0 24px;
 }

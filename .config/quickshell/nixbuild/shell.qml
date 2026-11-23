@@ -91,8 +91,10 @@ ShellRoot {
     function toggle() {
         if (shown && docked)
             undock();
-        else if (shown)
+        else if (shown && mode === "building")
             dock();
+        else if (shown)
+            hide();
         else
             show();
     }

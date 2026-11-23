@@ -18,6 +18,7 @@ ShellRoot {
     readonly property int filletRadius: 10
     readonly property int bottomRadius: 13
     readonly property int sidePadding: 6
+    readonly property int chinHeight: 28
 
     readonly property bool dark: themeMode.text().trim() === "dark"
     readonly property color background: dark ? "#000000" : "#ffffff"
@@ -26,6 +27,7 @@ ShellRoot {
     readonly property color focusBlob: dark ? "#262626" : "#e4e4e4"
     readonly property color urgent: dark ? "#ff8a3d" : "#c4501a"
     readonly property color danger: dark ? "#ff5f57" : "#c62828"
+    readonly property color scratchpad: dark ? "#ff79c6" : "#d0389a"
 
     property bool shown: false
     property bool ready: false
@@ -39,8 +41,8 @@ ShellRoot {
     property var urgentAddresses: []
     readonly property bool anyUrgent: workspaces.some(workspace => workspace.urgent)
 
-    readonly property string peekSubmap: "workspaces-peek"
-    property string currentSubmap: ""
+    property var scratchpadNames: ({})
+    property var scratchpads: []
 
     property bool managing: false
     property bool confirming: false
@@ -98,19 +100,21 @@ ShellRoot {
         return screens[0];
     }
 
-    function flash() {
+    function flash(armArrows = true) {
         if (!ready)
             return;
         shown = true;
         hideTimer.restart();
-        // Never clobber another submap (music, resize, ...) the user is in.
-        if (!managing && currentSubmap === "")
-            Hyprland.dispatch(`hl.dsp.submap("${peekSubmap}")`);
+        if (armArrows && !managing)
+            Hyprland.dispatch("function() workspacesPeek(true) end");
     }
 
     function endPeek() {
-        if (currentSubmap === peekSubmap)
-            Hyprland.dispatch(`hl.dsp.submap("reset")`);
+        Hyprland.dispatch("function() workspacesPeek(false) end");
+    }
+
+    function scratchpadOf(workspaceName) {
+        return workspaceName.match(/^special:S-(.+)$/)?.[1];
     }
 
     onShownChanged: {
@@ -168,6 +172,19 @@ ShellRoot {
             if (urgentAddresses.includes(client.address))
                 workspace.urgent = true;
         }
+
+        const names = {};
+        for (const client of state.clients) {
+            const name = scratchpadOf(client.workspace.name) ?? scratchpadNames[client.address];
+            if (name)
+                names[client.address] = name;
+        }
+        scratchpadNames = names;
+        const shownScratchpads = state.clients
+            .filter(client => client.mapped && names[client.address] && client.workspace.address === state.active.address)
+            .map(client => names[client.address]);
+        if (JSON.stringify(shownScratchpads) !== JSON.stringify(scratchpads))
+            scratchpads = shownScratchpads;
 
         focusedId = state.active.id;
         focusedMonitorName = state.active.monitor;
@@ -299,15 +316,11 @@ ShellRoot {
         return true;
     }
 
-    // Called from the workspaces-peek submap in keybinds.lua: enter manage mode, then act on the key that triggered it.
+    // Called from the arrow binds workspacesPeek arms in keybinds.lua: enter manage mode, then act on the key that triggered it.
     function enterWithKey(name) {
         const keys = {
             "left": [Qt.Key_Left, Qt.NoModifier],
-            "right": [Qt.Key_Right, Qt.NoModifier],
-            "shift-left": [Qt.Key_Left, Qt.ShiftModifier],
-            "shift-right": [Qt.Key_Right, Qt.ShiftModifier],
-            "x": [Qt.Key_X, Qt.NoModifier],
-            "delete": [Qt.Key_Delete, Qt.NoModifier]
+            "right": [Qt.Key_Right, Qt.NoModifier]
         };
         if (!managing)
             startManaging();
@@ -370,15 +383,20 @@ ShellRoot {
 
         function onRawEvent(event) {
             switch (event.name) {
-            case "submap":
-                root.currentSubmap = event.data;
-                break;
             case "workspacev2":
             case "focusedmonv2":
-            case "movewindowv2":
                 root.refresh();
                 root.flash();
                 break;
+            case "movewindowv2": {
+                const [address, workspaceName] = event.data.split(",");
+                const name = root.scratchpadOf(workspaceName);
+                if (name)
+                    root.scratchpadNames["0x" + address] = name;
+                root.refresh();
+                root.flash(!root.scratchpadNames["0x" + address]);
+                break;
+            }
             case "urgent":
                 root.urgentAddresses = root.urgentAddresses.concat(["0x" + event.data]);
                 root.refresh();
@@ -464,7 +482,7 @@ ShellRoot {
         anchors.top: true
         anchors.left: true
         anchors.right: true
-        implicitHeight: root.islandHeight + root.secondRowHeight + 12
+        implicitHeight: root.islandHeight + root.secondRowHeight + root.chinHeight + 12
         mask: Region { item: hitArea }
 
         WlrLayershell.layer: WlrLayer.Overlay
@@ -484,7 +502,7 @@ ShellRoot {
             anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
             width: root.shown ? root.animatedContentWidth + 2 * root.filletRadius : 0
-            height: root.shown ? root.targetHeight : 0
+            height: root.shown ? root.targetHeight + (root.scratchpads.length > 0 ? root.chinHeight : 0) : 0
         }
 
         Item {
@@ -761,6 +779,49 @@ ShellRoot {
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: root.confirming = false
                             }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                id: chin
+                anchors.horizontalCenter: parent.horizontalCenter
+                y: parent.height - border.width
+                width: chinRow.implicitWidth + 20
+                height: root.chinHeight
+                visible: root.scratchpads.length > 0
+                opacity: Math.max(0, Math.min(1, (root.reveal - 0.5) / 0.4))
+                color: root.background
+                border.color: root.scratchpad
+                border.width: 1.5
+                topLeftRadius: 0
+                topRightRadius: 0
+                bottomLeftRadius: 9
+                bottomRightRadius: 9
+
+                Rectangle {
+                    id: chinTopBorderMask
+                    x: chin.border.width
+                    width: chin.width - 2 * chin.border.width
+                    height: chin.border.width
+                    color: root.background
+                }
+
+                Row {
+                    id: chinRow
+                    anchors.centerIn: parent
+                    spacing: 10
+
+                    Repeater {
+                        model: root.scratchpads
+
+                        Text {
+                            required property string modelData
+                            text: modelData
+                            color: root.scratchpad
+                            font.family: "Myna Nerd Font"
+                            font.pointSize: 13.3333
                         }
                     }
                 }
