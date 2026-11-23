@@ -60,3 +60,18 @@ there is no input, diagram the most recent thing being discussed.
 
 Say in two or three short sentences what the diagram shows, then the paths. Do
 not retell the whole diagram in prose.
+
+List every file you created (SVG, `.mmd` and any other) by its full absolute
+path, one per line, so it can be copied straight from the terminal:
+
+```
+/tmp/claude-1000/-home-me-project/0f3a9c2e/scratchpad/symlink-fix.svg
+/tmp/claude-1000/-home-me-project/0f3a9c2e/scratchpad/symlink-fix.mmd
+```
+
+Write each path out in full, never shortened with an ellipsis. Never give a directory
+followed by bare filenames, a path relative to the scratchpad or the working
+directory, or a path starting with `~`.
+
+Put each path on its own line as plain text, outside a link, list marker or
+sentence, so nothing else gets copied along with it.

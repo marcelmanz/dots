@@ -512,13 +512,13 @@ binding = { key = "Y", mods = "Control|Alt" }
 
 [[hints.enabled]]
 regex = '''[A-Za-z][A-Za-z0-9+.-]*://[^\u0000-\u001F\u007F-\u009F<>"\s{-}\^⟨⟩`\\]+|~?[\w.+@$-]*/[^\s'"`<>{}|,;:]+'''
-command = { program = "hint-path", args = ["xdg-open"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/hint-path" "$@"', "hint-path", "xdg-open"] }
 post_processing = true
 binding = { key = "O", mods = "Control|Shift" }
 
 [[hints.enabled]]
 regex = '''~?[\w.+@$-]*/[^\s'"`<>{}|,;:]+'''
-command = { program = "hint-path", args = ["ripdrag"] }
+command = { program = "sh", args = ["-c", 'exec "$HOME/scripts/hint-path" "$@"', "hint-path", "ripdrag"] }
 post_processing = true
 binding = { key = "D", mods = "Control|Shift" }
 
