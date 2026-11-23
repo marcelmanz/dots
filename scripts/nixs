@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/nixs
+index=$cache_dir/index.tsv
+index_info=$cache_dir/index.info
+
+usage() {
+  cat <<EOF
+Usage: nixs [query]       fuzzy search nixpkgs with a package info preview
+       nixs -u|--update   rebuild the package index from the nixpkgs registry entry
+
+Keys:
+  enter   print attribute and exit     ctrl-y  copy attribute
+  ctrl-o  open homepage                ctrl-g  open nixpkgs source
+  ctrl-n  open search.nixos.org        ctrl-l  open changelog
+  ctrl-r  nix run                      ctrl-s  nix shell
+  ctrl-/  toggle preview
+EOF
+}
+
+update_index() {
+  local source rev tmp
+  mkdir -p "$cache_dir"
+  echo "nixs: resolving nixpkgs..." >&2
+  read -r source rev < <(nix flake metadata nixpkgs --json |
+    jq -r '[.path, (.locked.rev // .revision // "master")] | @tsv')
+  echo "nixs: evaluating package metadata for ${rev:0:12} (takes ~1 min)..." >&2
+  tmp=$(mktemp "$cache_dir/index.XXXXXX")
+  nix-env -qa --meta --json -f "$source" 2>/dev/null |
+    jq -r --arg rev "$rev" '
+      def clean: tostring | gsub("[\t\r\n]+"; " ") | sub("^ +"; "") | sub(" +$"; "");
+      def pad($n): if length < $n then . + (" " * ($n - length)) else . end;
+      def license: if type == "array" then map(license) | join(", ")
+        elif type == "object" and has("licenses") then
+          " \(.operator // "AND") " as $op | .licenses | map(license) | join($op)
+        elif type == "object" then (.spdxId // .shortName // .fullName // "")
+        else tostring end;
+      def first_url: if type == "array" then (.[0] // "") else . end;
+      to_entries[]
+      | .key as $attr
+      | .value as $pkg
+      | ($pkg.meta // {}) as $meta
+      | ($pkg.version // "" | clean) as $version
+      | ($meta.description // "" | clean) as $description
+      | (($meta.position // "") | sub("^/nix/store/[^/]+/"; "")
+          | capture("^(?<file>.*):(?<line>[0-9]+)$")
+          | "https://github.com/NixOS/nixpkgs/blob/\($rev)/\(.file)#L\(.line)") // "" | . as $source
+      | [
+          "\u001b[1;34m\($attr | pad(32))\u001b[0m \u001b[2m\($version | .[0:16] | pad(16))\u001b[0m \($description)",
+          $attr,
+          $version,
+          $description,
+          ($meta.homepage // "" | first_url | clean),
+          ($meta.changelog // "" | first_url | clean),
+          $source,
+          ($meta.license // "" | license | clean),
+          ($meta.mainProgram // "" | clean),
+          ([$meta.maintainers[]? | if .github then "@" + .github else .name end] | join(" ") | clean),
+          ([ (select($meta.unfree == true) | "unfree"),
+             (select($meta.broken == true) | "broken"),
+             (select($meta.insecure == true) | "insecure"),
+             (select($meta.available == false) | "unavailable") ] | join(" ")),
+          ($meta.longDescription // "" | clean)
+        ]
+      | join("\t")' > "$tmp"
+  mv "$tmp" "$index"
+  printf '%s\t%s\t%s\n' "$rev" "$(date +%F)" "$(wc -l < "$index")" > "$index_info"
+  echo "nixs: indexed $(wc -l < "$index") packages" >&2
+}
+
+preview() {
+  local attr=$1 version=$2 description=$3 homepage=$4 changelog=$5 source=$6
+  local license=$7 program=$8 maintainers=$9 flags=${10} long_description=${11}
+  local bold=$'\e[1m' dim=$'\e[2m' cyan=$'\e[36m' red=$'\e[31m' green=$'\e[32m' reset=$'\e[0m'
+  local bin=${program:-$attr} found
+
+  row() { [[ -n $2 ]] && printf '%s%-12s%s %s\n' "$dim" "$1" "$reset" "$2"; return 0; }
+  link() {
+    [[ -n $2 ]] && printf '%s%-12s%s \e]8;;%s\e\\%s%s%s\e]8;;\e\\\n' \
+      "$dim" "$1" "$reset" "$2" "$cyan" "${3:-$2}" "$reset"
+    return 0
+  }
+
+  printf '%s%s%s %s%s%s\n' "$bold" "$attr" "$reset" "$green" "$version" "$reset"
+  [[ -n $flags ]] && printf '%s%s%s\n' "$red" "$flags" "$reset"
+  printf '\n%s\n\n' "${description:-no description}"
+
+  link Homepage "$homepage"
+  link Changelog "$changelog"
+  link Source "$source" "$(sed -E 's|^.*/blob/[^/]+/||; s|#L|:|' <<< "$source")"
+  link Search "https://search.nixos.org/packages?channel=unstable&show=$attr&query=$attr" "search.nixos.org: $attr"
+  echo
+  row License "$license"
+  row Program "$program"
+  row Maintainers "$maintainers"
+  if found=$(command -v -- "$bin" 2>/dev/null); then
+    row Installed "$found"
+  fi
+  echo
+  row Run "nix run nixpkgs#$attr"
+  row Shell "nix shell nixpkgs#$attr"
+  row Install "nix profile add nixpkgs#$attr"
+
+  if [[ -n $long_description ]]; then
+    printf '\n%s\n' "$long_description"
+  fi
+}
+
+case ${1:-} in
+  -h|--help) usage; exit 0 ;;
+  -u|--update) update_index; exit 0 ;;
+  --preview) shift; preview "$@"; exit 0 ;;
+esac
+
+[[ -s $index ]] || update_index
+
+rev= date= count=
+[[ -f $index_info ]] && IFS=$'\t' read -r rev date count < "$index_info"
+
+self=$(realpath "$0")
+open_field() { printf 'execute-silent([ -n %s ] && setsid -f xdg-open %s >/dev/null 2>&1)' "$1" "$1"; }
+
+fzf \
+  --ansi \
+  --delimiter '\t' \
+  --with-nth 1 \
+  --accept-nth 2 \
+  --tiebreak begin,chunk \
+  --no-hscroll \
+  --layout reverse \
+  --query "$*" \
+  --prompt 'nixpkgs> ' \
+  --header "${count:-?} packages · nixpkgs ${rev:0:12} · indexed ${date:-?}
+^y copy · ^o home · ^g source · ^n search · ^l changelog · ^r run · ^s shell" \
+  --header-first \
+  --preview "$self --preview {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}" \
+  --preview-window 'right,50%,wrap,border-left' \
+  --bind "ctrl-/:toggle-preview" \
+  --bind "ctrl-y:execute-silent(printf %s {2} | wl-copy)" \
+  --bind "ctrl-o:$(open_field {5})" \
+  --bind "ctrl-l:$(open_field {6})" \
+  --bind "ctrl-g:$(open_field {7})" \
+  --bind "ctrl-n:execute-silent(setsid -f xdg-open 'https://search.nixos.org/packages?channel=unstable&show='{2}'&query='{2} >/dev/null 2>&1)" \
+  --bind "ctrl-r:become(nix run nixpkgs#{2})" \
+  --bind "ctrl-s:become(echo 'nixs: entering nix shell nixpkgs#'{2} >&2; nix shell nixpkgs#{2})" \
+  < "$index"

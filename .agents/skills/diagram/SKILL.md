@@ -1,6 +1,6 @@
 ---
 name: diagram
-description: Draw a Mermaid diagram with merman-cli that explains a change, bug, flow or decision, and render it to an SVG that shows text in any viewer. Use when the user types /diagram, or asks for a diagram or picture of how something works or why a change is needed.
+description: Draw a Mermaid diagram with merman-cli that explains a change, bug, flow or decision, and render it to an SVG that shows text in any viewer, plus a PNG for zooming. Use when the user types /diagram, or asks for a diagram or picture of how something works or why a change is needed.
 ---
 
 # Diagram
@@ -16,7 +16,7 @@ there is no input, diagram the most recent thing being discussed.
    needed, what breaks, or how a request flows. One idea per diagram.
 3. Write the source to a `.mmd` file in the scratchpad directory, not the repo.
 4. Render it with the skill script, which follows the system light/dark
-   preference and bakes in a background rect:
+   preference, bakes in a background rect and also writes `diagram.png`:
 
    ```
    ~/.agents/skills/diagram/render.sh diagram.mmd diagram.svg
@@ -31,8 +31,8 @@ there is no input, diagram the most recent thing being discussed.
 
    The first must be above zero and the second must be 0.
 
-6. Open it with `xdg-open` and give the full absolute path of the SVG and of the
-   `.mmd` source.
+6. Open the PNG with `xdg-open` and give the full absolute paths of the PNG, the
+   SVG and the `.mmd` source.
 
 ## Rules
 
@@ -42,7 +42,10 @@ there is no input, diagram the most recent thing being discussed.
   the system setting.
 - The script always passes `--svg-pipeline resvg-safe`. The default pipeline puts labels in
   `foreignObject` HTML, which many viewers draw as empty boxes.
-- Do not render to PNG: it fails on a font size limit in this install. SVG only.
+- Do not render PNG with merman-cli: it fails on a font size limit in this
+  install. `render.sh` rasterizes the SVG with resvg instead.
+- Open the PNG, not the SVG, in imv: imv redraws an SVG on the CPU every frame
+  and freezes when zoomed in.
 - Use `flowchart` for flows and decisions, `sequenceDiagram` for who calls whom
   over time, `stateDiagram-v2` for states.
 - For a bug or change, use a BEFORE and an AFTER subgraph with the same input,
@@ -60,3 +63,19 @@ there is no input, diagram the most recent thing being discussed.
 
 Say in two or three short sentences what the diagram shows, then the paths. Do
 not retell the whole diagram in prose.
+
+List every file you created (PNG, SVG, `.mmd` and any other) by its full
+absolute path, one per line, so it can be copied straight from the terminal:
+
+```
+/tmp/claude-1000/-home-me-project/0f3a9c2e/scratchpad/symlink-fix.png
+/tmp/claude-1000/-home-me-project/0f3a9c2e/scratchpad/symlink-fix.svg
+/tmp/claude-1000/-home-me-project/0f3a9c2e/scratchpad/symlink-fix.mmd
+```
+
+Write each path out in full, never shortened with an ellipsis. Never give a directory
+followed by bare filenames, a path relative to the scratchpad or the working
+directory, or a path starting with `~`.
+
+Put each path on its own line as plain text, outside a link, list marker or
+sentence, so nothing else gets copied along with it.

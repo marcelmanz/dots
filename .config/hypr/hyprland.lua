@@ -553,13 +553,17 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("sh -c \"mkfifo $XDG_RUNTIME_DIR/wob-brightness.sock 2>/dev/null; tail -f $XDG_RUNTIME_DIR/wob-brightness.sock | wob -c ~/.config/wob/wob-brightness.ini\"")
 end)
 
+local function exec_after_session_env(cmd)
+    hl.exec_cmd("sh -c 'for i in $(seq 100); do systemctl --user -q is-active graphical-session.target && break; sleep 0.1; done; " .. cmd .. "'")
+end
+
 -- runs on initial start AND on `hyprctl reload`
 local function reloadable()
-    hl.exec_cmd("pkill ironbar; ironbar &")
-    hl.exec_cmd("~/scripts/hyprland/notifications start")
-    hl.exec_cmd("~/scripts/hyprland/media-module start")
-    hl.exec_cmd("qs -p ~/.config/quickshell/workspaces --no-duplicate -d")
-    hl.exec_cmd("~/scripts/hyprland/dark-light-toggle.sh")
+    exec_after_session_env("pkill ironbar; ironbar &")
+    exec_after_session_env("~/scripts/hyprland/notifications start")
+    exec_after_session_env("~/scripts/hyprland/media-module start")
+    exec_after_session_env("qs -p ~/.config/quickshell/workspaces --no-duplicate -d")
+    exec_after_session_env("~/scripts/hyprland/dark-light-toggle.sh")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")
 end
