@@ -175,7 +175,7 @@ local function focusOrCycleWhenMaximized(direction, next)
         local window = hl.get_active_window()
         if hl.get_active_workspace().tiled_layout == "monocle" then
             hl.dispatch(hl.dsp.layout(next and "cyclenext" or "cycleprev"))
-        elseif window and window.fullscreen == 1 then
+        elseif (window and window.fullscreen == 1) or hl.get_active_workspace().tiled_layout == "scrolling" then
             hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
         else
             hl.dispatch(hl.dsp.focus({ direction = direction }))
@@ -217,8 +217,20 @@ hl.define_submap("tmuxprefix", function()
     hl.bind("catchall", hl.dsp.submap("reset"), { non_consuming = true })
 end)
 
-hl.bind(altMod .. " + l", hl.dsp.window.resize({ x = 50, y = 0, relative = true }))
-hl.bind(altMod .. " + h", hl.dsp.window.resize({ x = -50, y = 0, relative = true }))
+local function resizeOrLayoutRatio(x, ratioStep)
+    return function()
+        local workspace = hl.get_active_workspace()
+        local window = hl.get_active_window()
+        if workspace and (workspace.tiled_layout or ""):sub(1, 4) == "lua:" and window and not window.floating then
+            hl.dispatch(hl.dsp.layout("ratio " .. ratioStep))
+        else
+            hl.dispatch(hl.dsp.window.resize({ x = x, y = 0, relative = true }))
+        end
+    end
+end
+
+hl.bind(altMod .. " + l", resizeOrLayoutRatio(50, "+0.05"))
+hl.bind(altMod .. " + h", resizeOrLayoutRatio(-50, "-0.05"))
 hl.bind(altMod .. " + k", hl.dsp.window.resize({ x = 0, y = -50, relative = true }))
 hl.bind(altMod .. " + j", hl.dsp.window.resize({ x = 0, y = 50, relative = true }))
 

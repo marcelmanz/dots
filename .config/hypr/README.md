@@ -54,23 +54,24 @@ Esc or Mod+Shift+M hides ostui and leaves the submap.
 
 ## Windows
 
-| Keys              | Action                                     |
-| ----------------- | ------------------------------------------ |
-| Mod+H/J/K/L       | Focus, J/K cycle in monocle and fullscreen |
-| Mod+Shift+H/J/K/L | Move window                                |
-| Super+H/J/K/L     | Resize                                     |
-| Mod+R             | Resize submap with h/j/k/l, Esc leaves     |
-| Mod+V             | Toggle float and center                    |
-| Mod+F             | Toggle monocle layout on this workspace    |
-| Mod+A             | Pick a layout for this workspace (fzf)     |
-| Mod+Shift+F       | Fullscreen                                 |
-| Mod+Tab           | Lock / unlock window                       |
-| Mod+Shift+Q       | Close, refused while locked                |
-| Mod+Shift+X       | Click a window to kill it                  |
-| Mod+Shift+I       | Shift workspaces to the next monitor       |
-| Mod+Z             | Zoom in                                    |
-| Mod+Shift+Z       | Reset zoom and reload Hyprland             |
-| Mod+drag L / R    | Move / resize with the mouse               |
+| Keys              | Action                                                |
+| ----------------- | ----------------------------------------------------- |
+| Mod+H/J/K/L       | Focus, J/K cycle in monocle, fullscreen and scrolling |
+| Mod+Shift+H/J/K/L | Move window                                           |
+| Super+H/J/K/L     | Resize                                                |
+| Mod+R             | Resize submap with h/j/k/l, Esc leaves                |
+| Mod+V             | Toggle float and center                               |
+| Mod+F             | Toggle monocle layout on this workspace               |
+| Mod+A             | Pick a layout for this workspace (fzf)                |
+| Super+H/L         | In Mod+A layouts, shrink / grow the main              |
+| Mod+Shift+F       | Fullscreen                                            |
+| Mod+Tab           | Lock / unlock window                                  |
+| Mod+Shift+Q       | Close, refused while locked                           |
+| Mod+Shift+X       | Click a window to kill it                             |
+| Mod+Shift+I       | Shift workspaces to the next monitor                  |
+| Mod+Z             | Zoom in                                               |
+| Mod+Shift+Z       | Reset zoom and reload Hyprland                        |
+| Mod+drag L / R    | Move / resize with the mouse                          |
 
 ## Workspaces
 

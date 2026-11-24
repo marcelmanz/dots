@@ -600,3 +600,8 @@ wiki_search() {
 # export BEMENU_OPTS="--fb #1c1c1c --ff #c6c6c6 --nb #1c1c1c --nf #c6c6c6 --tb #1c1c1c --tf #5f87af --hb #303030 --hf #ffaf5f --ab #1c1c1c --af #c6c6c6 --fn 'monospace 11'"
 
 unset LS_COLORS
+
+if [ ! -e /etc/NIXOS ]; then
+	unset LD_LIBRARY_PATH GBM_BACKENDS_PATH LIBGL_DRIVERS_PATH \
+		LIBVA_DRIVERS_PATH __EGL_VENDOR_LIBRARY_FILENAMES
+fi
