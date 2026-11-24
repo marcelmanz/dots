@@ -184,11 +184,23 @@ hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload && pypr reloa
 hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd("hyprctl kill"))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("pypr toggle term"))
 
-local function workspaceHasFloating(workspace)
+-- Tiled windows left to right, then floating ones; nil when nothing floats, so plain directional focus applies.
+local function floatingFocusRing(workspace)
+    local tiled, floating = {}, {}
     for _, window in ipairs(hl.get_workspace_windows(workspace)) do
-        if window.floating then return true end
+        if window.mapped and not window.hidden then
+            table.insert(window.floating and floating or tiled, window)
+        end
     end
-    return false
+    if #floating == 0 then return nil end
+    local function position(window) return window.at.x or window.at[1], window.at.y or window.at[2] end
+    table.sort(tiled, function(a, b)
+        local ax, ay = position(a)
+        local bx, by = position(b)
+        return ax < bx or (ax == bx and ay < by)
+    end)
+    for _, window in ipairs(floating) do table.insert(tiled, window) end
+    return tiled
 end
 
 local function focusOrCycleWhenMaximized(direction, next)
@@ -201,12 +213,16 @@ local function focusOrCycleWhenMaximized(direction, next)
             or layouts.current(layouts.workspaceKey(workspace)) == "deck" then
             hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
         else
-            hl.dispatch(hl.dsp.focus({ direction = direction }))
-            local focused = hl.get_active_window()
-            -- Directional focus never crosses between floating and tiled windows, so fall back to cycling.
-            if window and focused and focused.address == window.address
-                and (window.floating or workspaceHasFloating(workspace)) then
-                hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
+            local ring = window and floatingFocusRing(workspace)
+            if ring then
+                local index = 1
+                for i, candidate in ipairs(ring) do
+                    if candidate.address == window.address then index = i end
+                end
+                local target = ring[(index - 1 + (next and 1 or -1)) % #ring + 1]
+                hl.dispatch(hl.dsp.focus({ window = "address:" .. target.address }))
+            else
+                hl.dispatch(hl.dsp.focus({ direction = direction }))
             end
         end
     end

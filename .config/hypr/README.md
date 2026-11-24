@@ -57,7 +57,7 @@ Esc or Mod+Shift+M hides ostui and leaves the submap.
 | Keys              | Action                                                |
 | ----------------- | ----------------------------------------------------- |
 | Mod+H/J/K/L       | Focus, J/K cycle in monocle, fullscreen and scrolling |
-| Mod+J/K           | Also cycle in deck, and between floating and tiled    |
+| Mod+J/K           | In deck, or with floating windows: cycle through all  |
 | Mod+Shift+H/J/K/L | Move window; floating: 5% steps, hold to repeat       |
 | Mod+Shift+Return  | Make the focused window the main                      |
 | Super+H/J/K/L     | Resize; floating: 5% steps, stays on screen           |
