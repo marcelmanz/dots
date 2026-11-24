@@ -540,16 +540,13 @@ hl.config({
 })
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("dbus-update-activation-environment --systemd --all && systemctl --user start nixos-fake-graphical-session.target")
-    hl.exec_cmd("swayosd-server &")
+    hl.exec_cmd("dbus-update-activation-environment --systemd --all && systemctl --user stop nixos-fake-graphical-session.target && systemctl --user start nixos-fake-graphical-session.target")
     hl.exec_cmd("~/scripts/hyprland/nixbuild start")
     hl.exec_cmd("blueman-applet &")
     hl.exec_cmd("batsignal -b -w 20 -c 7 -d 5")
     hl.exec_cmd("ydotool &")
-    hl.exec_cmd("pypr")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
-    hl.exec_cmd("kanshi")
     hl.exec_cmd("sh -c \"mkfifo $XDG_RUNTIME_DIR/wob-volume.sock 2>/dev/null; tail -f $XDG_RUNTIME_DIR/wob-volume.sock | wob -c ~/.config/wob/wob-volume.ini\"")
     hl.exec_cmd("sh -c \"mkfifo $XDG_RUNTIME_DIR/wob-brightness.sock 2>/dev/null; tail -f $XDG_RUNTIME_DIR/wob-brightness.sock | wob -c ~/.config/wob/wob-brightness.ini\"")
 end)
@@ -560,7 +557,6 @@ end
 
 -- runs on initial start AND on `hyprctl reload`
 local function reloadable()
-    exec_after_session_env("pkill ironbar; ironbar &")
     exec_after_session_env("~/scripts/hyprland/notifications start")
     exec_after_session_env("~/scripts/hyprland/media-module start")
     exec_after_session_env("qs -p ~/.config/quickshell/workspaces --no-duplicate -d")
@@ -569,7 +565,24 @@ local function reloadable()
     hl.exec_cmd("gsettings set org.gnome.desktop.interface text-scaling-factor 0.9")
 end
 
-hl.on("hyprland.start", reloadable)
-hl.on("config.reloaded", reloadable)
+local startedMarker = (os.getenv("XDG_RUNTIME_DIR") or "/tmp") .. "/hypr/" .. (os.getenv("HYPRLAND_INSTANCE_SIGNATURE") or "") .. "/started"
+
+hl.on("hyprland.start", function()
+    local marker = io.open(startedMarker, "w")
+    if marker then marker:close() end
+    reloadable()
+end)
+
+hl.on("config.reloaded", function()
+    local marker = io.open(startedMarker, "r")
+    if not marker then return end
+    marker:close()
+    hl.exec_cmd("systemctl --user restart ironbar.service")
+    reloadable()
+end)
+
+hl.on("hyprland.shutdown", function()
+    os.execute("systemctl --user stop nixos-fake-graphical-session.target && sleep 0.1")
+end)
 
  

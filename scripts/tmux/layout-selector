@@ -1,0 +1,199 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+layouts() {
+  cat <<'EOF'
+main-vertical	Main pane left, the rest stacked right
+main-vertical-mirrored	Main pane right, the rest stacked left
+main-horizontal	Main pane on top, the rest in columns below
+main-horizontal-mirrored	Main pane at the bottom, the rest in columns above
+focus	Main pane at 70% on the left, the rest stacked right
+dual	Two main panes side by side, the rest stacked right
+centered	Second pane in a wide middle column, first on the left, the rest stacked right
+dwindle	Binary splits, each new pane halves the previous one
+even-horizontal	Equal side-by-side columns
+even-vertical	Equal stacked rows
+tiled	Near-square grid, the last row stretched
+manual	Leave panes as they are, new splits are not re-arranged
+EOF
+}
+
+custom_awk='
+  function splits(total, k, W, S, O,   avail, acc, prev, cur, i) {
+    avail = total - (k - 1); acc = 0; prev = 0
+    for (i = 1; i <= k; i++) {
+      acc += W[i]
+      cur = (i == k) ? avail : int(avail * acc + 0.5)
+      S[i] = cur - prev; O[i] = prev + i - 1; prev = cur
+    }
+  }
+  function leaf(x, y, w, h) { leaves = leaves " " x "," y "," w "," h; return w "x" h "," x "," y "," (cell++) }
+  function node(x, y, w, h, vertical, children) {
+    return w "x" h "," x "," y (vertical ? "[" : "{") children (vertical ? "]" : "}")
+  }
+  function cells_stack(from, to, x, y, w, h, vertical,   k, i, W, S, O, out) {
+    k = to - from + 1
+    if (k == 1) return leaf(x, y, w, h)
+    for (i = 1; i <= k; i++) W[i] = 1 / k
+    splits(vertical ? h : w, k, W, S, O)
+    for (i = 1; i <= k; i++)
+      out = out (i > 1 ? "," : "") (vertical ? leaf(x, y + O[i], w, S[i]) : leaf(x + O[i], y, S[i], h))
+    return node(x, y, w, h, vertical, out)
+  }
+  function cells_columns(x, y, w, h, W, k, last,   S, O, i, out) {
+    splits(w, k, W, S, O)
+    for (i = 1; i < k; i++) out = out leaf(x + O[i], y, S[i], h) ","
+    out = out cells_stack(k, last, x + O[k], y, S[k], h, 1)
+    return node(x, y, w, h, 0, out)
+  }
+  function cells_dwindle(i, x, y, w, h,   W, S, O, vertical, first) {
+    if (i == n) return leaf(x, y, w, h)
+    W[1] = 0.5; W[2] = 0.5; vertical = w < 2 * h
+    splits(vertical ? h : w, 2, W, S, O)
+    if (vertical) first = leaf(x, y, w, S[1]) "," cells_dwindle(i + 1, x, y + O[2], w, S[2])
+    else first = leaf(x, y, S[1], h) "," cells_dwindle(i + 1, x + O[2], y, S[2], h)
+    return node(x, y, w, h, vertical, first)
+  }
+  function generate(layout,   W) {
+    if (n == 1) return leaf(0, 0, ww, wh)
+    if (layout == "focus") { W[1] = 0.7; W[2] = 0.3; return cells_columns(0, 0, ww, wh, W, 2, n) }
+    if (layout == "dual") {
+      if (n == 2) return cells_stack(1, 2, 0, 0, ww, wh, 0)
+      W[1] = 0.35; W[2] = 0.35; W[3] = 0.3; return cells_columns(0, 0, ww, wh, W, 3, n)
+    }
+    if (layout == "centered") {
+      if (n == 2) { W[1] = 0.3; W[2] = 0.7; return cells_columns(0, 0, ww, wh, W, 2, 2) }
+      W[1] = 0.2; W[2] = 0.6; W[3] = 0.2; return cells_columns(0, 0, ww, wh, W, 3, n)
+    }
+    return cells_dwindle(1, 0, 0, ww, wh)
+  }
+  function checksum(s,   i, csum) {
+    for (i = 0; i < 256; i++) ORD[sprintf("%c", i)] = i
+    for (i = 1; i <= length(s); i++) csum = (int(csum / 2) + (csum % 2) * 32768 + ORD[substr(s, i, 1)]) % 65536
+    return sprintf("%04x,%s", csum, s)
+  }
+'
+
+is_custom() {
+  [[ $1 =~ ^(focus|dual|centered|dwindle)$ ]]
+}
+
+apply() {
+  local window=$1 layout=$2 n ww wh
+  if [[ $layout == manual ]]; then
+    tmux set-option -wu -t "$window" @layout
+    return
+  fi
+  if is_custom "$layout"; then
+    read -r n ww wh < <(tmux display-message -p -t "$window" '#{window_panes} #{window_width} #{window_height}')
+    tmux select-layout -t "$window" \
+      "$(LC_ALL=C gawk -v n="$n" -v ww="$ww" -v wh="$wh" -v layout="$layout" "$custom_awk"'BEGIN { print checksum(generate(layout)) }')"
+  else
+    tmux select-layout -t "$window" "$layout"
+  fi
+  tmux set-option -w -t "$window" @layout "$layout"
+}
+
+preview() {
+  local layout=$1 width=${FZF_PREVIEW_COLUMNS:-80} height=${FZF_PREVIEW_LINES:-24}
+  grep "^$layout	" <(layouts) | cut -f2
+  echo
+  gawk -v layout="$layout" -v W="$width" -v maxH="$((height - 2))" \
+    -v panes="$LAYOUT_PANES" -v geometry="$LAYOUT_GEOMETRY" \
+    -v ww="$LAYOUT_WIDTH" -v wh="$LAYOUT_HEIGHT" \
+    -v mainWidth="$LAYOUT_MAIN_WIDTH" -v mainHeight="$LAYOUT_MAIN_HEIGHT" "$custom_awk"'
+    function rect(x, y, w, h) { n_r++; RX[n_r] = x; RY[n_r] = y; RW[n_r] = w; RH[n_r] = h }
+    function stack(from, to, x, y, w, h, vertical,   i, count) {
+      count = to - from + 1
+      for (i = from; i <= to; i++)
+        if (vertical) rect(x, y + h * (i - from) / count, w, h / count)
+        else rect(x + w * (i - from) / count, y, w / count, h)
+    }
+    function fraction(size, total,   f) {
+      f = (size ~ /%$/) ? substr(size, 1, length(size) - 1) / 100 : size / total
+      return f < 0.1 ? 0.1 : f > 0.9 ? 0.9 : f
+    }
+    function main(orientation,   mf) {
+      if (n == 1) { rect(0, 0, 1, 1); return }
+      mf = (orientation ~ /^(left|right)$/) ? fraction(mainWidth, ww) : fraction(mainHeight, wh)
+      if (orientation == "left") { rect(0, 0, mf, 1); stack(2, n, mf, 0, 1 - mf, 1, 1) }
+      else if (orientation == "right") { rect(1 - mf, 0, mf, 1); stack(2, n, 0, 0, 1 - mf, 1, 1) }
+      else if (orientation == "top") { rect(0, 0, 1, mf); stack(2, n, 0, mf, 1, 1 - mf, 0) }
+      else { rect(0, 1 - mf, 1, mf); stack(2, n, 0, 0, 1, 1 - mf, 0) }
+    }
+    function tiled(   rows, cols, r, i, inRow) {
+      rows = 1; cols = 1
+      while (rows * cols < n) { rows++; if (rows * cols < n) cols++ }
+      i = 1
+      for (r = 0; r < rows && i <= n; r++) {
+        inRow = (n - i + 1 < cols) ? n - i + 1 : cols
+        stack(i, i + inRow - 1, 0, r / rows, 1, 1 / rows, 0)
+        i += inRow
+      }
+    }
+    function current(   i, g) {
+      for (i = 1; i <= n; i++) {
+        split(G[i], g, ",")
+        rect(g[1] / (ww + 1), g[2] / (wh + 1), (g[3] + 1) / (ww + 1), (g[4] + 1) / (wh + 1))
+      }
+    }
+    function put(x, y, s) { if (x >= 0 && x < W && y >= 0 && y < H) C[y, x] = s }
+    function draw(k,   x0, y0, x1, y1, x, y, label, lx, ly, i) {
+      x0 = int(RX[k] * W); x1 = int((RX[k] + RW[k]) * W) - 1
+      y0 = int(RY[k] * H); y1 = int((RY[k] + RH[k]) * H) - 1
+      if (x1 - x0 < 1 || y1 - y0 < 1) return
+      for (y = y0 + 1; y < y1; y++) for (x = x0 + 1; x < x1; x++) put(x, y, " ")
+      for (x = x0 + 1; x < x1; x++) { put(x, y0, "─"); put(x, y1, "─") }
+      for (y = y0 + 1; y < y1; y++) { put(x0, y, "│"); put(x1, y, "│") }
+      put(x0, y0, "┌"); put(x1, y0, "┐"); put(x0, y1, "└"); put(x1, y1, "┘")
+      label = names[k]
+      if (length(label) > x1 - x0 - 1) label = substr(label, 1, x1 - x0 - 1)
+      lx = x0 + int((x1 - x0 + 1 - length(label)) / 2); ly = int((y0 + y1) / 2)
+      for (i = 1; i <= length(label); i++) put(lx + i - 1, ly, substr(label, i, 1))
+    }
+    BEGIN {
+      n = split(panes, names, " ")
+      split(geometry, G, " ")
+      H = int(W * wh / ww); if (H > maxH) H = maxH
+      if (layout == "main-vertical") main("left")
+      else if (layout == "main-vertical-mirrored") main("right")
+      else if (layout == "main-horizontal") main("top")
+      else if (layout == "main-horizontal-mirrored") main("bottom")
+      else if (layout == "even-horizontal") stack(1, n, 0, 0, 1, 1, 0)
+      else if (layout == "even-vertical") stack(1, n, 0, 0, 1, 1, 1)
+      else if (layout == "tiled") tiled()
+      else if (layout ~ /^(focus|dual|centered|dwindle)$/) { generate(layout); split(substr(leaves, 2), G, " "); current() }
+      else current()
+      for (k = 1; k <= n_r; k++) draw(k)
+      for (y = 0; y < H; y++) {
+        line = ""
+        for (x = 0; x < W; x++) line = line (((y, x) in C) ? C[y, x] : " ")
+        print line
+      }
+    }'
+}
+
+pick() {
+  local window=$1 choice current position
+  LAYOUT_PANES=$(tmux list-panes -t "$window" -F '#{pane_index}:#{pane_current_command}' | paste -sd' ')
+  LAYOUT_GEOMETRY=$(tmux list-panes -t "$window" -F '#{pane_left},#{pane_top},#{pane_width},#{pane_height}' | paste -sd' ')
+  read -r LAYOUT_WIDTH LAYOUT_HEIGHT LAYOUT_MAIN_WIDTH LAYOUT_MAIN_HEIGHT current < <(tmux display-message -p -t "$window" \
+    '#{window_width} #{window_height} #{main-pane-width} #{main-pane-height} #{?@layout,#{@layout},manual}')
+  export LAYOUT_PANES LAYOUT_GEOMETRY LAYOUT_WIDTH LAYOUT_HEIGHT LAYOUT_MAIN_WIDTH LAYOUT_MAIN_HEIGHT
+  position=$(layouts | cut -f1 | grep -nxF -- "$current" | cut -d: -f1)
+  choice=$(layouts | awk -F'\t' -v current="$current" '{ print $0 "\t" ($1 == current ? "(current)" : "") }' |
+    fzf --delimiter='\t' --with-nth=1,3 --layout=reverse --bind="load:pos(${position:-1}),change:first" \
+    --prompt="layout> " \
+    --preview="'$0' preview {1}" --preview-window=down,75%,border-top) || exit 0
+  apply "$window" "${choice%%	*}"
+}
+
+case ${1:-} in
+  preview) preview "$2" ;;
+  pick) pick "${2:-}" ;;
+  apply) apply "$2" "$3" ;;
+  *)
+    window=${1:-$(tmux display-message -p '#{window_id}')}
+    tmux display-popup ${2:+-c "$2"} -E -w 70% -h 80% "'$0' pick '$window'"
+    ;;
+esac

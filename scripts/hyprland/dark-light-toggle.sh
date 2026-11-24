@@ -124,8 +124,7 @@ if [[ "$1" == "toggle" ]]; then
     tmux refresh-client -S 2>/dev/null
     printf '%s tmux reload exit=%s mode=%s\n' "$(date +%H:%M:%S)" "$?" "$current" >> "$HOME/.cache/tmux-theme-toggle.log"
 
-    pkill ironbar 2>/dev/null
-    setsid ironbar >/dev/null 2>&1 & disown
+    systemctl --user restart ironbar.service
 
     pkill -USR2 btop 2>/dev/null
 
