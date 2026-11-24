@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+dots_dir=$(dirname "$(dirname "$(readlink -f "$0")")")
+readme="$dots_dir/README.md"
+
+if command -v tree &>/dev/null && tree --fromfile </dev/null &>/dev/null; then
+	tree_cmd=(tree)
+else
+	tree_cmd=(nix run nixpkgs#tree --)
+fi
+
+if ! grep -q '^<!-- tree -->$' "$readme" || ! grep -q '^<!-- /tree -->$' "$readme"; then
+	echo "dots-tree: add <!-- tree --> and <!-- /tree --> lines to $readme" >&2
+	exit 1
+fi
+
+tree_file=$(mktemp)
+trap 'rm -f "$tree_file"' EXIT
+
+{
+	echo '```text'
+	git -C "$dots_dir" ls-files |
+		awk -F/ '{
+			depth = 1
+			if ($0 ~ /^\.agents\/skills\//) depth = 3
+			else if ($0 ~ /^(\.config|scripts)\//) depth = 2
+			path = $1
+			for (i = 2; i <= depth && i <= NF; i++) path = path "/" $i
+			if (NF > depth) path = path "/"
+			print path
+		}' |
+		sort -u |
+		"${tree_cmd[@]}" --fromfile -a -F --noreport --dirsfirst
+	echo '```'
+} >"$tree_file"
+
+awk -v tree_file="$tree_file" '
+	$0 == "<!-- tree -->" { print; while ((getline line < tree_file) > 0) print line; skip = 1; next }
+	$0 == "<!-- /tree -->" { skip = 0 }
+	!skip
+' "$readme" >"$readme.tmp"
+mv "$readme.tmp" "$readme"
