@@ -189,10 +189,23 @@ hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + K", focusOrCycleWhenMaximized("up", false))
 hl.bind(mainMod .. " + J", focusOrCycleWhenMaximized("down", true))
 
-hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "l" }))
-hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "r" }))
-hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "u" }))
-hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "d" }))
+local nudgeFloating = require("layouts").nudgeFloating
+
+local function moveOrNudgeFloating(direction)
+    return function()
+        local window = hl.get_active_window()
+        if window and window.floating and window.workspace and window.workspace.monitor then
+            nudgeFloating(window, direction)
+        else
+            hl.dispatch(hl.dsp.window.move({ direction = direction }))
+        end
+    end
+end
+
+hl.bind(mainMod .. " + SHIFT + H", moveOrNudgeFloating("l"), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + L", moveOrNudgeFloating("r"), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + K", moveOrNudgeFloating("u"), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + J", moveOrNudgeFloating("d"), { repeating = true })
 
 -- hl.bind(mainMod .. " + E", hl.dsp.layout("orientationnext"))
 
@@ -217,22 +230,26 @@ hl.define_submap("tmuxprefix", function()
     hl.bind("catchall", hl.dsp.submap("reset"), { non_consuming = true })
 end)
 
-local function resizeOrLayoutRatio(x, ratioStep)
+local resizeFloating = require("layouts").resizeFloating
+
+local function resizeOrLayoutRatio(stepsX, stepsY, ratioStep)
     return function()
         local workspace = hl.get_active_workspace()
         local window = hl.get_active_window()
-        if workspace and (workspace.tiled_layout or ""):sub(1, 4) == "lua:" and window and not window.floating then
+        if window and window.floating and window.workspace and window.workspace.monitor then
+            resizeFloating(window, stepsX, stepsY)
+        elseif ratioStep and workspace and (workspace.tiled_layout or ""):sub(1, 4) == "lua:" and window then
             hl.dispatch(hl.dsp.layout("ratio " .. ratioStep))
         else
-            hl.dispatch(hl.dsp.window.resize({ x = x, y = 0, relative = true }))
+            hl.dispatch(hl.dsp.window.resize({ x = stepsX * 50, y = stepsY * 50, relative = true }))
         end
     end
 end
 
-hl.bind(altMod .. " + l", resizeOrLayoutRatio(50, "+0.05"))
-hl.bind(altMod .. " + h", resizeOrLayoutRatio(-50, "-0.05"))
-hl.bind(altMod .. " + k", hl.dsp.window.resize({ x = 0, y = -50, relative = true }))
-hl.bind(altMod .. " + j", hl.dsp.window.resize({ x = 0, y = 50, relative = true }))
+hl.bind(altMod .. " + l", resizeOrLayoutRatio(1, 0, "+0.05"))
+hl.bind(altMod .. " + h", resizeOrLayoutRatio(-1, 0, "-0.05"))
+hl.bind(altMod .. " + k", resizeOrLayoutRatio(0, -1))
+hl.bind(altMod .. " + j", resizeOrLayoutRatio(0, 1))
 
 -- Switch workspaces with mainMod + [0-9]
 hl.bind(mainMod .. " + 1", hl.dsp.focus({ workspace = 1 }))

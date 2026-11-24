@@ -288,3 +288,38 @@ function layoutUnfloat(selector)
         end
     end
 end
+
+local function nudgeFloating(window, direction)
+    local area = floatArea(window.workspace)
+    local x, y = window.at.x or window.at[1], window.at.y or window.at[2]
+    local w, h = window.size.x or window.size[1], window.size.y or window.size[2]
+    local stepX, stepY = area.w * 0.05, area.h * 0.05
+    if direction == "l" then
+        x = x - stepX
+    elseif direction == "r" then
+        x = x + stepX
+    elseif direction == "u" then
+        y = y - stepY
+    else
+        y = y + stepY
+    end
+    x = math.max(area.x, math.min(x, area.x + area.w - w))
+    y = math.max(area.y, math.min(y, area.y + area.h - h))
+    hl.dispatch(hl.dsp.window.move({ x = math.floor(x), y = math.floor(y), window = "address:" .. window.address }))
+end
+
+local function resizeFloating(window, stepsX, stepsY)
+    local area = floatArea(window.workspace)
+    local x, y = window.at.x or window.at[1], window.at.y or window.at[2]
+    local w, h = window.size.x or window.size[1], window.size.y or window.size[2]
+    local centerX, centerY = x + w / 2, y + h / 2
+    w = math.max(area.w * 0.1, math.min(w + stepsX * area.w * 0.05, area.w))
+    h = math.max(area.h * 0.1, math.min(h + stepsY * area.h * 0.05, area.h))
+    x = math.max(area.x, math.min(centerX - w / 2, area.x + area.w - w))
+    y = math.max(area.y, math.min(centerY - h / 2, area.y + area.h - h))
+    local selector = "address:" .. window.address
+    hl.dispatch(hl.dsp.window.resize({ x = math.floor(w), y = math.floor(h), window = selector }))
+    hl.dispatch(hl.dsp.window.move({ x = math.floor(x), y = math.floor(y), window = selector }))
+end
+
+return { nudgeFloating = nudgeFloating, resizeFloating = resizeFloating }

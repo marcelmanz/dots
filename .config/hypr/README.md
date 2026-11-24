@@ -57,8 +57,8 @@ Esc or Mod+Shift+M hides ostui and leaves the submap.
 | Keys              | Action                                                |
 | ----------------- | ----------------------------------------------------- |
 | Mod+H/J/K/L       | Focus, J/K cycle in monocle, fullscreen and scrolling |
-| Mod+Shift+H/J/K/L | Move window                                           |
-| Super+H/J/K/L     | Resize                                                |
+| Mod+Shift+H/J/K/L | Move window; floating: 5% steps, hold to repeat       |
+| Super+H/J/K/L     | Resize; floating: 5% steps, stays on screen           |
 | Mod+R             | Resize submap with h/j/k/l, Esc leaves                |
 | Mod+V             | Toggle float and center                               |
 | Mod+F             | Toggle monocle layout on this workspace               |
