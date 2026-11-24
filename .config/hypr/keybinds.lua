@@ -150,12 +150,26 @@ hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/scripts/tofi/power-selector.sh"))
 -- bind = , escape, submap, reset
 -- submap = reset
 
+local layouts = require("layouts")
+
 hl.bind(mainMod .. " + F", function()
     local workspace = hl.get_active_workspace()
-    local layout = workspace.tiled_layout == "monocle" and "dwindle" or "monocle"
-    hl.workspace_rule({ workspace = tostring(workspace.id), layout = layout })
+    local key = layouts.workspaceKey(workspace)
+    if workspace.tiled_layout == "monocle" then
+        layouts.apply(key, layouts.previous(key) or "dwindle")
+    else
+        layouts.apply(key, "monocle")
+    end
 end)
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd("~/scripts/hyprland/layout-selector"))
+hl.bind(mainMod .. " + SHIFT + Return", function()
+    local layout = hl.get_active_workspace().tiled_layout or ""
+    if layout:sub(1, 4) == "lua:" then
+        hl.dispatch(hl.dsp.layout("promote"))
+    elseif layout == "master" then
+        hl.dispatch(hl.dsp.layout("swapwithmaster"))
+    end
+end)
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 -- bind = $mainMod, E, togglesplit, # dwindle
 -- bind = $mainMod, E, layoutmsg, orientationcycle # master
@@ -170,15 +184,30 @@ hl.bind(mainMod .. " + SHIFT + R", hl.dsp.exec_cmd("hyprctl reload && pypr reloa
 hl.bind(mainMod .. " + SHIFT + X", hl.dsp.exec_cmd("hyprctl kill"))
 hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("pypr toggle term"))
 
+local function workspaceHasFloating(workspace)
+    for _, window in ipairs(hl.get_workspace_windows(workspace)) do
+        if window.floating then return true end
+    end
+    return false
+end
+
 local function focusOrCycleWhenMaximized(direction, next)
     return function()
         local window = hl.get_active_window()
+        local workspace = hl.get_active_workspace()
         if hl.get_active_workspace().tiled_layout == "monocle" then
             hl.dispatch(hl.dsp.layout(next and "cyclenext" or "cycleprev"))
-        elseif (window and window.fullscreen == 1) or hl.get_active_workspace().tiled_layout == "scrolling" then
+        elseif (window and window.fullscreen == 1) or hl.get_active_workspace().tiled_layout == "scrolling"
+            or layouts.current(layouts.workspaceKey(workspace)) == "deck" then
             hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
         else
             hl.dispatch(hl.dsp.focus({ direction = direction }))
+            local focused = hl.get_active_window()
+            -- Directional focus never crosses between floating and tiled windows, so fall back to cycling.
+            if window and focused and focused.address == window.address
+                and (window.floating or workspaceHasFloating(workspace)) then
+                hl.dispatch(hl.dsp.window.cycle_next({ next = next }))
+            end
         end
     end
 end
@@ -196,6 +225,8 @@ local function moveOrNudgeFloating(direction)
         local window = hl.get_active_window()
         if window and window.floating and window.workspace and window.workspace.monitor then
             nudgeFloating(window, direction)
+        elseif (hl.get_active_workspace().tiled_layout or ""):sub(1, 4) == "lua:" then
+            hl.dispatch(hl.dsp.layout((direction == "l" or direction == "u") and "swap prev" or "swap next"))
         else
             hl.dispatch(hl.dsp.window.move({ direction = direction }))
         end

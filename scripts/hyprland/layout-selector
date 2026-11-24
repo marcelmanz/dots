@@ -27,25 +27,7 @@ EOF
 }
 
 apply() {
-  local workspace=$1 layout=$2
-  local rule="hl.workspace_rule({workspace = \"$workspace\", layout = "
-  if [[ $layout == float-* ]]; then
-    hyprctl -q eval "layoutFloat(\"$workspace\", \"${layout#float-}\", \"${LAYOUT_ACTIVE:-}\")"
-    return
-  fi
-  hyprctl -q eval "layoutUnfloat(\"$workspace\")"
-  case $layout in
-    master-*)
-      hyprctl -q eval "${rule}\"dwindle\"})"
-      hyprctl -q eval "${rule}\"master\", layout_opts = { orientation = \"${layout#master-}\" }})"
-      ;;
-    focus | centered | dual | spiral | accordion | deck | columns | rows | grid)
-      hyprctl -q eval "${rule}\"lua:$layout\"})"
-      ;;
-    *)
-      hyprctl -q eval "${rule}\"$layout\"})"
-      ;;
-  esac
+  hyprctl -q eval "require('layouts').apply(\"$1\", \"$2\", \"${LAYOUT_ACTIVE:-}\")"
 }
 
 preview() {
@@ -191,8 +173,12 @@ preview() {
 }
 
 pick() {
-  local choice
-  choice=$(layouts | fzf --delimiter='\t' --with-nth=1 --layout=reverse \
+  local choice current position
+  current=$(hyprctl repl "return require('layouts').current(\"$LAYOUT_WORKSPACE\") or '-'")
+  if [[ $current == - ]]; then current=$LAYOUT_TILED; fi
+  position=$(layouts | cut -f1 | grep -nxF -- "$current" | cut -d: -f1)
+  choice=$(layouts | awk -F'\t' -v current="$current" '{ print $0 "\t" ($1 == current ? "(current)" : "") }' |
+    fzf --delimiter='\t' --with-nth=1,3 --layout=reverse --bind="load:pos(${position:-1})" \
     --prompt="layout ($LAYOUT_WORKSPACE)> " \
     --preview="'$0' preview {1}" --preview-window=down,75%,border-top) || exit 0
   apply "$LAYOUT_WORKSPACE" "${choice%%	*}"
@@ -207,6 +193,7 @@ case ${1:-} in
     id=$(jq -r .id <<<"$workspace")
     if ((id < 0)); then id=$(jq -r .name <<<"$workspace"); fi
     export LAYOUT_WORKSPACE=$id
+    export LAYOUT_TILED=$(jq -r .tiledLayout <<<"$workspace")
     export LAYOUT_ACTIVE=$(hyprctl activewindow -j | jq -r '.address // empty')
     export LAYOUT_WINDOWS=$(hyprctl clients -j | jq -r --arg ws "$id" '
       [.[] | select((.workspace.id | tostring) == $ws or .workspace.name == $ws)

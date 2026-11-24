@@ -16,41 +16,145 @@ local function stack(targets, from, area, vertical)
     end
 end
 
-local ratioDelta = {}
+-- Per workspace key: layout, previous, ratio and window order. Saved so choices survive reloads.
+local statePath = (os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state")) .. "/hypr-layouts.lua"
+local state = {}
 local lastActive = {}
+local luaLayouts = {}
+
+local function serialize(value)
+    if type(value) == "table" then
+        local parts = {}
+        for k, v in pairs(value) do
+            parts[#parts + 1] = "[" .. serialize(k) .. "] = " .. serialize(v)
+        end
+        return "{ " .. table.concat(parts, ", ") .. " }"
+    elseif type(value) == "string" then
+        return string.format("%q", value)
+    end
+    return tostring(value)
+end
+
+local function save()
+    local file = io.open(statePath, "w")
+    if not file then return end
+    file:write("return " .. serialize(state) .. "\n")
+    file:close()
+end
+
+local function load()
+    local chunk = loadfile(statePath)
+    if not chunk then return end
+    local ok, saved = pcall(chunk)
+    if ok and type(saved) == "table" then state = saved end
+end
+
+load()
+
+local function entry(key)
+    state[key] = state[key] or {}
+    return state[key]
+end
+
+local function workspaceKey(workspace)
+    return workspace.id > 0 and tostring(workspace.id) or workspace.name
+end
 
 local function workspaceId(ctx)
     for _, t in ipairs(ctx.targets) do
-        if t.window and t.window.workspace then return t.window.workspace.id end
+        if t.window and t.window.workspace then return workspaceKey(t.window.workspace) end
     end
-    return 0
 end
 
 local function ratio(ctx, default)
-    return math.max(0.2, math.min(0.85, default + (ratioDelta[workspaceId(ctx)] or 0)))
+    local key = workspaceId(ctx)
+    local delta = key and state[key] and state[key].ratio or 0
+    return math.max(0.2, math.min(0.85, default + delta))
 end
 
 local function activeIndex(ctx)
     local id = workspaceId(ctx)
     local active = hl.get_active_window()
-    if active and active.workspace and active.workspace.id == id then lastActive[id] = active.address end
+    if active and active.workspace and workspaceKey(active.workspace) == id then lastActive[id] = active.address end
     for i, t in ipairs(ctx.targets) do
         if t.window and t.window.address == lastActive[id] then return i end
     end
     return 1
 end
 
+local function orderedTargets(ctx)
+    local key = workspaceId(ctx)
+    if not key then return ctx.targets end
+    local s = entry(key)
+    local present, seen, order = {}, {}, {}
+    for _, t in ipairs(ctx.targets) do
+        if t.window then present[t.window.address] = true end
+    end
+    for _, address in ipairs(s.order or {}) do
+        if not seen[address] and (present[address] or hl.get_window("address:" .. address)) then
+            order[#order + 1] = address
+            seen[address] = true
+        end
+    end
+    for _, t in ipairs(ctx.targets) do
+        if t.window and not seen[t.window.address] then
+            order[#order + 1] = t.window.address
+            seen[t.window.address] = true
+        end
+    end
+    if table.concat(order, " ") ~= table.concat(s.order or {}, " ") then
+        s.order = order
+        save()
+    end
+    local rank = {}
+    for i, address in ipairs(order) do rank[address] = i end
+    local targets = { table.unpack(ctx.targets) }
+    table.sort(targets, function(a, b)
+        return (a.window and rank[a.window.address] or math.huge) < (b.window and rank[b.window.address] or math.huge)
+    end)
+    return targets
+end
+
+local function withOrder(ctx)
+    local targets = orderedTargets(ctx)
+    return setmetatable({ targets = targets }, { __index = function(_, k) return ctx[k] end })
+end
+
 local function layoutMsg(ctx, msg)
     if msg == "refresh" then return true end
+    local key = workspaceId(ctx)
+    if not key then return false end
+    local s = entry(key)
     local step = tonumber(msg:match("^ratio%s+([+-]?[%d.]+)$") or "")
-    if not step then return false end
-    local id = workspaceId(ctx)
-    ratioDelta[id] = math.max(-0.5, math.min(0.5, (ratioDelta[id] or 0) + step))
+    if step then
+        s.ratio = math.max(-0.5, math.min(0.5, (s.ratio or 0) + step))
+        save()
+        return true
+    end
+    local active = hl.get_active_window()
+    local order = s.order or {}
+    local index
+    for i, address in ipairs(order) do
+        if active and address == active.address then index = i end
+    end
+    if not index then return false end
+    local target = msg == "promote" and 1 or msg == "swap next" and index + 1 or msg == "swap prev" and index - 1 or nil
+    if not target or target < 1 or target > #order or target == index then return false end
+    if msg == "promote" then
+        table.insert(order, 1, table.remove(order, index))
+    else
+        order[index], order[target] = order[target], order[index]
+    end
+    save()
     return true
 end
 
 local function register(name, recalculate)
-    hl.layout.register(name, { recalculate = recalculate, layout_msg = layoutMsg })
+    luaLayouts[name] = true
+    hl.layout.register(name, {
+        recalculate = function(ctx) recalculate(withOrder(ctx)) end,
+        layout_msg = function(ctx, msg) return layoutMsg(withOrder(ctx), msg) end,
+    })
 end
 
 -- Lua layouts only see focus on recalculation, so accordion needs a nudge on every focus change.
@@ -248,7 +352,7 @@ local floatArrangements = {
     end,
 }
 
-function layoutFloat(selector, name, activeAddress)
+local function layoutFloat(selector, name, activeAddress)
     local workspace = hl.get_workspace(selector)
     local arrange = floatArrangements[name]
     if not workspace or not workspace.monitor or not arrange then return end
@@ -277,7 +381,7 @@ function layoutFloat(selector, name, activeAddress)
     end
 end
 
-function layoutUnfloat(selector)
+local function layoutUnfloat(selector)
     local workspace = hl.get_workspace(selector)
     if not workspace then return end
     for _, window in ipairs(hl.get_workspace_windows(workspace)) do
@@ -322,4 +426,53 @@ local function resizeFloating(window, stepsX, stepsY)
     hl.dispatch(hl.dsp.window.move({ x = math.floor(x), y = math.floor(y), window = selector }))
 end
 
-return { nudgeFloating = nudgeFloating, resizeFloating = resizeFloating }
+local function setRule(selector, name)
+    local rule = { workspace = selector, layout = name }
+    if name:sub(1, 7) == "master-" then
+        rule.layout, rule.layout_opts = "master", { orientation = name:sub(8) }
+    elseif luaLayouts[name] then
+        rule.layout = "lua:" .. name
+    end
+    hl.workspace_rule(rule)
+end
+
+local function apply(selector, name, activeAddress)
+    if name:sub(1, 6) == "float-" then
+        layoutFloat(selector, name:sub(7), activeAddress)
+        return
+    end
+    layoutUnfloat(selector)
+    local s = entry(selector)
+    if s.layout ~= name then s.previous = s.layout end
+    s.layout = name
+    save()
+    local workspace = hl.get_workspace(selector)
+    -- master only re-reads layout_opts when the layout name changes, and not within the same tick.
+    if name:sub(1, 7) == "master-" and workspace and workspace.tiled_layout == "master" then
+        hl.workspace_rule({ workspace = selector, layout = "dwindle" })
+        hl.timer(function() setRule(selector, name) end, { timeout = 1, type = "oneshot" })
+    else
+        setRule(selector, name)
+    end
+end
+
+local function current(selector)
+    return state[selector] and state[selector].layout
+end
+
+local function previous(selector)
+    return state[selector] and state[selector].previous
+end
+
+for key, s in pairs(state) do
+    if s.layout then setRule(key, s.layout) end
+end
+
+return {
+    apply = apply,
+    current = current,
+    previous = previous,
+    workspaceKey = workspaceKey,
+    nudgeFloating = nudgeFloating,
+    resizeFloating = resizeFloating,
+}

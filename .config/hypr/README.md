@@ -57,12 +57,14 @@ Esc or Mod+Shift+M hides ostui and leaves the submap.
 | Keys              | Action                                                |
 | ----------------- | ----------------------------------------------------- |
 | Mod+H/J/K/L       | Focus, J/K cycle in monocle, fullscreen and scrolling |
+| Mod+J/K           | Also cycle in deck, and between floating and tiled    |
 | Mod+Shift+H/J/K/L | Move window; floating: 5% steps, hold to repeat       |
+| Mod+Shift+Return  | Make the focused window the main                      |
 | Super+H/J/K/L     | Resize; floating: 5% steps, stays on screen           |
 | Mod+R             | Resize submap with h/j/k/l, Esc leaves                |
 | Mod+V             | Toggle float and center                               |
-| Mod+F             | Toggle monocle layout on this workspace               |
-| Mod+A             | Pick a layout for this workspace (fzf)                |
+| Mod+F             | Toggle monocle, then back to the previous layout      |
+| Mod+A             | Pick a layout for this workspace, kept across reloads |
 | Super+H/L         | In Mod+A layouts, shrink / grow the main              |
 | Mod+Shift+F       | Fullscreen                                            |
 | Mod+Tab           | Lock / unlock window                                  |
