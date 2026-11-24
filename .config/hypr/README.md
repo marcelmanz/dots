@@ -62,6 +62,7 @@ Esc or Mod+Shift+M hides ostui and leaves the submap.
 | Mod+R             | Resize submap with h/j/k/l, Esc leaves     |
 | Mod+V             | Toggle float and center                    |
 | Mod+F             | Toggle monocle layout on this workspace    |
+| Mod+A             | Pick a layout for this workspace (fzf)     |
 | Mod+Shift+F       | Fullscreen                                 |
 | Mod+Tab           | Lock / unlock window                       |
 | Mod+Shift+Q       | Close, refused while locked                |

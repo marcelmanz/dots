@@ -146,6 +146,7 @@ hl.device({
     kb_file = home .. "/.config/hypr/keymaps/ultranav-caps-shift.xkb",
 })
 
+require("layouts")
 require("keybinds")
 
 hl.window_rule({

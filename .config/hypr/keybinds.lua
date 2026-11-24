@@ -155,6 +155,7 @@ hl.bind(mainMod .. " + F", function()
     local layout = workspace.tiled_layout == "monocle" and "dwindle" or "monocle"
     hl.workspace_rule({ workspace = tostring(workspace.id), layout = layout })
 end)
+hl.bind(mainMod .. " + A", hl.dsp.exec_cmd("~/scripts/hyprland/layout-selector"))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 -- bind = $mainMod, E, togglesplit, # dwindle
 -- bind = $mainMod, E, layoutmsg, orientationcycle # master

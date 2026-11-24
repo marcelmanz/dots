@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+layouts() {
+  cat <<'EOF'
+dwindle	Binary splits, each new window halves the focused one
+master-left	Main window left, the rest stacked right
+master-right	Main window right, the rest stacked left
+master-top	Main window on top, the rest in columns below
+master-bottom	Main window at the bottom, the rest in columns above
+master-center	Main window centered, the rest split left and right
+focus	Main window at 70%, the rest stacked small on the right
+columns	Equal side-by-side columns
+rows	Equal stacked rows
+grid	Near-square grid
+scrolling	Half-width columns on a horizontal strip
+monocle	One window at a time, cycle with Mod+J/K
+EOF
+}
+
+apply() {
+  local workspace=$1 layout=$2
+  local rule="hl.workspace_rule({workspace = \"$workspace\", layout = "
+  case $layout in
+    master-*)
+      hyprctl -q eval "${rule}\"dwindle\"})"
+      hyprctl -q eval "${rule}\"master\", layout_opts = { orientation = \"${layout#master-}\" }})"
+      ;;
+    focus | columns | rows | grid)
+      hyprctl -q eval "${rule}\"lua:$layout\"})"
+      ;;
+    *)
+      hyprctl -q eval "${rule}\"$layout\"})"
+      ;;
+  esac
+}
+
+preview() {
+  local layout=$1 width=${FZF_PREVIEW_COLUMNS:-80} height=${FZF_PREVIEW_LINES:-24}
+  grep "^$layout	" <(layouts) | cut -f2
+  echo
+  gawk -v layout="$layout" -v W="$width" -v maxH="$((height - 2))" \
+    -v windows="$LAYOUT_WINDOWS" -v aspect="$LAYOUT_ASPECT" '
+    function rect(x, y, w, h) { n_r++; RX[n_r] = x; RY[n_r] = y; RW[n_r] = w; RH[n_r] = h }
+    function stack(from, to, x, y, w, h, vertical,   i, count) {
+      count = to - from + 1
+      for (i = from; i <= to; i++)
+        if (vertical) rect(x, y + h * (i - from) / count, w, h / count)
+        else rect(x + w * (i - from) / count, y, w / count, h)
+    }
+    function master(orientation,   mf, i, left, right, side) {
+      mf = 0.55
+      if (n == 1) { rect(0, 0, 1, 1); return }
+      if (orientation == "center" && n < 3) orientation = "left"
+      if (orientation == "left") { rect(0, 0, mf, 1); stack(2, n, mf, 0, 1 - mf, 1, 1) }
+      else if (orientation == "right") { rect(1 - mf, 0, mf, 1); stack(2, n, 0, 0, 1 - mf, 1, 1) }
+      else if (orientation == "top") { rect(0, 0, 1, mf); stack(2, n, 0, mf, 1, 1 - mf, 0) }
+      else if (orientation == "bottom") { rect(0, 1 - mf, 1, mf); stack(2, n, 0, 0, 1, 1 - mf, 0) }
+      else {
+        side = (1 - mf) / 2
+        rect(side, 0, mf, 1)
+        for (i = 2; i <= n; i++) if (i % 2 == 0) right++; else left++
+        for (i = 2; i <= n; i++) {
+          if (i % 2 == 0) { rect(side + mf, (i / 2 - 1) / right, side, 1 / right) }
+          else { rect(0, ((i - 1) / 2 - 1) / left, side, 1 / left) }
+        }
+      }
+    }
+    function dwindle(   i, x, y, w, h) {
+      x = 0; y = 0; w = 1; h = 1
+      for (i = 1; i <= n; i++) {
+        if (i == n) { rect(x, y, w, h); break }
+        if (w * aspect >= h) { rect(x, y, w / 2, h); x += w / 2; w /= 2 }
+        else { rect(x, y, w, h / 2); y += h / 2; h /= 2 }
+      }
+    }
+    function grid(   cols, rows, r, i, inRow) {
+      cols = int(sqrt(n)); if (cols * cols < n) cols++
+      rows = int((n + cols - 1) / cols)
+      i = 1
+      for (r = 0; r < rows; r++) {
+        inRow = (n - i + 1 < cols) ? n - i + 1 : cols
+        stack(i, i + inRow - 1, 0, r / rows, 1, 1 / rows, 0)
+        i += inRow
+      }
+    }
+    function put(x, y, s) { if (x >= 0 && x < W && y >= 0 && y < H) C[y, x] = s }
+    function draw(k,   x0, y0, x1, y1, x, y, label, lx, ly, i) {
+      x0 = int(RX[k] * W); x1 = int((RX[k] + RW[k]) * W) - 1
+      y0 = int(RY[k] * H); y1 = int((RY[k] + RH[k]) * H) - 1
+      if (x1 - x0 < 1 || y1 - y0 < 1) return
+      for (x = x0 + 1; x < x1; x++) { put(x, y0, "─"); put(x, y1, "─") }
+      for (y = y0 + 1; y < y1; y++) { put(x0, y, "│"); put(x1, y, "│") }
+      put(x0, y0, "┌"); put(x1, y0, "┐"); put(x0, y1, "└"); put(x1, y1, "┘")
+      label = LABEL[k]
+      if (length(label) > x1 - x0 - 1) label = substr(label, 1, x1 - x0 - 1)
+      lx = x0 + int((x1 - x0 + 1 - length(label)) / 2); ly = int((y0 + y1) / 2)
+      for (i = 1; i <= length(label); i++) put(lx + i - 1, ly, substr(label, i, 1))
+    }
+    BEGIN {
+      n = split(windows, names, " ")
+      if (n == 0) { n = 3; names[1] = "1"; names[2] = "2"; names[3] = "3" }
+      H = int(W / aspect / 2.2); if (H > maxH) H = maxH
+      if (layout == "dwindle") dwindle()
+      else if (layout ~ /^master-/) master(substr(layout, 8))
+      else if (layout == "focus") {
+        if (n == 1) rect(0, 0, 1, 1)
+        else { rect(0, 0, 0.7, 1); stack(2, n, 0.7, 0, 0.3, 1, 1) }
+      }
+      else if (layout == "columns") stack(1, n, 0, 0, 1, 1, 0)
+      else if (layout == "rows") stack(1, n, 0, 0, 1, 1, 1)
+      else if (layout == "grid") grid()
+      else if (layout == "scrolling") {
+        for (i = 1; i <= n && i <= 2; i++) rect((i - 1) / 2, 0, 0.5, 1)
+      }
+      else if (layout == "monocle") rect(0, 0, 1, 1)
+      for (k = 1; k <= n_r; k++) LABEL[k] = names[k]
+      if (layout == "scrolling" && n > 2) LABEL[2] = LABEL[2] " +" (n - 2) " >"
+      if (layout == "monocle" && n > 1) LABEL[1] = LABEL[1] " (1/" n ")"
+      for (k = 1; k <= n_r; k++) draw(k)
+      for (y = 0; y < H; y++) {
+        line = ""
+        for (x = 0; x < W; x++) line = line (((y, x) in C) ? C[y, x] : " ")
+        print line
+      }
+    }'
+}
+
+pick() {
+  local choice
+  choice=$(layouts | fzf --delimiter='\t' --with-nth=1 --layout=reverse \
+    --prompt="layout ($LAYOUT_WORKSPACE)> " \
+    --preview="'$0' preview {1}" --preview-window=down,75%,border-top) || exit 0
+  apply "$LAYOUT_WORKSPACE" "${choice%%	*}"
+}
+
+case ${1:-} in
+  preview) preview "$2" ;;
+  pick) pick ;;
+  apply) apply "$2" "$3" ;;
+  *)
+    workspace=$(hyprctl activeworkspace -j)
+    id=$(jq -r .id <<<"$workspace")
+    if ((id < 0)); then id=$(jq -r .name <<<"$workspace"); fi
+    export LAYOUT_WORKSPACE=$id
+    export LAYOUT_WINDOWS=$(hyprctl clients -j | jq -r --arg ws "$id" '
+      [.[] | select((.workspace.id | tostring) == $ws or .workspace.name == $ws)
+        | select(.floating | not) | .class | ascii_downcase | gsub(" "; "-")] | join(" ")')
+    export LAYOUT_ASPECT=$(hyprctl monitors -j | jq -r '.[] | select(.focused)
+      | if (.transform % 2) == 1 then .height / .width else .width / .height end')
+    exec "$HOME/scripts/alacritty-help" "Layouts" "$0" pick
+    ;;
+esac
