@@ -15,12 +15,11 @@ is_descendant_of_alacritty() {
 }
 
 if command -v tmux >/dev/null && tmux list-clients >/dev/null 2>&1; then
-  while read -r client_pid client_name; do
+  while read -r client_pid pane_id; do
     if is_descendant_of_alacritty "$client_pid"; then
-      pane_id=$(tmux display-message -c "$client_name" -p '#{pane_id}')
       exec tmux copy-mode -t "$pane_id"
     fi
-  done < <(tmux list-clients -F '#{client_pid} #{client_name}')
+  done < <(tmux list-clients -F '#{client_pid} #{pane_id}')
 fi
 
 exec hyprctl dispatch 'hl.dsp.send_shortcut({ mods = "CTRL SHIFT", key = "space", window = "activewindow" })'
