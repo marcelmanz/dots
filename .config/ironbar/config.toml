@@ -65,14 +65,14 @@ type = "sys_info"
 name = "cpu"
 format = ["CPU {cpu_percent}%"]
 interval.cpu = 2
-on_click_left = "alacritty -e s-tui"
+on_click_left = "systemd-run --user --scope --quiet alacritty -e s-tui"
 
 [[end]]
 type = "sys_info"
 name = "ram"
 format = ["RAM {memory_percent}%"]
 interval.memory = 5
-on_click_left = "alacritty -e btm --default_widget_type mem --expanded"
+on_click_left = "systemd-run --user --scope --quiet alacritty -e btm --default_widget_type mem --expanded"
 
 [[end]]
 type = "volume"
@@ -102,13 +102,33 @@ bar = [
 type = "custom"
 class = "bluetooth"
 bar = [
-    { type = "button", label = "󰂯", on_click = "!alacritty -e bluetuith" },
+    { type = "button", label = "󰂯", on_click = "!systemd-run --user --scope --quiet alacritty -e bluetuith" },
 ]
 
 # [[end]]
 # type = "network_manager"
 # icon_size = 24
 # types_whitelist = ["wifi"]
+
+[[end]]
+type = "custom"
+name = "keyboard-battery"
+show_if = "#keyboard-battery"
+bar = [
+    { type = "label", label = "󰌌" },
+    { type = "label", class = "dot", label = "#keyboard-battery-dot" },
+    { type = "label", class = "level", label = "{{watch:~/scripts/hyprland/bt-battery keyboard}}" },
+]
+
+[[end]]
+type = "custom"
+name = "headset-battery"
+show_if = "#headset-battery"
+bar = [
+    { type = "label", label = "󰋋" },
+    { type = "label", class = "dot", label = "#headset-battery-dot" },
+    { type = "label", class = "level", label = "{{watch:~/scripts/hyprland/bt-battery headset}}" },
+]
 
 [[end]]
 type = "battery"

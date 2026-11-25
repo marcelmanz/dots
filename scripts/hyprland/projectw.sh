@@ -22,7 +22,7 @@ toggle() {
 		pkill -f projectw.py 2>/dev/null
 		status="projectw disabled"
 	else
-		setsid projectw >/dev/null 2>&1 & disown
+		systemd-run --user --scope --quiet projectw >/dev/null 2>&1 & disown
 		status="projectw enabled"
 	fi
 

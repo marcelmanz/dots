@@ -238,7 +238,7 @@ toggle() {
 }
 
 start() {
-	qs -p "$quickshell_config" --no-duplicate -d
+	systemd-run --user --scope --quiet qs -p "$quickshell_config" --no-duplicate -d
 }
 
 parse() {

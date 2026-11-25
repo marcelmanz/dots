@@ -190,6 +190,35 @@ popover modelbutton:hover {
     color: #ffd75f;
 }
 
+#keyboard-battery .level,
+#headset-battery .level {
+    margin-left: 8px;
+}
+
+#keyboard-battery .dot,
+#headset-battery .dot {
+    font-size: 8px;
+    padding-top: 12px;
+}
+
+#keyboard-battery.warning .dot,
+#keyboard-battery.critical .dot,
+#headset-battery.warning .dot,
+#headset-battery.critical .dot {
+    margin-left: 1px;
+    margin-right: -7px;
+}
+
+#keyboard-battery.warning .dot,
+#headset-battery.warning .dot {
+    color: #ffd75f;
+}
+
+#keyboard-battery.critical .dot,
+#headset-battery.critical .dot {
+    color: #ff5f5f;
+}
+
 #workspace label {
     color: @color_strong;
     font-weight: bold;
@@ -204,6 +233,8 @@ box.focused {
 }
 
 .volume,
+#keyboard-battery,
+#headset-battery,
 .battery,
 .clock,
 .notifications {

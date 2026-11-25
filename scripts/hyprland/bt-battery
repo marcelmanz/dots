@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+kind="$1"
+module_name="$kind-battery"
+
+case "$kind" in
+keyboard | headset) ;;
+*)
+	echo "usage: bt-battery keyboard|headset" >&2
+	exit 1
+	;;
+esac
+
+percentage() {
+	upower -e | while read -r device; do
+		upower -i "$device" | awk -v kind="$kind" '
+			$1 == kind && NF == 1 { found = 1 }
+			found && $1 == "percentage:" { print $2; exit }
+		'
+	done | head -n1
+}
+
+update_state() {
+	ironbar style remove-class "$module_name" warning >/dev/null 2>&1
+	ironbar style remove-class "$module_name" critical >/dev/null 2>&1
+	ironbar var set "$module_name-dot" "" >/dev/null 2>&1
+
+	if [ -z "$level" ]; then
+		ironbar var set "$module_name" false >/dev/null 2>&1
+		return
+	fi
+
+	if [ "${level%\%}" -le 15 ]; then
+		ironbar style add-class "$module_name" critical >/dev/null 2>&1
+		ironbar var set "$module_name-dot" "●" >/dev/null 2>&1
+	elif [ "${level%\%}" -le 30 ]; then
+		ironbar style add-class "$module_name" warning >/dev/null 2>&1
+		ironbar var set "$module_name-dot" "●" >/dev/null 2>&1
+	fi
+
+	ironbar var set "$module_name" true >/dev/null 2>&1
+}
+
+print_status() {
+	level=$(percentage)
+
+	if [ "$level" != "$last_level" ]; then
+		last_level="$level"
+		update_state
+	fi
+
+	echo "$level"
+}
+
+last_level="unset"
+print_status
+
+upower --monitor | while read -r _; do
+	print_status
+done
