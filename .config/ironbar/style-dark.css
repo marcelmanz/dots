@@ -201,17 +201,10 @@ popover modelbutton:hover {
     padding-top: 12px;
 }
 
-#keyboard-battery.warning .dot,
 #keyboard-battery.critical .dot,
-#headset-battery.warning .dot,
 #headset-battery.critical .dot {
     margin-left: 1px;
     margin-right: -7px;
-}
-
-#keyboard-battery.warning .dot,
-#headset-battery.warning .dot {
-    color: #ffd75f;
 }
 
 #keyboard-battery.critical .dot,
@@ -233,10 +226,25 @@ box.focused {
 }
 
 .volume,
-#keyboard-battery,
-#headset-battery,
-.battery,
 .clock,
 .notifications {
     margin-left: 16px;
+}
+
+.bluetooth {
+    margin-right: 6px;
+}
+
+#keyboard-battery,
+#headset-battery {
+    margin-left: 10px;
+}
+
+.battery {
+    padding: 0;
+    margin-left: 4px;
+}
+
+.battery .label {
+    margin-left: -6px;
 }

@@ -133,7 +133,7 @@ bar = [
 [[end]]
 type = "battery"
 format = "{percentage}%"
-icon_size = 24
+icon_size = 20
 
 [end.profiles.warning]
 percent = 30

@@ -21,7 +21,6 @@ percentage() {
 }
 
 update_state() {
-	ironbar style remove-class "$module_name" warning >/dev/null 2>&1
 	ironbar style remove-class "$module_name" critical >/dev/null 2>&1
 	ironbar var set "$module_name-dot" "" >/dev/null 2>&1
 
@@ -32,9 +31,6 @@ update_state() {
 
 	if [ "${level%\%}" -le 15 ]; then
 		ironbar style add-class "$module_name" critical >/dev/null 2>&1
-		ironbar var set "$module_name-dot" "●" >/dev/null 2>&1
-	elif [ "${level%\%}" -le 30 ]; then
-		ironbar style add-class "$module_name" warning >/dev/null 2>&1
 		ironbar var set "$module_name-dot" "●" >/dev/null 2>&1
 	fi
 

@@ -72,6 +72,10 @@
 [help]
 	autocorrect = prompt
 
+[hook "push-rejected-notify"]
+	event = pre-push
+	command = ~/scripts/git/push-rejected-notify
+
 [includeIf "gitdir:~/clones/work/"]
 	path = ~/.gitconfig-work
 

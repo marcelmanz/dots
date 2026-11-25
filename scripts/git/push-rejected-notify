@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+remote_name=$1
+remote_url=$2
+
+push_args=()
+pid=$PPID
+while ((pid > 1)); do
+	mapfile -d '' -t argv <"/proc/$pid/cmdline" 2>/dev/null
+	if [[ ${argv[0]##*/} == git ]]; then
+		for i in "${!argv[@]}"; do
+			if [[ ${argv[i]} == push ]]; then
+				push_args=("${argv[@]:i+1}")
+				break 2
+			fi
+		done
+	fi
+	pid=$(awk '{print $4}' "/proc/$pid/stat" 2>/dev/null) || break
+done
+
+force=
+all_refs=
+remote_seen=
+skip_next=
+refspecs=()
+for arg in "${push_args[@]}"; do
+	if [[ -n $skip_next ]]; then
+		skip_next=
+		continue
+	fi
+	case $arg in
+	--force | --force-with-lease* | --force-if-includes | --mirror) force=1 ;;
+	--all | --branches | --tags) all_refs=1 ;;
+	--repo | --receive-pack | --exec | --push-option | -o) skip_next=1 ;;
+	--*) ;;
+	-*) [[ $arg == *f* ]] && force=1 ;;
+	*)
+		if [[ -z $remote_seen ]]; then
+			remote_seen=1
+		elif [[ $arg == +* ]]; then
+			force=1
+		else
+			refspecs+=("$arg")
+		fi
+		;;
+	esac
+done
+
+[[ -n $force ]] && exit 0
+
+rejected=()
+declare -A seen_in_stdin
+while read -r _ local_sha remote_ref remote_sha; do
+	seen_in_stdin[${remote_ref#refs/heads/}]=1
+	[[ $local_sha =~ ^0+$ || $remote_sha =~ ^0+$ ]] && continue
+	if ! git cat-file -e "$remote_sha^{commit}" 2>/dev/null ||
+		! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+		rejected+=("${remote_ref#refs/heads/}")
+	fi
+done
+
+check_against_tracking() {
+	local source_sha tracking_ref=$2 branch
+	branch=${tracking_ref#refs/remotes/"$remote_name"/}
+	[[ -n ${seen_in_stdin[$branch]} ]] && return
+	source_sha=$(git rev-parse -q --verify "$1^{commit}") || return
+	git rev-parse -q --verify "$tracking_ref" >/dev/null || return
+	git merge-base --is-ancestor "$tracking_ref" "$source_sha" || rejected+=("$branch")
+}
+
+if [[ $remote_name != "$remote_url" && -z $all_refs ]]; then
+	if ((${#refspecs[@]} == 0)); then
+		tracking_ref=$(git rev-parse --symbolic-full-name '@{push}' 2>/dev/null) &&
+			check_against_tracking HEAD "$tracking_ref"
+	else
+		for spec in "${refspecs[@]}"; do
+			source=${spec%%:*}
+			destination=${spec#*:}
+			[[ -z $source ]] && continue
+			[[ $destination == HEAD ]] && destination=$(git symbolic-ref -q --short HEAD)
+			check_against_tracking "$source" "refs/remotes/$remote_name/${destination#refs/heads/}"
+		done
+	fi
+fi
+
+((${#rejected[@]})) || exit 0
+[[ -n ${DISPLAY-}${WAYLAND_DISPLAY-} ]] && command -v notify-send >/dev/null || exit 0
+
+repo=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
+branches=$(printf '%s\n' "${rejected[@]}" | sort -u | paste -sd, - | sed 's/,/, /g')
+notify-send -u critical -a git "git push rejected" "$repo $branches: pull needed"
+exit 0
