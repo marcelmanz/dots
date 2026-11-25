@@ -8,7 +8,8 @@ call() {
 }
 
 start() {
-	qs -p "$quickshell_config" --no-duplicate -d
+	busctl --user call org.freedesktop.DBus /org/freedesktop/DBus org.freedesktop.DBus \
+		StartServiceByName su org.freedesktop.Notifications 0 >/dev/null
 }
 
 watch() {
