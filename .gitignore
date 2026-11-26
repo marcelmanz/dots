@@ -20,6 +20,7 @@
 .cargo/
 old-scripts/
 .config/nushell/history.txt
+__pycache__/
 
 # theme-toggle churn (symlinks/sed-edited by dark-light-toggle.sh)
 .config/eza/theme.yml

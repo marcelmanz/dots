@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+quickshell_config="$HOME/.config/quickshell/tv-remote"
+token_file="$XDG_RUNTIME_DIR/tv-remote-token"
+daemon_pid_file="$XDG_RUNTIME_DIR/tv-remote-daemon.pid"
+daemon_port=47181
+
+module() {
+	qs ipc -p "$quickshell_config" call tvRemote "$@" >/dev/null 2>&1 || true
+}
+
+load_token() {
+	[[ -s $token_file ]] && return
+	if ! (umask 077 && rbw get ha.marcel.cool/api-token >"$token_file"); then
+		rm -f "$token_file"
+		notify-send "TV remote" "No HA token. Add an rbw entry ha.marcel.cool/api-token."
+		exit 1
+	fi
+}
+
+daemon_running() {
+	[[ -s $daemon_pid_file ]] && kill -0 "$(<"$daemon_pid_file")" 2>/dev/null
+}
+
+start_daemon() {
+	daemon_running && return
+	setsid ~/scripts/hyprland/tv-remote-daemon "$daemon_port" "$token_file" >/dev/null 2>&1 &
+	echo $! >"$daemon_pid_file"
+}
+
+stop_daemon() {
+	daemon_running && kill "$(<"$daemon_pid_file")" 2>/dev/null
+	rm -f "$daemon_pid_file"
+}
+
+send() {
+	printf '%s' "$1" >"/dev/udp/127.0.0.1/$daemon_port"
+}
+
+open() {
+	load_token
+	start_daemon
+	qs -p "$quickshell_config" --no-duplicate -d >/dev/null 2>&1
+	for _ in $(seq 20); do
+		qs ipc -p "$quickshell_config" call tvRemote open >/dev/null 2>&1 && break
+		sleep 0.1
+	done
+	hyprctl dispatch 'hl.dsp.submap("tv")' >/dev/null
+}
+
+close() {
+	module close
+	hyprctl dispatch 'hl.dsp.submap("reset")' >/dev/null
+	stop_daemon
+}
+
+type_text() {
+	local text
+	# leave the submap so the prompt gets the keys instead of the TV
+	hyprctl dispatch 'hl.dsp.submap("reset")' >/dev/null
+	text=$(~/scripts/themed-bemenu -p tv: </dev/null) || text=""
+	hyprctl dispatch 'hl.dsp.submap("tv")' >/dev/null
+	[[ -n $text ]] && send "text $text"
+}
+
+case "${1:-}" in
+open) open ;;
+close) close ;;
+toggle)
+	if [[ $(hyprctl submap 2>/dev/null) == tv ]]; then close; else open; fi
+	;;
+key) send "key ${2:?usage: tv-remote key COMMAND}" ;;
+type) type_text ;;
+bt-restart)
+	module status "Restarting box Bluetooth..."
+	send "service shell_command.tv_box_bluetooth_restart"
+	;;
+*)
+	echo "usage: tv-remote open|close|toggle|key COMMAND|type|bt-restart" >&2
+	exit 2
+	;;
+esac

@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+import http.client
+import json
+import os
+import queue
+import socket
+import subprocess
+import sys
+import threading
+import time
+
+HA_HOST = "ha.marcel.cool"
+REMOTE_ENTITY = "remote.living_room_xiao_mitv"
+QUICKSHELL_CONFIG = os.path.expanduser("~/.config/quickshell/tv-remote")
+# held keys repeat faster than the box takes them; stale repeats are dropped so a key stops on release
+STALE_REPEAT_SECONDS = 0.3
+REPEATING_KEYS = {"DPAD_UP", "DPAD_DOWN", "DPAD_LEFT", "DPAD_RIGHT", "VOLUME_UP", "VOLUME_DOWN"}
+
+port = int(sys.argv[1])
+token_file = sys.argv[2]
+with open(token_file) as file:
+    token = file.read().strip()
+
+pending = queue.Queue()
+connection = None
+last_status = ""
+
+
+def receive():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(("127.0.0.1", port))
+    while True:
+        data, _ = sock.recvfrom(4096)
+        pending.put((time.monotonic(), data.decode(errors="replace").rstrip("\n")))
+
+
+def post(path, body):
+    global connection
+    for _ in range(2):
+        try:
+            if connection is None:
+                connection = http.client.HTTPSConnection(HA_HOST, timeout=10)
+            connection.request(
+                "POST",
+                path,
+                json.dumps(body),
+                {"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+            )
+            response = connection.getresponse()
+            response.read()
+            return response.status
+        except (OSError, http.client.HTTPException):
+            if connection is not None:
+                connection.close()
+            connection = None
+    return "no connection"
+
+
+def report(status):
+    global last_status
+    text = "" if status == 200 else f"HA error: {status}"
+    if status == 401:
+        os.remove(token_file) if os.path.exists(token_file) else None
+    if text != last_status:
+        last_status = text
+        subprocess.Popen(
+            ["qs", "ipc", "-p", QUICKSHELL_CONFIG, "call", "tvRemote", "status", text],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+
+def send_command(command):
+    return post("/api/services/remote/send_command", {"entity_id": REMOTE_ENTITY, "command": command})
+
+
+threading.Thread(target=receive, daemon=True).start()
+while True:
+    queued_at, message = pending.get()
+    kind, _, argument = message.partition(" ")
+    if kind == "key":
+        if argument in REPEATING_KEYS and time.monotonic() - queued_at > STALE_REPEAT_SECONDS:
+            continue
+        report(send_command(argument))
+    elif kind == "text":
+        report(send_command(f"text:{argument}"))
+    elif kind == "service":
+        domain, _, service = argument.partition(".")
+        report(post(f"/api/services/{domain}/{service}", {}))

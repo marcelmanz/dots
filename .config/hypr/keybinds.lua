@@ -92,6 +92,33 @@ hl.define_submap("music", function()
     hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("~/scripts/hyprland/music-toggle.sh hide"))
     hl.bind("escape", hl.dsp.exec_cmd("~/scripts/hyprland/music-toggle.sh hide"))
 end)
+-- Same keys as the keyboard mode of the ha.marcel.cool TV dashboard.
+local tvRemote = "~/scripts/hyprland/tv-remote"
+hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(tvRemote .. " open"))
+hl.define_submap("tv", function()
+    local function tvKey(keys, command, repeating)
+        for _, key in ipairs(keys) do
+            hl.bind(key, hl.dsp.exec_cmd(tvRemote .. " key " .. command), { repeating = repeating })
+        end
+    end
+    tvKey({ "up" }, "DPAD_UP", true)
+    tvKey({ "down" }, "DPAD_DOWN", true)
+    tvKey({ "left" }, "DPAD_LEFT", true)
+    tvKey({ "right" }, "DPAD_RIGHT", true)
+    tvKey({ "space", "Return" }, "DPAD_CENTER")
+    tvKey({ "BackSpace", "escape" }, "BACK")
+    tvKey({ "h" }, "HOME")
+    tvKey({ "m" }, "MENU")
+    tvKey({ "a" }, "APP_SWITCH")
+    tvKey({ "p", "XF86AudioPlay" }, "MEDIA_PLAY_PAUSE")
+    tvKey({ "0", "XF86AudioMute" }, "VOLUME_MUTE")
+    tvKey({ "minus", "KP_Subtract", "XF86AudioLowerVolume" }, "VOLUME_DOWN", true)
+    tvKey({ "equal", "SHIFT + equal", "KP_Add", "XF86AudioRaiseVolume" }, "VOLUME_UP", true)
+    hl.bind("k", hl.dsp.exec_cmd(tvRemote .. " type"))
+    hl.bind("b", hl.dsp.exec_cmd(tvRemote .. " bt-restart"))
+    hl.bind(mainMod .. " + X", hl.dsp.exec_cmd(tvRemote .. " close"))
+    hl.bind("q", hl.dsp.exec_cmd(tvRemote .. " close"))
+end)
 hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("pypr shift_monitors +1"))
 hl.bind(mainMod .. " + SHIFT + Z", hl.dsp.exec_cmd("hyprctl reload && pypr zoom"))
 -- bind = $mainMod SHIFT, N, exec, $terminal --title "nnn-term" -e nnn
@@ -150,7 +177,19 @@ hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("~/scripts/tofi/power-selector.sh"))
 -- bind = , escape, submap, reset
 -- submap = reset
 
-local layouts = require("layouts")
+local hasLayouts, layouts = pcall(require, "layouts")
+if not hasLayouts then
+    layouts = {
+        apply = function(key, name) hl.workspace_rule({ workspace = key, layout = name }) end,
+        current = function() end,
+        previous = function() end,
+        workspaceKey = function(workspace) return workspace.id > 0 and tostring(workspace.id) or workspace.name end,
+        nudgeFloating = function(_, direction) hl.dispatch(hl.dsp.window.move({ direction = direction })) end,
+        resizeFloating = function(_, stepsX, stepsY)
+            hl.dispatch(hl.dsp.window.resize({ x = stepsX * 50, y = stepsY * 50, relative = true }))
+        end,
+    }
+end
 
 hl.bind(mainMod .. " + F", function()
     local workspace = hl.get_active_workspace()
@@ -234,7 +273,7 @@ hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + K", focusOrCycleWhenMaximized("up", false))
 hl.bind(mainMod .. " + J", focusOrCycleWhenMaximized("down", true))
 
-local nudgeFloating = require("layouts").nudgeFloating
+local nudgeFloating = layouts.nudgeFloating
 
 local function moveOrNudgeFloating(direction)
     return function()
@@ -277,7 +316,7 @@ hl.define_submap("tmuxprefix", function()
     hl.bind("catchall", hl.dsp.submap("reset"), { non_consuming = true })
 end)
 
-local resizeFloating = require("layouts").resizeFloating
+local resizeFloating = layouts.resizeFloating
 
 local function resizeOrLayoutRatio(stepsX, stepsY, ratioStep)
     return function()

@@ -30,6 +30,7 @@ Ctrl+B still reaches the focused app, so tmux keeps working.
 | Mod+Shift+D | Drag files with `ripdrag` |
 | Mod+B       | Bluetooth                 |
 | Mod+P       | Power menu                |
+| Mod+X       | Xiaomi TV remote submap   |
 
 ## Scratchpads
 
@@ -51,6 +52,26 @@ Esc or Mod+Shift+M hides ostui and leaves the submap.
 | Space        | Play / pause  |
 | Left / Right | Seek 5s       |
 | Up / Down    | Player volume |
+
+## TV remote submap
+
+Drives the Xiaomi TV box through ha.marcel.cool, with the same keys as the TV
+dashboard. A card in the corner lists them. Q, Mod+X or its close button
+leaves.
+
+It needs a Home Assistant long-lived token in rbw, entry
+`ha.marcel.cool/api-token`.
+
+| Keys          | Action                      |
+| ------------- | --------------------------- |
+| Arrows        | Navigate, hold to repeat    |
+| Space / Enter | OK                          |
+| Backspace/Esc | Back                        |
+| H / M / A     | Home / Menu / Apps          |
+| P             | Play / pause                |
+| + / - / 0     | Volume up / down / mute     |
+| K             | Type text on the TV         |
+| B             | Restart the box's Bluetooth |
 
 ## Windows
 
