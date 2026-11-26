@@ -43,6 +43,38 @@
   "preferredNotifChannel": "notifications_disabled",
   "autoCompactEnabled": false,
   "switchModelsOnFlag": false,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": "cargo-agents hook claude pre-tool-use" }]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": "cargo-agents hook claude post-tool-use" }]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": "cargo-agents hook claude user-prompt-submit" }]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": "cargo-agents hook claude session-start" }]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [{ "type": "command", "command": "cargo-agents hook claude stop" }]
+      }
+    ]
+  },
   "autoMode": {
     "environment": [
       "### Org-wide",

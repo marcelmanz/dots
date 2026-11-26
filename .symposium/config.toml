@@ -1,0 +1,15 @@
+auto-update = "off"
+auto-sync = true
+agents-syncing = true
+sync-debounce-secs = 5
+registry = []
+
+[[agent]]
+name = "claude"
+
+[logging]
+level = "info"
+
+[defaults]
+symposium-recommendations = true
+user-plugins = true
