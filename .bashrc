@@ -376,7 +376,8 @@ if command -v rbw >/dev/null 2>&1; then
 	SYNTHETIC_API_KEY="$(rbw get --folder synthetic.new api-key 2>/dev/null)"
 	WS_LITE_LLM_API_KEY="$(rbw get --folder worldsensing ws-llm 2>/dev/null)"
 	SONAR_TOKEN="$(rbw get --folder worldsensing sonar-token 2>/dev/null)"
-	export MINI_FLUX_TOKEN SYNTHETIC_API_KEY WS_LITE_LLM_API_KEY SONAR_TOKEN
+	BITBUCKET_TOKEN="$(rbw get --folder dev 'atlassian.com bit pr token' 2>/dev/null)"
+	export MINI_FLUX_TOKEN SYNTHETIC_API_KEY WS_LITE_LLM_API_KEY SONAR_TOKEN BITBUCKET_TOKEN
 fi
 
 if [[ $PWD == */triumph-dev-environment* || $PWD == */meta-worldsensing* ]] &&
