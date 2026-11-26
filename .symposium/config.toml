@@ -1,8 +1,14 @@
-auto-update = "off"
 auto-sync = true
 agents-syncing = true
 sync-debounce-secs = 5
+auto-update = "off"
 registry = []
+
+[plugins]
+use = [
+    "rust-best-practice",
+    "find-crate-source",
+]
 
 [[agent]]
 name = "claude"

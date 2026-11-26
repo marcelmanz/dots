@@ -4,6 +4,7 @@
 set -euo pipefail
 
 model="${CLAUDE_COMMIT_MODEL:-haiku}"
+pi_model="${PI_COMMIT_MODEL:-synthetic/hf:zai-org/GLM-5.3-Flash}"
 max_diff_bytes="${CLAUDE_COMMIT_MAX_DIFF:-60000}"
 
 git rev-parse --git-dir >/dev/null
@@ -24,19 +25,31 @@ Subject line under 72 chars. Add a body only if the change is not obvious from t
 msg_file=$(mktemp)
 trap 'rm -f "$msg_file"' EXIT
 
-printf '<recent_commits>\n%s\n</recent_commits>\n\n<stat>\n%s\n</stat>\n\n<diff>\n%s\n</diff>\n' \
-	"$log" "$stat" "$diff" |
-	claude -p \
+prompt() {
+	printf '<recent_commits>\n%s\n</recent_commits>\n\n<stat>\n%s\n</stat>\n\n<diff>\n%s\n</diff>\n' \
+		"$log" "$stat" "$diff"
+}
+
+if ! prompt |
+	timeout 30s claude -p \
 		--model "$model" \
 		--system-prompt "$system_prompt" \
 		--tools "" \
 		--strict-mcp-config \
 		--disable-slash-commands \
-		--no-session-persistence |
-	sed -e '/^```/d' >"$msg_file"
+		--no-session-persistence 2>/dev/null |
+	sed -e '/^```/d' >"$msg_file" || [[ ! -s "$msg_file" ]]; then
+	printf '\033[33mClaude unavailable; falling back to Pi.\033[0m\n' >&2
+	prompt |
+		pi -p --model "$pi_model" \
+			--no-session --no-tools --no-extensions \
+			--no-skills --no-context-files --no-prompt-templates \
+			--system-prompt "$system_prompt" |
+		sed -e '/^```/d' >"$msg_file"
+fi
 
 if [[ ! -s "$msg_file" ]]; then
-	echo "Claude returned an empty message." >&2
+	echo "No commit message generated." >&2
 	exit 1
 fi
 

@@ -1,6 +1,5 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Shapes
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
@@ -15,8 +14,11 @@ ShellRoot {
 
     readonly property int islandHeight: 34
     readonly property int secondRowHeight: 26
-    readonly property int filletRadius: 10
-    readonly property int bottomRadius: 13
+    readonly property int screenGap: 20
+    readonly property int chinGap: 8
+    readonly property int cornerRadius: 8
+    readonly property int innerRadius: 5
+    readonly property int ironbarHeight: 30
     readonly property int sidePadding: 6
     readonly property int chinHeight: 28
 
@@ -73,14 +75,13 @@ ShellRoot {
     property real reveal: shown ? 1 : 0
     Behavior on reveal {
         SpringAnimation {
-            spring: root.shown ? 7 : 9
-            damping: root.shown ? 0.5 : 0.85
+            spring: root.shown ? 16 : 9
+            damping: root.shown ? 0.6 : 0.85
             epsilon: 0.002
         }
     }
 
     readonly property real collapsedWidth: 56
-    readonly property real dropHeight: Math.max(0, reveal * animatedHeight)
     readonly property real bodyWidth: Math.max(0, collapsedWidth + (animatedContentWidth - collapsedWidth) * reveal)
 
     onWorkspacesChanged: Qt.callLater(() => {
@@ -479,10 +480,14 @@ ShellRoot {
         screen: root.focusedScreen()
         color: "transparent"
         exclusionMode: ExclusionMode.Ignore
-        anchors.top: true
+        anchors.bottom: true
         anchors.left: true
         anchors.right: true
-        implicitHeight: root.islandHeight + root.secondRowHeight + root.chinHeight + 12
+        margins {
+            bottom: root.ironbarHeight + root.screenGap
+            right: root.screenGap
+        }
+        implicitHeight: root.islandHeight + root.secondRowHeight + root.chinHeight + root.chinGap + 12
         mask: Region { item: hitArea }
 
         WlrLayershell.layer: WlrLayer.Overlay
@@ -499,19 +504,22 @@ ShellRoot {
 
         Item {
             id: hitArea
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: root.shown ? root.animatedContentWidth + 2 * root.filletRadius : 0
-            height: root.shown ? root.targetHeight + (root.scratchpads.length > 0 ? root.chinHeight : 0) : 0
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            width: root.shown ? Math.max(root.animatedContentWidth, chin.width) : 0
+            height: root.shown ? root.targetHeight + (root.scratchpads.length > 0 ? root.chinHeight + root.chinGap : 0) : 0
         }
 
         Item {
             id: drop
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: root.bodyWidth + 2 * root.filletRadius
-            height: root.dropHeight
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            width: root.bodyWidth
+            height: root.animatedHeight
             visible: root.reveal > 0.005
+            opacity: Math.max(0, Math.min(1, root.reveal / 0.6))
+            scale: 0.9 + 0.1 * root.reveal
+            transformOrigin: Item.BottomRight
 
             HoverHandler {
                 onHoveredChanged: {
@@ -534,48 +542,10 @@ ShellRoot {
                 }
             }
 
-            Repeater {
-                model: [false, true]
-
-                Shape {
-                    required property bool modelData
-                    readonly property real f: root.filletRadius
-
-                    x: modelData ? drop.width - f : 0
-                    width: f
-                    height: f
-                    preferredRendererType: Shape.CurveRenderer
-                    transform: [
-                        Scale {
-                            origin.x: root.filletRadius / 2
-                            xScale: modelData ? -1 : 1
-                        },
-                        Scale {
-                            origin.x: modelData ? 0 : root.filletRadius
-                            xScale: Math.min(1, root.dropHeight / (2 * root.filletRadius))
-                            yScale: xScale
-                        }
-                    ]
-
-                    ShapePath {
-                        strokeWidth: -1
-                        fillColor: root.background
-                        PathSvg { path: `M 0 0 L ${root.filletRadius} 0 L ${root.filletRadius} ${root.filletRadius} A ${root.filletRadius} ${root.filletRadius} 0 0 0 0 0 Z` }
-                    }
-                }
-            }
-
             Rectangle {
-                readonly property real corner: Math.max(0, Math.min(root.bottomRadius, height / 2, width / 2))
-
-                x: root.filletRadius
-                width: root.bodyWidth
-                height: parent.height
+                anchors.fill: parent
                 color: root.background
-                topLeftRadius: 0
-                topRightRadius: 0
-                bottomLeftRadius: corner
-                bottomRightRadius: corner
+                radius: root.cornerRadius
                 clip: true
 
                 Item {
@@ -599,7 +569,7 @@ ShellRoot {
                         y: row.y + (row.height - height) / 2
                         width: Math.max(height, rightEdge - leftEdge)
                         height: 24
-                        radius: height / 2
+                        radius: root.innerRadius
                         color: root.focusBlob
 
                         Behavior on leftEdge {
@@ -629,7 +599,7 @@ ShellRoot {
                         y: row.y + (row.height - height) / 2
                         width: targetWidth
                         height: 24
-                        radius: height / 2
+                        radius: root.innerRadius
                         color: "transparent"
                         border.color: root.confirming ? root.danger : root.strong
                         border.width: 1.5
@@ -689,7 +659,7 @@ ShellRoot {
                                     anchors.centerIn: parent
                                     width: parent.width
                                     height: 24
-                                    radius: height / 2
+                                    radius: root.innerRadius
                                     color: root.danger
                                     opacity: pill.isSelected ? (root.dark ? 0.35 : 0.25) : 0
 
@@ -786,8 +756,8 @@ ShellRoot {
 
             Rectangle {
                 id: chin
-                anchors.horizontalCenter: parent.horizontalCenter
-                y: parent.height - border.width
+                anchors.right: parent.right
+                y: -height - root.chinGap
                 width: chinRow.implicitWidth + 20
                 height: root.chinHeight
                 visible: root.scratchpads.length > 0
@@ -795,18 +765,7 @@ ShellRoot {
                 color: root.background
                 border.color: root.scratchpad
                 border.width: 1.5
-                topLeftRadius: 0
-                topRightRadius: 0
-                bottomLeftRadius: 9
-                bottomRightRadius: 9
-
-                Rectangle {
-                    id: chinTopBorderMask
-                    x: chin.border.width
-                    width: chin.width - 2 * chin.border.width
-                    height: chin.border.width
-                    color: root.background
-                }
+                radius: root.cornerRadius
 
                 Row {
                     id: chinRow
